@@ -13,6 +13,7 @@ class AppColor {
   static const Color red = Color(0xFFD92525);
   static const Color tosca = Color(0xFFD92525);
   static const Color grey = Color(0xFF858585);
+  static const Color black = Color(0xFF000000);
   static const Color lightGrey = Color(0xFFFAFAFA);
   static const Color yellow = Color(0xFFFFD233);
 }
@@ -21,14 +22,14 @@ ColorScheme AppColorScheme = const ColorScheme(
   brightness: Brightness.light,
   primary: AppColor.darkBlue,
   onPrimary: AppColor.blue,
-  secondary: AppColor.orange,
+  secondary: AppColor.grey,
   onSecondary: AppColor.lightOrange,
   error: AppColor.red,
   onError: AppColor.darkRed,
   background: AppColor.white,
   onBackground: AppColor.lightGrey,
   surface: AppColor.lightGrey,
-  onSurface: AppColor.grey,
+  onSurface: AppColor.orange,
 );
 
 TextStyle AppBasicStyle({

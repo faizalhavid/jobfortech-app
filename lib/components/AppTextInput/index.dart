@@ -44,7 +44,7 @@ InputDecoration AppTextInputDecoration({
     hintText: hintText,
     labelText: labelText,
     labelStyle: AppBasicStyle(
-      fontColor: Colors.black,
+      fontColor: AppColor.black,
       fontSize: 18,
       fontWeight: FontWeight.bold,
     ),

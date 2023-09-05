@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 import 'package:jobfortech/app/modules/Auth/controllers/auth_controller.dart';
 import 'package:jobfortech/app/modules/Dashboard/views/dashboard_view.dart';
 import 'package:jobfortech/components/AppButton/index.dart';
+import 'package:jobfortech/components/AppSafeArea/index.dart';
+import 'package:jobfortech/components/AppVStack/index.dart';
 import 'package:jobfortech/constant/icons.dart';
 import 'package:jobfortech/components/AppTextInput/index.dart';
 import 'package:jobfortech/constant/theme.dart';
@@ -17,77 +19,62 @@ class LoginView extends GetView {
     final eyeController = Get.put(EyeController());
 
     return Scaffold(
-      body: ListView(
-        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+      body: AppSafeArea(
         children: [
-          SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.only(
-                  left: 48, right: 48, top: 144, bottom: 132),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  AppIcon(
-                    svgPath: 'assets/svgs/jobfortech-logo.svg',
-                    size: 48.0,
-                    isColor: false,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 40),
-                    child: Center(
-                      child: Text(
-                        'Tellus mauris cursus at condimentum mauris purus nulla. Donec eget quis euismod sapien eu.',
-                        style: AppBasicStyle(
-                            fontColor: AppColor.grey, fontSize: 12),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  ),
-                  AppTextInput(
-                      controller: email,
-                      labelText: 'Email',
-                      hintText: 'Enter email address',
-                      errorText: 'Invalid email address',
-                      keyboardType: TextInputType.emailAddress),
-                  const SizedBox(height: 24),
-                  Obx(
-                    () => AppTextInput(
-                      controller: password,
-                      labelText: 'Password',
-                      hintText: '*********',
-                      errorText: 'Invalid password address',
-                      keyboardType: TextInputType.visiblePassword,
-                      obscureText: eyeController.isClose.value,
-                      suffix: AppIconButton(
-                          svgPath: eyeController.isClose.value
-                              ? 'assets/svgs/eye-closed.svg'
-                              : 'assets/svgs/eye-opened.svg',
-                          onPressed: () {
-                            eyeController.isClose.value =
-                                !eyeController.isClose.value;
-                          }),
-                    ),
-                  ),
-                  const SizedBox(height: 64),
-                  AppButton(
-                    height: 54,
-                    text: 'Sign In',
-                    onPressed: () {
-                      Get.to(() => DashboardView());
-                    },
-                  ),
-                  const SizedBox(height: 24),
-                  AppButton(
-                    prefix: Image.asset('assets/images/google-logo.png'),
-                    height: 54,
-                    text: 'Sign In with Google',
-                    onPressed: () {},
-                    type: 'outline',
-                  ),
-                ],
+          AppIcon(
+            svgPath: 'assets/svgs/jobfortech-logo.svg',
+            size: 48.0,
+            isColor: false,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 40),
+            child: Center(
+              child: Text(
+                'Tellus mauris cursus at condimentum mauris purus nulla. Donec eget quis euismod sapien eu.',
+                style: AppBasicStyle(fontColor: AppColor.grey, fontSize: 12),
+                textAlign: TextAlign.center,
               ),
             ),
+          ),
+          AppTextInput(
+              controller: email,
+              labelText: 'Email',
+              hintText: 'Enter email address',
+              errorText: 'Invalid email address',
+              keyboardType: TextInputType.emailAddress),
+          const SizedBox(height: 24),
+          Obx(
+            () => AppTextInput(
+              controller: password,
+              labelText: 'Password',
+              hintText: '*********',
+              errorText: 'Invalid password address',
+              keyboardType: TextInputType.visiblePassword,
+              obscureText: eyeController.isClose.value,
+              suffix: AppIconButton(
+                  svgPath: eyeController.isClose.value
+                      ? 'assets/svgs/eye-closed.svg'
+                      : 'assets/svgs/eye-opened.svg',
+                  onPressed: () {
+                    eyeController.isClose.value = !eyeController.isClose.value;
+                  }),
+            ),
+          ),
+          const SizedBox(height: 64),
+          AppButton(
+            height: 54,
+            text: 'Sign In',
+            onPressed: () {
+              Get.to(() => DashboardView());
+            },
+          ),
+          const SizedBox(height: 24),
+          AppButton(
+            prefix: Image.asset('assets/images/google-logo.png'),
+            height: 54,
+            text: 'Sign In with Google',
+            onPressed: () {},
+            type: 'outline',
           ),
         ],
       ),
