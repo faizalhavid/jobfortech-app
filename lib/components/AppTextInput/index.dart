@@ -10,6 +10,7 @@ TextField AppTextInput({
   Widget prefix = const Text('Prefix'),
   required TextEditingController controller,
   TextInputType keyboardType = TextInputType.text,
+  bool readOnly = false,
   // required TextInputAction textInputAction,
   // required FocusNode focusNode,
   // required Function(String) validator,
@@ -17,7 +18,7 @@ TextField AppTextInput({
   // required Function(String) onChanged,
 }) {
   return TextField(
-    controller: controller,
+    controller: controller, readOnly: readOnly,
 
     decoration: AppTextInputDecoration(
       suffix: suffix,
@@ -41,6 +42,7 @@ InputDecoration AppTextInputDecoration({
   return InputDecoration(
     floatingLabelBehavior: FloatingLabelBehavior.always,
     suffixIcon: suffix,
+    suffixStyle: AppBasicStyle(fontSize: 12),
     hintText: hintText,
     labelText: labelText,
     labelStyle: AppBasicStyle(

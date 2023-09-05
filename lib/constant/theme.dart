@@ -21,12 +21,12 @@ class AppColor {
 ColorScheme AppColorScheme = const ColorScheme(
   brightness: Brightness.light,
   primary: AppColor.darkBlue,
-  onPrimary: AppColor.blue,
+  onPrimary: AppColor.white,
   secondary: AppColor.grey,
   onSecondary: AppColor.lightOrange,
   error: AppColor.red,
   onError: AppColor.darkRed,
-  background: AppColor.white,
+  background: AppColor.blue,
   onBackground: AppColor.lightGrey,
   surface: AppColor.lightGrey,
   onSurface: AppColor.orange,
@@ -45,3 +45,5 @@ TextStyle AppBasicStyle({
     color: fontColor,
   );
 }
+
+TextStyle AppTitleHeader = TextStyle(fontSize: 30, color: AppColor.blue);
