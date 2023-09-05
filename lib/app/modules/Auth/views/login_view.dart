@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 import 'package:jobfortech/app/modules/Auth/controllers/auth_controller.dart';
 import 'package:jobfortech/app/modules/Dashboard/views/dashboard_view.dart';
+import 'package:jobfortech/app/modules/Menu/views/profile_view.dart';
+import 'package:jobfortech/components/AppAvatar/index.dart';
 import 'package:jobfortech/components/AppButton/index.dart';
+import 'package:jobfortech/components/AppHeaderBar/index.dart';
 import 'package:jobfortech/components/AppSafeArea/index.dart';
 import 'package:jobfortech/components/AppVStack/index.dart';
 import 'package:jobfortech/constant/icons.dart';
@@ -19,6 +21,8 @@ class LoginView extends GetView {
     final eyeController = Get.put(EyeController());
 
     return Scaffold(
+      appBar:
+          AppHeaderbar(title: 'test', leading: AppAvatar(), leadingWidth: 45),
       body: AppSafeArea(
         spacing: 20,
         safearea: {'horizontal': 40, 'vertical': 80},
@@ -65,7 +69,7 @@ class LoginView extends GetView {
             height: 54,
             text: 'Sign In',
             onPressed: () {
-              Get.to(() => DashboardView());
+              Get.to(() => ProfileView());
             },
           ),
           AppButton(

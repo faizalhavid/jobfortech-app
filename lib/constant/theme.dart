@@ -45,3 +45,5 @@ TextStyle AppBasicStyle({
     color: fontColor,
   );
 }
+
+TextStyle AppTitleHeader = TextStyle(fontSize: 30, color: AppColor.blue);
