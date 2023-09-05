@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 
 class DashboardController extends GetxController {
   //TODO: Implement DashboardController
-
+  RxBool isNotify = false.obs;
   final count = 0.obs;
   @override
   void onInit() {

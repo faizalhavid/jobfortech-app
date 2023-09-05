@@ -20,11 +20,12 @@ class LoginView extends GetView {
 
     return Scaffold(
       body: AppSafeArea(
+        spacing: 20,
+        safearea: {'horizontal': 40, 'vertical': 80},
         children: [
           AppIcon(
             svgPath: 'assets/svgs/jobfortech-logo.svg',
             size: 48.0,
-            isColor: false,
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 40),
@@ -42,7 +43,6 @@ class LoginView extends GetView {
               hintText: 'Enter email address',
               errorText: 'Invalid email address',
               keyboardType: TextInputType.emailAddress),
-          const SizedBox(height: 24),
           Obx(
             () => AppTextInput(
               controller: password,
@@ -68,7 +68,6 @@ class LoginView extends GetView {
               Get.to(() => DashboardView());
             },
           ),
-          const SizedBox(height: 24),
           AppButton(
             prefix: Image.asset('assets/images/google-logo.png'),
             height: 54,

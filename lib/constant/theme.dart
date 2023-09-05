@@ -11,7 +11,7 @@ class AppColor {
   static const Color lightOrange = Color(0xFFFFEFE7);
   static const Color darkRed = Color(0xFFBD251C);
   static const Color red = Color(0xFFD92525);
-  static const Color tosca = Color(0xFFD92525);
+  static const Color tosca = Color(0xFF8CCC9D);
   static const Color grey = Color(0xFF858585);
   static const Color black = Color(0xFF000000);
   static const Color lightGrey = Color(0xFFFAFAFA);
@@ -21,12 +21,12 @@ class AppColor {
 ColorScheme AppColorScheme = const ColorScheme(
   brightness: Brightness.light,
   primary: AppColor.darkBlue,
-  onPrimary: AppColor.blue,
+  onPrimary: AppColor.white,
   secondary: AppColor.grey,
   onSecondary: AppColor.lightOrange,
   error: AppColor.red,
   onError: AppColor.darkRed,
-  background: AppColor.white,
+  background: AppColor.blue,
   onBackground: AppColor.lightGrey,
   surface: AppColor.lightGrey,
   onSurface: AppColor.orange,

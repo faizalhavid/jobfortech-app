@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
-import '../controllers/menu_controller.dart';
-
 class MenuView extends GetView<MenuController> {
   const MenuView({Key? key}) : super(key: key);
   @override
