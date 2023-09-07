@@ -21,8 +21,6 @@ class LoginView extends GetView {
     final eyeController = Get.put(EyeController());
 
     return Scaffold(
-      appBar:
-          AppHeaderbar(title: 'test', leading: AppAvatar(), leadingWidth: 45),
       body: AppSafeArea(
         spacing: 20,
         safearea: {'horizontal': 40, 'vertical': 80},
@@ -69,7 +67,7 @@ class LoginView extends GetView {
             height: 54,
             text: 'Sign In',
             onPressed: () {
-              Get.to(() => ProfileView());
+              Get.to(() => DashboardView());
             },
           ),
           AppButton(

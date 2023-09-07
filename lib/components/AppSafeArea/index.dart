@@ -1,11 +1,14 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
+import 'package:jobfortech/constant/theme.dart';
 
 ListView AppSafeArea({
   List<Widget>? children,
   Map<String, double> safearea = const {'horizontal': 40, 'vertical': 90},
   double spacing = 10,
   bool isScrollable = true,
-  bool isLoading = false,
+  bool isLoading = true,
 }) {
   return ListView(
     physics: isScrollable ? null : NeverScrollableScrollPhysics(),

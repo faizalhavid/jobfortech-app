@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:jobfortech/app/modules/Menu/views/profile_view.dart';
 import 'package:jobfortech/components/AppAvatar/index.dart';
 import 'package:jobfortech/components/AppBadge/index.dart';
+import 'package:jobfortech/components/AppCard/index.dart';
 import 'package:jobfortech/components/AppHeaderBar/index.dart';
 import 'package:jobfortech/components/AppSafeArea/index.dart';
 import 'package:jobfortech/constant/icons.dart';
@@ -26,25 +28,91 @@ class DashboardView extends GetView<DashboardController> {
       'Ecommerce',
       'Website'
     ];
+    final arrowController = Get.put(DashboardController());
     return Scaffold(
       backgroundColor: AppColor.lightGrey,
       appBar: AppHeaderbar(
-          leading: AppAvatar(),
-          title: AppIcon(
-            svgPath: 'assets/svgs/jobfortech-logo.svg',
-            size: 24,
-            editColor: true,
-            color: AppColor.white,
+        leading: InkWell(
+          child: AppAvatar(),
+          onTap: () {
+            Get.to(() => ProfileView());
+          },
+        ),
+        title: AppIcon(
+          svgPath: 'assets/svgs/jobfortech-logo.svg',
+          size: 24,
+          editColor: true,
+          color: AppColor.white,
+        ),
+        actions: Obx(
+          () => AppIconButton(
+            svgPath: 'assets/svgs/notifications-bell.svg',
+            onPressed: () {
+              notifyState.isNotify.value = !notifyState.isNotify.value;
+            },
+            isbadge: notifyState.isNotify.value,
           ),
-          actions: Obx(
-            () => AppIconButton(
-              svgPath: 'assets/svgs/notifications-bell.svg',
-              onPressed: () {
-                notifyState.isNotify.value = !notifyState.isNotify.value;
-              },
-              isbadge: notifyState.isNotify.value,
+        ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        selectedLabelStyle: AppBasicStyle(
+          fontSize: 12,
+          fontWeight: FontWeight.w600,
+        ),
+        unselectedLabelStyle: AppBasicStyle(
+          fontSize: 12,
+          fontWeight: FontWeight.w600,
+          fontColor: AppColor.lightGrey,
+        ),
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: AppBadge(
+              backgroundColor: AppColor.blue,
+              height: 8,
+              radius: 10,
+              width: 8,
+              child: AppIcon(
+                svgPath: 'assets/svgs/home.svg',
+                size: 20,
+                editColor: true,
+                color: AppColor.white,
+              ),
             ),
-          )),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: AppBadge(
+              backgroundColor: AppColor.blue,
+              height: 8,
+              radius: 10,
+              width: 8,
+              child: AppIcon(
+                svgPath: 'assets/svgs/notes.svg',
+                size: 20,
+                editColor: true,
+                color: AppColor.white,
+              ),
+            ),
+            label: 'Work Desk',
+          ),
+          BottomNavigationBarItem(
+            backgroundColor: AppColor.lightBlue,
+            icon: AppBadge(
+              backgroundColor: AppColor.blue,
+              height: 8,
+              radius: 10,
+              width: 8,
+              child: AppIcon(
+                size: 20,
+                editColor: true,
+                color: AppColor.white,
+                svgPath: 'assets/svgs/messages.svg',
+              ),
+            ),
+            label: 'Messages',
+          ),
+        ],
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -53,7 +121,7 @@ class DashboardView extends GetView<DashboardController> {
               height: Get.height * 0.25,
               child: AppSafeArea(
                 spacing: 15,
-                safearea: {'horizontal': 35, 'vertical': 30},
+                safearea: {'horizontal': 30, 'vertical': 30},
                 isScrollable: false,
                 children: [
                   Text(
@@ -71,7 +139,10 @@ class DashboardView extends GetView<DashboardController> {
                           const SizedBox(width: 10),
                       itemCount: TopIndustri.length,
                       itemBuilder: (context, index) {
-                        return AppBadge(
+                        return AppBadgeButton(
+                          onPressed: () {
+                            print(TopIndustri[index]);
+                          },
                           height: 2,
                           width: 10,
                           child: Text(
@@ -159,8 +230,7 @@ class DashboardView extends GetView<DashboardController> {
             Container(
               height: Get.height * 0.45,
               child: AppSafeArea(
-                spacing: 15,
-                safearea: {'horizontal': 35, 'vertical': 30},
+                safearea: {'horizontal': 30, 'vertical': 30},
                 isScrollable: false,
                 children: [
                   Text(
@@ -198,12 +268,128 @@ class DashboardView extends GetView<DashboardController> {
                       ],
                     ),
                   ),
-                  Text(
-                    'On Going',
-                    style: AppBasicStyle(
-                      fontWeight: FontWeight.w800,
-                      fontSize: 18,
-                      fontColor: AppColor.black,
+                  Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'On Going',
+                        style: AppBasicStyle(
+                          fontWeight: FontWeight.w800,
+                          fontSize: 18,
+                          fontColor: AppColor.black,
+                        ),
+                      ),
+                      Obx(
+                        () => IconButton(
+                          splashRadius: 20,
+                          icon: Icon(
+                            arrowController.isArrowUp.value
+                                ? Icons.arrow_drop_up_sharp
+                                : Icons.arrow_drop_down_circle_outlined,
+                          ),
+                          onPressed: () {
+                            arrowController.toggleArrowDirection();
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                  Obx(
+                    () => AnimatedSize(
+                      duration: const Duration(milliseconds: 500),
+                      child: arrowController.isArrowUp.value
+                          ? AppCard(
+                              horizontal: true,
+                              color: AppColor.lightBlue,
+                              radius: 24,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        AppBadge(
+                                          backgroundColor: AppColor.darkOrange,
+                                          height: 6,
+                                          child: Text(
+                                            'Overtime',
+                                            style: AppBasicStyle(
+                                                fontSize: 13,
+                                                fontColor: AppColor.white,
+                                                fontWeight: FontWeight.w600),
+                                          ),
+                                        ),
+                                        const SizedBox(width: 10),
+                                        AppBadge(
+                                          backgroundColor: AppColor.lightOrange,
+                                          height: 6,
+                                          child: Text(
+                                            '+ 00:15:01',
+                                            style: AppBasicStyle(
+                                              fontSize: 13,
+                                              fontColor: AppColor.darkOrange,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    SizedBox(
+                                      width: Get.width * 0.65,
+                                      child: Column(
+                                        children: [
+                                          Text(
+                                            'Task 3 Integrate Third Party Program',
+                                            style: AppBasicStyle(
+                                              fontSize: 16,
+                                              fontColor: AppColor.blue,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                          SizedBox(
+                                            height: 5,
+                                          ),
+                                          Text(
+                                            'Erat at nibh viverra erat pharetra quis egestas morbi maecenas. Lectus egestas turpis ut adipiscing.',
+                                            style: AppBasicStyle(
+                                              fontSize: 13,
+                                              fontColor: AppColor.grey,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                            textAlign: TextAlign.justify,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                AppIcon(
+                                  svgPath: 'assets/svgs/time-history.svg',
+                                  size: 30,
+                                ),
+                              ],
+                            )
+                          : AppCard(
+                              color: AppColor.lightBlue,
+                              height: 50,
+                              children: [
+                                Text(
+                                  'Task 3 Integrate Third Party Program',
+                                  style: AppBasicStyle(
+                                    fontSize: 16,
+                                    fontColor: AppColor.blue,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                            ),
                     ),
                   ),
                 ],

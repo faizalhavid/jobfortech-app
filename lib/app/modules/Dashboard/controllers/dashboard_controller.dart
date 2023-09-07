@@ -19,5 +19,9 @@ class DashboardController extends GetxController {
     super.onClose();
   }
 
-  void increment() => count.value++;
+  RxBool isArrowUp = true.obs;
+
+  void toggleArrowDirection() {
+    isArrowUp.value = !isArrowUp.value;
+  }
 }
