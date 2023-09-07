@@ -7,7 +7,7 @@ TextField AppTextInput({
   String errorText = 'TextInput error',
   bool obscureText = false,
   Widget? suffix,
-  Widget prefix = const Text('Prefix'),
+  Widget? prefix,
   required TextEditingController controller,
   TextInputType keyboardType = TextInputType.text,
   bool readOnly = false,
@@ -22,6 +22,7 @@ TextField AppTextInput({
 
     decoration: AppTextInputDecoration(
       suffix: suffix,
+      prefix: prefix,
       hintText: hintText,
       labelText: labelText,
     ),
@@ -38,17 +39,23 @@ InputDecoration AppTextInputDecoration({
   Widget? suffix,
   required String hintText,
   required String labelText,
+  Widget? prefix,
+  EdgeInsets contentPadding = const EdgeInsets.all(0),
 }) {
   return InputDecoration(
     floatingLabelBehavior: FloatingLabelBehavior.always,
     suffixIcon: suffix,
     suffixStyle: AppBasicStyle(fontSize: 12),
+    prefixIcon: prefix,
+    prefixStyle: AppBasicStyle(fontSize: 12),
     hintText: hintText,
     labelText: labelText,
+    contentPadding: contentPadding,
     labelStyle: AppBasicStyle(
       fontColor: AppColor.black,
       fontSize: 18,
       fontWeight: FontWeight.bold,
+      textAlign: TextAlign.start,
     ),
     enabledBorder: const UnderlineInputBorder(
       borderSide: BorderSide(

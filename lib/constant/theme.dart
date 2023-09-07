@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 class AppColor {
   static const Color darkBlue = Color(0xFF0371D8);
+  static const Color osean = Color(0xFF1DB5E5);
   static const Color blue = Color(0xFF197DDC);
   static const Color lightBlue = Color(0xFFEFF7FF);
   static const Color white = Color(0xFFFFFFFF);
@@ -38,6 +39,7 @@ TextStyle AppBasicStyle({
   FontWeight fontWeight = FontWeight.normal,
   Color fontColor = AppColor.blue,
   FontStyle fontStyle = FontStyle.normal,
+  TextAlign textAlign = TextAlign.start,
 }) {
   return GoogleFonts.inter(
     fontSize: fontSize,
