@@ -72,23 +72,26 @@ class _EditProfileViewState extends State<EditProfileView> {
                         children: [
                           SizedBox(
                             height: 50,
-                            width: 140,
+                            width: 150,
                             child: AppButton(
-                                text: 'Upload Photo', onPressed: () {}),
+                                text: 'Upload Photo',
+                                spacing: 0,
+                                onPressed: () {}),
                           ),
                           const SizedBox(
                             height: 10,
                           ),
                           Container(
                             width: 150,
-                            child: const Text(
+                            child: Text(
                               'Ut porttitor vel convallis id neque molestie. Nunc odio fermentum dolor pharetra eget.',
                               maxLines: 4,
                               overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                  fontSize: 10,
-                                  color: AppColor.grey,
-                                  height: 1.5),
+                              style: AppBasicStyle(
+                                  fontSize: 9.5,
+                                  fontColor: AppColor.grey,
+                                  fontStyle: FontStyle.normal,
+                                  fontWeight: FontWeight.normal),
                               textAlign: TextAlign.end,
                             ),
                           )
