@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:jobfortech/app/modules/Menu/views/edit_profile_view.dart';
+import 'package:jobfortech/app/modules/Menu/views/latest_work_view.dart';
+import 'package:jobfortech/app/modules/Menu/views/payroll_view.dart';
 import 'package:jobfortech/components/AppHeaderBar/index.dart';
 import 'package:jobfortech/components/AppSafeArea/index.dart';
 import 'package:jobfortech/constant/icons.dart';
@@ -27,12 +29,14 @@ class ProfileView extends GetView {
               path: 'assets/svgs/money-bill.svg',
               text: 'Payroll',
               onTap: () {
+                Get.to(() => PayrollView());
                 print('Payroll tapped');
               }),
           _buildProfileButton(
               path: 'assets/svgs/notes-list.svg',
               text: 'Latest Work',
               onTap: () {
+                Get.to(() => LatestWorkView());
                 print('Latest Work tapped');
               }),
           _buildProfileButton(

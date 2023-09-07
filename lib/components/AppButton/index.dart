@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:jobfortech/constant/theme.dart';
 
-ElevatedButton AppButton({
-  required String text,
-  required Function() onPressed,
-  Color backgroundColor = AppColor.darkBlue,
-  Color textColor = Colors.white,
-  double width = double.infinity,
-  double height = 48,
-  double borderRadius = 99,
-  String type = 'default',
-  Widget? prefix,
-  Widget? suffix,
-}) {
+ElevatedButton AppButton(
+    {required String text,
+    required Function() onPressed,
+    Color backgroundColor = AppColor.darkBlue,
+    Color textColor = Colors.white,
+    double width = double.infinity,
+    double height = 48,
+    double borderRadius = 99,
+    String type = 'default',
+    Widget? prefix,
+    Widget? suffix,
+    double spacing = 8}) {
   return ElevatedButton(
     onPressed: onPressed,
     style: AppButtonStyle(
@@ -27,12 +27,18 @@ ElevatedButton AppButton({
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         if (prefix != null) prefix,
+        SizedBox(
+          width: spacing,
+        ),
         Text(
           text,
           style: AppBasicStyle(
               fontSize: 16,
               fontColor: type == 'default' ? AppColor.white : AppColor.darkBlue,
               fontWeight: FontWeight.bold),
+        ),
+        SizedBox(
+          width: spacing,
         ),
         if (suffix != null) suffix,
       ],
