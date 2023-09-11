@@ -32,6 +32,8 @@ class DashboardView extends GetView<DashboardController> {
     return Scaffold(
       backgroundColor: AppColor.lightGrey,
       appBar: AppHeaderbar(
+        type: 'dashboard',
+        expandAppbar: true,
         leading: InkWell(
           child: AppAvatar(),
           onTap: () {
