@@ -57,7 +57,7 @@ class LatestWorkView extends GetView {
                         ],
                       ),
                       SizedBox(
-                        height: 20,
+                        height: 40,
                       ),
                       Stack(
                         alignment: Alignment.centerRight,

@@ -40,12 +40,14 @@ TextStyle AppBasicStyle({
   Color fontColor = AppColor.blue,
   FontStyle fontStyle = FontStyle.normal,
   TextAlign textAlign = TextAlign.start,
+  double letterSpacing = 0.0,
 }) {
   return GoogleFonts.inter(
     fontSize: fontSize,
     fontWeight: fontWeight,
     fontStyle: fontStyle,
     color: fontColor,
+    letterSpacing: letterSpacing,
   );
 }
 

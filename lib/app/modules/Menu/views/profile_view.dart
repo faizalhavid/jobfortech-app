@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 import 'package:jobfortech/app/modules/Menu/views/edit_profile_view.dart';
 import 'package:jobfortech/app/modules/Menu/views/latest_work_view.dart';
 import 'package:jobfortech/app/modules/Menu/views/payroll_view.dart';
+import 'package:jobfortech/app/modules/Menu/views/referral_program_view.dart';
+import 'package:jobfortech/app/modules/Menu/views/reviews_view.dart';
 import 'package:jobfortech/components/AppHeaderBar/index.dart';
 import 'package:jobfortech/components/AppSafeArea/index.dart';
 import 'package:jobfortech/constant/icons.dart';
@@ -43,12 +45,14 @@ class ProfileView extends GetView {
               path: 'assets/svgs/reviews-icon.svg',
               text: 'Reviews',
               onTap: () {
+                Get.to(() => ReviewsView());
                 print('Reviews tapped');
               }),
           _buildProfileButton(
               path: 'assets/svgs/money-ticket.svg',
               text: 'Referral Program',
               onTap: () {
+                Get.to(() => ReferralProgramView());
                 print('Referral Program tapped');
               }),
           _buildProfileButton(

@@ -2,15 +2,16 @@ import 'package:flutter/material.dart';
 
 import 'package:jobfortech/constant/theme.dart';
 
-Container AppCard(
-    {List<Widget>? children,
-    double width = 200,
-    double height = 150,
-    Color? color = AppColor.blue,
-    double radius = 30,
-    bool horizontal = false,
-    bool is_outline = false,
-    Color outline_color = AppColor.blue}) {
+Container AppCard({
+  List<Widget>? children,
+  double width = 200,
+  double height = 150,
+  Color? color = AppColor.blue,
+  double radius = 30,
+  bool horizontal = false,
+  bool is_outline = false,
+  Color outline_color = AppColor.blue,
+}) {
   return Container(
     width: width,
     height: height,
