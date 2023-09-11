@@ -32,6 +32,8 @@ class DashboardView extends GetView<DashboardController> {
     return Scaffold(
       backgroundColor: AppColor.lightGrey,
       appBar: AppHeaderbar(
+        type: 'dashboard',
+        expandAppbar: true,
         leading: InkWell(
           child: AppAvatar(),
           onTap: () {
@@ -53,65 +55,6 @@ class DashboardView extends GetView<DashboardController> {
             isbadge: notifyState.isNotify.value,
           ),
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        selectedLabelStyle: AppBasicStyle(
-          fontSize: 12,
-          fontWeight: FontWeight.w600,
-        ),
-        unselectedLabelStyle: AppBasicStyle(
-          fontSize: 12,
-          fontWeight: FontWeight.w600,
-          fontColor: AppColor.lightGrey,
-        ),
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: AppBadge(
-              backgroundColor: AppColor.blue,
-              height: 8,
-              radius: 10,
-              width: 8,
-              child: AppIcon(
-                svgPath: 'assets/svgs/home.svg',
-                size: 20,
-                editColor: true,
-                color: AppColor.white,
-              ),
-            ),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: AppBadge(
-              backgroundColor: AppColor.blue,
-              height: 8,
-              radius: 10,
-              width: 8,
-              child: AppIcon(
-                svgPath: 'assets/svgs/notes.svg',
-                size: 20,
-                editColor: true,
-                color: AppColor.white,
-              ),
-            ),
-            label: 'Work Desk',
-          ),
-          BottomNavigationBarItem(
-            backgroundColor: AppColor.lightBlue,
-            icon: AppBadge(
-              backgroundColor: AppColor.blue,
-              height: 8,
-              radius: 10,
-              width: 8,
-              child: AppIcon(
-                size: 20,
-                editColor: true,
-                color: AppColor.white,
-                svgPath: 'assets/svgs/messages.svg',
-              ),
-            ),
-            label: 'Messages',
-          ),
-        ],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -297,6 +240,7 @@ class DashboardView extends GetView<DashboardController> {
                   ),
                   Obx(
                     () => AnimatedSize(
+                      reverseDuration: const Duration(milliseconds: 500),
                       duration: const Duration(milliseconds: 500),
                       child: arrowController.isArrowUp.value
                           ? AppCard(
@@ -377,12 +321,12 @@ class DashboardView extends GetView<DashboardController> {
                             )
                           : AppCard(
                               color: AppColor.lightBlue,
-                              height: 50,
+                              height: 48,
                               children: [
                                 Text(
                                   'Task 3 Integrate Third Party Program',
                                   style: AppBasicStyle(
-                                    fontSize: 16,
+                                    fontSize: 14,
                                     fontColor: AppColor.blue,
                                     fontWeight: FontWeight.w600,
                                   ),

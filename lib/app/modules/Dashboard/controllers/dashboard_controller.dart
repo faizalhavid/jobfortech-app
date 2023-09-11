@@ -1,4 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jobfortech/constant/theme.dart';
 
 class DashboardController extends GetxController {
   //TODO: Implement DashboardController
@@ -24,4 +26,12 @@ class DashboardController extends GetxController {
   void toggleArrowDirection() {
     isArrowUp.value = !isArrowUp.value;
   }
+
+  Color changeColorTapped({
+    required int currentIndex,
+    required int index,
+    Color colorActive = AppColor.blue,
+    Color colorDisable = AppColor.lightBlue,
+  }) =>
+      currentIndex == index ? colorActive : colorDisable;
 }

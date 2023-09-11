@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:jobfortech/components/AppBadge/index.dart';
+import 'package:jobfortech/components/AppCard/index.dart';
 import 'package:jobfortech/constant/icons.dart';
 import 'package:jobfortech/constant/theme.dart';
 
@@ -16,8 +18,8 @@ AppBar AppHeaderbar({
   TextTheme? textTheme,
   bool primary = true,
   double? titleSpacing,
-  double? toolbarOpacity,
-  double? bottomOpacity,
+  bool expandAppbar = false,
+  String type = 'dashboard',
   double? toolbarHeight,
   double? leadingWidth,
   bool? backwardsCompatibility,
@@ -34,7 +36,7 @@ AppBar AppHeaderbar({
       Padding(
           padding: const EdgeInsets.only(top: 20, right: 20), child: actions)
     ],
-    bottom: AppHeaderBottom(),
+    bottom: expandAppbar ? AppHeaderBottom(type: type) : null,
     elevation: 0,
     backgroundColor: backgroundColor,
     iconTheme: iconTheme,
@@ -49,20 +51,20 @@ AppBar AppHeaderbar({
   );
 }
 
-PreferredSize AppHeaderBottom() {
+PreferredSize AppHeaderBottom({required String type}) {
   return PreferredSize(
     preferredSize: const Size.fromHeight(150),
     child: Container(
       color: AppColor.blue,
       height: 135,
       alignment: Alignment.center,
-      child: AppHeaderContent(),
+      child: AppHeaderContent(type: type),
     ),
   );
 }
 
 Container AppHeaderContent({
-  type = 'dashboard',
+  required String type,
 }) {
   Container typeContent;
   switch (type) {
@@ -177,6 +179,22 @@ Container AppHeaderContent({
         ),
       );
       break;
+
+    case 'work-desk':
+      typeContent = AppCard(
+          color: AppColor.white,
+          height: 100,
+          width: Get.width,
+          children: [
+            Row(
+              children: [
+                Text('new assignment',
+                    style: AppBasicStyle(fontWeight: FontWeight.w600))
+              ],
+            )
+          ]);
+      break;
+
     default:
       typeContent = Container(
         child: Column(

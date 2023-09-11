@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jobfortech/app/modules/Auth/controllers/auth_controller.dart';
 import 'package:jobfortech/app/modules/Dashboard/views/dashboard_view.dart';
+import 'package:jobfortech/app/modules/Dashboard/views/navigation.dart';
 import 'package:jobfortech/app/modules/Menu/views/profile_view.dart';
 import 'package:jobfortech/components/AppAvatar/index.dart';
 import 'package:jobfortech/components/AppButton/index.dart';
@@ -67,7 +68,7 @@ class LoginView extends GetView {
             height: 54,
             text: 'Sign In',
             onPressed: () {
-              Get.to(() => DashboardView());
+              Get.to(() => NavigationView());
             },
           ),
           AppButton(
