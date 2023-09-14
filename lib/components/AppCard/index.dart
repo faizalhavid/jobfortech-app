@@ -11,6 +11,7 @@ Container AppCard({
   bool horizontal = false,
   bool is_outline = false,
   Color outline_color = AppColor.blue,
+  List<BoxShadow>? boxShadow,
 }) {
   return Container(
     width: width,
@@ -19,6 +20,7 @@ Container AppCard({
       color: color,
       borderRadius: BorderRadius.all(Radius.circular(radius)),
       border: is_outline ? Border.all(color: outline_color) : null,
+      boxShadow: boxShadow,
     ),
     child: Padding(
       padding: const EdgeInsets.all(15.0),

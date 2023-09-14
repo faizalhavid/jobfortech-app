@@ -336,6 +336,104 @@ class DashboardView extends GetView<DashboardController> {
                             ),
                     ),
                   ),
+                  Obx(
+                    () => AnimatedSize(
+                      reverseDuration: const Duration(milliseconds: 500),
+                      duration: const Duration(milliseconds: 500),
+                      child: arrowController.isArrowUp.value
+                          ? AppCard(
+                              horizontal: true,
+                              color: AppColor.lightBlue,
+                              radius: 24,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        AppBadge(
+                                          backgroundColor: AppColor.darkOrange,
+                                          height: 6,
+                                          child: Text(
+                                            'Overtime',
+                                            style: AppBasicStyle(
+                                                fontSize: 13,
+                                                fontColor: AppColor.white,
+                                                fontWeight: FontWeight.w600),
+                                          ),
+                                        ),
+                                        const SizedBox(width: 10),
+                                        AppBadge(
+                                          backgroundColor: AppColor.lightOrange,
+                                          height: 6,
+                                          child: Text(
+                                            '+ 00:15:01',
+                                            style: AppBasicStyle(
+                                              fontSize: 13,
+                                              fontColor: AppColor.darkOrange,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    SizedBox(
+                                      width: Get.width * 0.65,
+                                      child: Column(
+                                        children: [
+                                          Text(
+                                            'Task 3 Integrate Third Party Program',
+                                            style: AppBasicStyle(
+                                              fontSize: 16,
+                                              fontColor: AppColor.blue,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                          SizedBox(
+                                            height: 5,
+                                          ),
+                                          Text(
+                                            'Erat at nibh viverra erat pharetra quis egestas morbi maecenas. Lectus egestas turpis ut adipiscing.',
+                                            style: AppBasicStyle(
+                                              fontSize: 13,
+                                              fontColor: AppColor.grey,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                            textAlign: TextAlign.justify,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                AppIcon(
+                                  svgPath: 'assets/svgs/time-history.svg',
+                                  size: 30,
+                                ),
+                              ],
+                            )
+                          : AppCard(
+                              color: AppColor.lightBlue,
+                              height: 48,
+                              children: [
+                                Text(
+                                  'Task 3 Integrate Third Party Program',
+                                  style: AppBasicStyle(
+                                    fontSize: 14,
+                                    fontColor: AppColor.blue,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                            ),
+                    ),
+                  ),
                 ],
               ),
             ),

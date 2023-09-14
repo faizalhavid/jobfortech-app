@@ -18,8 +18,8 @@ AppBar AppHeaderbar({
   TextTheme? textTheme,
   bool primary = true,
   double? titleSpacing,
-  bool expandAppbar = false,
-  String type = 'dashboard',
+  bool expandAppbar = true,
+  String type = 'default',
   double? toolbarHeight,
   double? leadingWidth,
   bool? backwardsCompatibility,
@@ -53,10 +53,10 @@ AppBar AppHeaderbar({
 
 PreferredSize AppHeaderBottom({required String type}) {
   return PreferredSize(
-    preferredSize: const Size.fromHeight(150),
+    preferredSize: Size.fromHeight(type == 'default' ? 18 : 150),
     child: Container(
       color: AppColor.blue,
-      height: 135,
+      height: type == 'default' ? 0 : 135,
       alignment: Alignment.center,
       child: AppHeaderContent(type: type),
     ),
@@ -181,45 +181,104 @@ Container AppHeaderContent({
       break;
 
     case 'work-desk':
-      typeContent = AppCard(
-          color: AppColor.white,
-          height: 100,
-          width: Get.width,
-          children: [
-            Row(
-              children: [
-                Text('new assignment',
-                    style: AppBasicStyle(fontWeight: FontWeight.w600))
-              ],
-            )
-          ]);
-      break;
-
-    default:
       typeContent = Container(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
-              'Selamat Datang',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: AppColor.white,
+            SizedBox(
+              height: 8,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 30.0, right: 30.0),
+              child: Row(
+                children: [
+                  Text(
+                    'New Assignment',
+                    style: AppBasicStyle(
+                        fontSize: 14,
+                        fontColor: AppColor.white,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  Spacer(),
+                  RichText(
+                    text: TextSpan(
+                      style: AppBasicStyle(
+                          fontColor: AppColor.white,
+                          fontSize: 10), // gaya default
+                      children: <TextSpan>[
+                        TextSpan(text: 'Confirm in '),
+                        TextSpan(
+                          text: '5',
+                          style: TextStyle(color: AppColor.yellow),
+                        ),
+                        TextSpan(text: ':'),
+                        TextSpan(
+                          text: '43',
+                          style: TextStyle(color: Colors.yellow),
+                        ),
+                        TextSpan(text: ':'),
+                        TextSpan(
+                          text: '21',
+                          style: TextStyle(color: Colors.yellow),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
               ),
             ),
-            const SizedBox(height: 10),
-            const Text(
-              'JobForTech',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: AppColor.white,
-              ),
+            SizedBox(
+              height: 8,
             ),
+            AppCard(
+                color: AppColor.white.withOpacity(0.8),
+                height: 85,
+                width: Get.width * 0.9,
+                radius: 15,
+                children: [
+                  Row(
+                    children: [
+                      Image.asset('assets/images/company.png'),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'E-Commerce Project',
+                            style: AppBasicStyle(fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            'Company Name',
+                            style: AppBasicStyle(
+                                fontColor: AppColor.grey,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500),
+                          ),
+                          SizedBox(
+                            height: 8,
+                          ),
+                          Text(
+                            'Back End . 3 Months',
+                            style: AppBasicStyle(
+                                fontSize: 10, fontWeight: FontWeight.w500),
+                          )
+                        ],
+                      ),
+                      Spacer(),
+                      AppIconButton(
+                          svgPath: 'assets/svgs/arrow-right.svg',
+                          onPressed: () {})
+                    ],
+                  )
+                ]),
           ],
         ),
       );
+      break;
+
+    default:
+      typeContent = Container();
   }
   return typeContent;
 }
