@@ -74,7 +74,13 @@ class _EditProfileViewState extends State<EditProfileView> {
                             height: 50,
                             width: 150,
                             child: AppButton(
-                                text: 'Upload Photo',
+                                child: Text(
+                                  'Upload Photo',
+                                  style: AppBasicStyle(
+                                      fontSize: 16,
+                                      fontColor: AppColor.darkBlue,
+                                      fontWeight: FontWeight.bold),
+                                ),
                                 spacing: 0,
                                 onPressed: () {}),
                           ),

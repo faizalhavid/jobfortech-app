@@ -34,7 +34,13 @@ class PayrollView extends GetView {
                           style: AppTitleHeader,
                         ),
                         AppButton(
-                            text: 'Withdraw',
+                            child: Text(
+                              'Sign In with Google',
+                              style: AppBasicStyle(
+                                  fontSize: 16,
+                                  fontColor: AppColor.darkBlue,
+                                  fontWeight: FontWeight.bold),
+                            ),
                             width: 14,
                             borderRadius: 10,
                             onPressed: () {},

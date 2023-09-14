@@ -92,7 +92,13 @@ class WorkDeskView extends GetView {
                 SizedBox(
                     width: Get.width * 0.5,
                     child: AppButton(
-                        text: 'Explore Work',
+                        child: Text(
+                          'Explore Work',
+                          style: AppBasicStyle(
+                              fontSize: 16,
+                              fontColor: AppColor.darkBlue,
+                              fontWeight: FontWeight.bold),
+                        ),
                         onPressed: () {
                           Get.to(() => WorkDesk2View());
                         }))

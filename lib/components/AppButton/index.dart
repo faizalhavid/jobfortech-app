@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:jobfortech/constant/theme.dart';
 
 ElevatedButton AppButton(
-    {required String text,
+    {required Widget child,
     required Function() onPressed,
     Color backgroundColor = AppColor.darkBlue,
-    Color textColor = Colors.white,
     double width = double.infinity,
     double height = 48,
     double borderRadius = 99,
@@ -18,7 +17,6 @@ ElevatedButton AppButton(
     style: AppButtonStyle(
       type: type,
       backgroundColor: backgroundColor,
-      textColor: textColor,
       width: width,
       height: height,
       borderRadius: borderRadius,
@@ -30,13 +28,7 @@ ElevatedButton AppButton(
         SizedBox(
           width: spacing,
         ),
-        Text(
-          text,
-          style: AppBasicStyle(
-              fontSize: 16,
-              fontColor: type == 'default' ? AppColor.white : AppColor.darkBlue,
-              fontWeight: FontWeight.bold),
-        ),
+        child,
         SizedBox(
           width: spacing,
         ),
@@ -49,7 +41,6 @@ ElevatedButton AppButton(
 ButtonStyle AppButtonStyle({
   required String type,
   required Color backgroundColor,
-  required Color textColor,
   required double width,
   required double height,
   required double borderRadius,
@@ -60,7 +51,6 @@ ButtonStyle AppButtonStyle({
     case 'default':
       buttonStyle = ButtonStyle(
         backgroundColor: MaterialStateProperty.all<Color>(backgroundColor),
-        foregroundColor: MaterialStateProperty.all<Color>(textColor),
         minimumSize: MaterialStateProperty.all<Size>(Size(width, height)),
         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
           RoundedRectangleBorder(

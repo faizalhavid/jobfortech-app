@@ -95,7 +95,13 @@ class ReferralProgramView extends GetView {
                     SizedBox(
                       width: 160,
                       child: AppButton(
-                          text: 'LinkedIn',
+                          child: Text(
+                            'Sign In with Google',
+                            style: AppBasicStyle(
+                                fontSize: 16,
+                                fontColor: AppColor.darkBlue,
+                                fontWeight: FontWeight.bold),
+                          ),
                           type: 'outline',
                           prefix: AppIcon(
                               svgPath: 'assets/svgs/social-media-logo.svg',
@@ -105,7 +111,13 @@ class ReferralProgramView extends GetView {
                     SizedBox(
                       width: 160,
                       child: AppButton(
-                          text: 'WhatsApp',
+                          child: Text(
+                            'Sign In with Google',
+                            style: AppBasicStyle(
+                                fontSize: 16,
+                                fontColor: AppColor.darkBlue,
+                                fontWeight: FontWeight.bold),
+                          ),
                           prefix: AppIcon(
                               svgPath: 'assets/svgs/whatsapp.svg', size: 23),
                           onPressed: () {}),

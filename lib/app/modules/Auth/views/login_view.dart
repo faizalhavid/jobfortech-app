@@ -8,7 +8,7 @@ import 'package:jobfortech/components/AppAvatar/index.dart';
 import 'package:jobfortech/components/AppButton/index.dart';
 import 'package:jobfortech/components/AppHeaderBar/index.dart';
 import 'package:jobfortech/components/AppSafeArea/index.dart';
-import 'package:jobfortech/components/AppVStack/index.dart';
+import 'package:jobfortech/components/AppStack/index.dart';
 import 'package:jobfortech/constant/icons.dart';
 import 'package:jobfortech/components/AppTextInput/index.dart';
 import 'package:jobfortech/constant/theme.dart';
@@ -66,7 +66,13 @@ class LoginView extends GetView {
           const SizedBox(height: 64),
           AppButton(
             height: 54,
-            text: 'Sign In',
+            child: Text(
+              'Sign In',
+              style: AppBasicStyle(
+                  fontSize: 16,
+                  fontColor: AppColor.white,
+                  fontWeight: FontWeight.bold),
+            ),
             onPressed: () {
               Get.to(() => NavigationView());
             },
@@ -74,7 +80,13 @@ class LoginView extends GetView {
           AppButton(
             prefix: Image.asset('assets/images/google-logo.png'),
             height: 54,
-            text: 'Sign In with Google',
+            child: Text(
+              'Sign In with Google',
+              style: AppBasicStyle(
+                  fontSize: 16,
+                  fontColor: AppColor.darkBlue,
+                  fontWeight: FontWeight.bold),
+            ),
             onPressed: () {},
             type: 'outline',
           ),
