@@ -50,7 +50,9 @@ ButtonStyle AppButtonStyle({
   switch (type) {
     case 'default':
       buttonStyle = ButtonStyle(
+        elevation: MaterialStateProperty.all<double>(0.1),
         backgroundColor: MaterialStateProperty.all<Color>(backgroundColor),
+        overlayColor: MaterialStateProperty.all<Color>(AppColor.lightBlue),
         minimumSize: MaterialStateProperty.all<Size>(Size(width, height)),
         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
           RoundedRectangleBorder(

@@ -345,12 +345,9 @@ class FindWorksView extends GetView {
                             svgPath: 'assets/svgs/card.svg', onPressed: () {})
                       ],
                     ),
+
                     SizedBox(
-                      height: 30,
-                    ),
-                    Container(
-                      height: 130,
-                      padding: EdgeInsets.all(15),
+                      height: 100,
                       child: ListView.separated(
                         separatorBuilder: (context, index) =>
                             const SizedBox(width: 10),
