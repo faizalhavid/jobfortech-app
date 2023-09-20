@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:jobfortech/app/modules/Dashboard/views/work_detail_view.dart';
 import 'package:jobfortech/components/AppBadge/index.dart';
 import 'package:jobfortech/components/AppButton/index.dart';
 import 'package:jobfortech/components/AppCard/index.dart';
@@ -345,189 +346,106 @@ class FindWorksView extends GetView {
                             svgPath: 'assets/svgs/card.svg', onPressed: () {})
                       ],
                     ),
-
                     SizedBox(
-                      height: 100,
+                      height: 32,
+                    ),
+                    SizedBox(
+                      height: 110,
                       child: ListView.separated(
                         separatorBuilder: (context, index) =>
                             const SizedBox(width: 10),
                         itemCount: TopIndustri.length,
+                        padding: EdgeInsets.only(
+                            bottom: 10.0, left: 5.0, right: 5.0),
                         itemBuilder: (context, index) {
-                          return AppCard(
-                              color: AppColor.white,
-                              width: 230,
-                              height: 100,
-                              radius: 15,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: AppColor.blue.withOpacity(0.2),
-                                  spreadRadius: 0.5,
-                                  blurRadius: 5,
-                                  offset: Offset(0, 5),
-                                ),
-                              ],
-                              children: [
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Image.asset(
-                                      'assets/images/company-2.png',
-                                    ),
-                                    SizedBox(
-                                      width: 8,
-                                    ),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          'Mobile Dev',
-                                          style: AppBasicStyle(
-                                            fontColor: AppColor.black,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 8,
-                                        ),
-                                        Text(
-                                          'Company Name',
-                                          style: AppBasicStyle(
-                                            fontColor: AppColor.grey,
-                                            fontSize: 11,
-                                          ),
-                                        ),
-                                        Text(
-                                          'Flutter, Middle, Freelance',
-                                          style: AppBasicStyle(
-                                            fontColor: AppColor.blue,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 11,
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 5,
-                                        ),
-                                        Row(
-                                          children: [
-                                            AppIcon(
-                                                svgPath:
-                                                    'assets/svgs/dolar.svg'),
-                                            SizedBox(
-                                              width: 5,
+                          return GestureDetector(
+                            onTap: () {
+                              Get.to(() => WorkDetailView());
+                            },
+                            child: AppCard(
+                                color: AppColor.white,
+                                width: 230,
+                                height: 100,
+                                radius: 15,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: AppColor.blue.withOpacity(0.2),
+                                    spreadRadius: 0.5,
+                                    blurRadius: 5,
+                                    offset: Offset(0, 5),
+                                  ),
+                                ],
+                                children: [
+                                  Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Image.asset(
+                                        'assets/images/company-2.png',
+                                      ),
+                                      SizedBox(
+                                        width: 8,
+                                      ),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'Mobile Dev',
+                                            style: AppBasicStyle(
+                                              fontColor: AppColor.black,
+                                              fontWeight: FontWeight.bold,
                                             ),
-                                            Text(
-                                              'IDR 6.5 - 8 jt',
-                                              style: AppBasicStyle(
-                                                fontColor: AppColor.black,
-                                                fontSize: 11,
-                                                fontWeight: FontWeight.bold,
+                                          ),
+                                          SizedBox(
+                                            height: 8,
+                                          ),
+                                          Text(
+                                            'Company Name',
+                                            style: AppBasicStyle(
+                                              fontColor: AppColor.grey,
+                                              fontSize: 11,
+                                            ),
+                                          ),
+                                          Text(
+                                            'Flutter, Middle, Freelance',
+                                            style: AppBasicStyle(
+                                              fontColor: AppColor.blue,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 11,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 5,
+                                          ),
+                                          Row(
+                                            children: [
+                                              AppIcon(
+                                                  svgPath:
+                                                      'assets/svgs/dolar.svg'),
+                                              SizedBox(
+                                                width: 5,
                                               ),
-                                            )
-                                          ],
-                                        )
-                                      ],
-                                    )
-                                  ],
-                                )
-                              ]);
+                                              Text(
+                                                'IDR 6.5 - 8 jt',
+                                                style: AppBasicStyle(
+                                                  fontColor: AppColor.black,
+                                                  fontSize: 11,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              )
+                                            ],
+                                          )
+                                        ],
+                                      )
+                                    ],
+                                  )
+                                ]),
+                          );
                         },
                         scrollDirection: Axis.horizontal,
                       ),
                     ),
-                    // Container(
-                    //   height: 200,
-                    //   child: ListView.builder(
-                    //     scrollDirection: Axis.horizontal,
-                    //     itemCount:
-                    //         10, // Jumlah item yang ingin ditampilkan. Anda bisa menggantinya sesuai kebutuhan
-                    //     itemBuilder: (context, index) {
-                    //       return Padding(
-                    //         padding: EdgeInsets.only(
-                    //             right: 10.0), // Padding antar card
-                    //         child: AppCard(
-                    //             color: AppColor.white,
-                    //             height: 100,
-                    //             width: 230,
-                    //             radius: 15,
-                    //             boxShadow: [
-                    //               BoxShadow(
-                    //                 color: AppColor.blue.withOpacity(0.2),
-                    //                 spreadRadius: 0.5,
-                    //                 blurRadius: 5,
-                    //                 offset: Offset(0, 5),
-                    //               ),
-                    //             ],
-                    //             children: [
-                    //               Row(
-                    //                 crossAxisAlignment:
-                    //                     CrossAxisAlignment.start,
-                    //                 children: [
-                    //                   Image.asset(
-                    //                     'assets/images/company-2.png',
-                    //                   ),
-                    //                   SizedBox(
-                    //                     width: 8,
-                    //                   ),
-                    //                   Column(
-                    //                     crossAxisAlignment:
-                    //                         CrossAxisAlignment.start,
-                    //                     children: [
-                    //                       Text(
-                    //                         'Mobile Dev',
-                    //                         style: AppBasicStyle(
-                    //                           fontColor: AppColor.black,
-                    //                           fontWeight: FontWeight.bold,
-                    //                         ),
-                    //                       ),
-                    //                       SizedBox(
-                    //                         height: 8,
-                    //                       ),
-                    //                       Text(
-                    //                         'Company Name',
-                    //                         style: AppBasicStyle(
-                    //                           fontColor: AppColor.grey,
-                    //                           fontSize: 11,
-                    //                         ),
-                    //                       ),
-                    //                       Text(
-                    //                         'Flutter, Middle, Freelance',
-                    //                         style: AppBasicStyle(
-                    //                           fontColor: AppColor.blue,
-                    //                           fontWeight: FontWeight.bold,
-                    //                           fontSize: 11,
-                    //                         ),
-                    //                       ),
-                    //                       SizedBox(
-                    //                         height: 5,
-                    //                       ),
-                    //                       Row(
-                    //                         children: [
-                    //                           AppIcon(
-                    //                               svgPath:
-                    //                                   'assets/svgs/dolar.svg'),
-                    //                           SizedBox(
-                    //                             width: 5,
-                    //                           ),
-                    //                           Text(
-                    //                             'IDR 6.5 - 8 jt',
-                    //                             style: AppBasicStyle(
-                    //                               fontColor: AppColor.black,
-                    //                               fontSize: 11,
-                    //                               fontWeight: FontWeight.bold,
-                    //                             ),
-                    //                           )
-                    //                         ],
-                    //                       )
-                    //                     ],
-                    //                   )
-                    //                 ],
-                    //               )
-                    //             ]),
-                    //       );
-                    //     },
-                    //   ),
-                    // )
                   ],
                 )
               ],

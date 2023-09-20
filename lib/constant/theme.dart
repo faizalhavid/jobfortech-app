@@ -17,6 +17,7 @@ class AppColor {
   static const Color grey = Color(0xFF858585);
   static const Color black = Color(0xFF000000);
   static const Color lightGrey = Color(0xFFFAFAFA);
+  static const Color lightGrey2 = Color(0xFFD9D9D9);
   static const Color yellow = Color(0xFFFFD233);
   static const Color transparent = Color(0x00000000);
 }
@@ -42,6 +43,7 @@ TextStyle AppBasicStyle({
   FontStyle fontStyle = FontStyle.normal,
   TextAlign textAlign = TextAlign.start,
   double letterSpacing = 0.0,
+  double? height,
 }) {
   return GoogleFonts.inter(
     fontSize: fontSize,
@@ -49,6 +51,7 @@ TextStyle AppBasicStyle({
     fontStyle: fontStyle,
     color: fontColor,
     letterSpacing: letterSpacing,
+    height: height,
   );
 }
 

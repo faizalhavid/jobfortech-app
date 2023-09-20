@@ -7,12 +7,15 @@ Container AppBadge({
   double width = 10,
   double height = 2,
   double radius = 30,
+  bool showOutline = false,
+  Color? outlineColor = AppColor.blue,
 }) {
   return Container(
     padding: EdgeInsets.symmetric(vertical: height, horizontal: width),
     decoration: BoxDecoration(
       color: backgroundColor,
       borderRadius: BorderRadius.circular(radius),
+      border: showOutline ? Border.all(color: outlineColor!, width: 1) : null,
     ),
     child: child,
   );

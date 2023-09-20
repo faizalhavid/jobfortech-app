@@ -435,188 +435,33 @@ class DashboardView extends GetView<DashboardController> {
                           ),
                   ),
                 ),
-                Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SizedBox(
-                      width: Get.width * 0.45,
-                      child: Text(
-                        'Erat at nibh viverra erat pharetra quis egestas morbi maecenas.',
-                        style: AppBasicStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 12,
-                          fontColor: AppColor.grey,
-                        ),
-                      ),
-                    ),
-                    AppButton(
-                      spacing: 1,
-                      width: 0,
-                      height: 30,
-                      backgroundColor: AppColor.lightGrey,
-                      child: Text(
-                        'Find Work',
-                        style: AppBasicStyle(
-                          fontSize: 13,
-                          fontColor: AppColor.osean,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      suffix: Icon(
-                        size: 35,
-                        Icons.zoom_in_outlined,
-                        color: AppColor.osean,
-                      ),
-                      onPressed: () {},
-                    )
-                  ],
-                ),
-                Row(
-                  children: [
-                    AppCard(
-                      width: Get.width * 0.25,
-                      height: Get.height * 0.135,
-                      radius: 15,
-                      color: AppColor.white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppColor.blue.withOpacity(0.2),
-                          spreadRadius: 0.5,
-                          blurRadius: 5,
-                          offset: Offset(0, 5),
-                        ),
-                      ],
-                      children: [
-                        Text(
-                          'Project Available',
-                          style: AppBasicStyle(
-                            fontColor: AppColor.grey,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              '10',
-                              style: AppBasicStyle(
-                                  fontColor: AppColor.black,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            Icon(
-                              Icons.laptop,
-                              size: 20,
-                              color: AppColor.blue,
-                            )
-                          ],
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    AppCard(
-                      width: Get.width * 0.25,
-                      height: Get.height * 0.135,
-                      radius: 15,
-                      color: AppColor.white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppColor.blue.withOpacity(0.2),
-                          spreadRadius: 0.5,
-                          blurRadius: 5,
-                          offset: Offset(0, 5),
-                        ),
-                      ],
-                      children: [
-                        Text(
-                          'Project Available',
-                          style: AppBasicStyle(
-                            fontColor: AppColor.grey,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              '10',
-                              style: AppBasicStyle(
-                                  fontColor: AppColor.black,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            Icon(
-                              Icons.laptop,
-                              size: 20,
-                              color: AppColor.blue,
-                            )
-                          ],
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    AppCard(
-                      width: Get.width * 0.25,
-                      height: Get.height * 0.135,
-                      radius: 15,
-                      color: AppColor.white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppColor.blue.withOpacity(0.2),
-                          spreadRadius: 0.5,
-                          blurRadius: 5,
-                          offset: Offset(0, 5),
-                        ),
-                      ],
-                      children: [
-                        Text(
-                          'Project Available',
-                          style: AppBasicStyle(
-                            fontColor: AppColor.grey,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              '10',
-                              style: AppBasicStyle(
-                                  fontColor: AppColor.black,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            Icon(
-                              Icons.laptop,
-                              size: 20,
-                              color: AppColor.blue,
-                            )
-                          ],
-                        )
-                      ],
-                    ),
-                  ],
-                ),
+                // Row(
+                //   mainAxisSize: MainAxisSize.max,
+                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //   children: [
+                //     SizedBox(
+                //       width: Get.width * 0.6,
+                //       child: Text(
+                //         'Erat at nibh viverra erat pharetra quis egestas morbi maecenas.',
+                //         style: AppBasicStyle(
+                //           fontWeight: FontWeight.w500,
+                //           fontSize: 14,
+                //           fontColor: AppColor.grey,
+                //         ),
+                //       ),
+                //     ),
+                //     AppButton(
+                //       child: Text(
+                //         'Find Work',
+                //         style: AppBasicStyle(
+                //             fontSize: 16,
+                //             fontColor: AppColor.darkBlue,
+                //             fontWeight: FontWeight.bold),
+                //       ),
+                //       onPressed: () {},
+                //     )
+                //   ],
+                // ),
               ],
             ),
           ],
