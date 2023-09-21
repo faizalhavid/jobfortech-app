@@ -33,6 +33,7 @@ class DashboardView extends GetView<DashboardController> {
     return Scaffold(
       backgroundColor: AppColor.lightGrey,
       appBar: AppHeaderbar(
+        height: 210,
         type: 'dashboard',
         expandAppbar: true,
         leading: InkWell(

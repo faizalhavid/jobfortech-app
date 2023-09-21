@@ -5,10 +5,10 @@ import 'package:jobfortech/components/AppCard/index.dart';
 import 'package:jobfortech/constant/icons.dart';
 import 'package:jobfortech/constant/theme.dart';
 
-AppBar AppHeaderbar({
-  required Widget title,
+PreferredSize AppHeaderbar({
+  Widget? title,
   bool centerTitle = true,
-  bool automaticallyImplyLeading = true,
+  bool automaticallyImplyLeading = false,
   Widget? actions,
   PreferredSizeWidget? bottom,
   double? elevation,
@@ -26,28 +26,32 @@ AppBar AppHeaderbar({
   Widget? leading,
   ShapeBorder? shape,
   Color? shadowColor,
+  double height = 80,
   Key? key,
 }) {
-  return AppBar(
-    title: Padding(padding: const EdgeInsets.only(top: 30), child: title),
-    centerTitle: centerTitle,
-    automaticallyImplyLeading: automaticallyImplyLeading,
-    actions: [
-      Padding(
-          padding: const EdgeInsets.only(top: 20, right: 20), child: actions)
-    ],
-    bottom: expandAppbar ? AppHeaderBottom(type: type) : null,
-    elevation: 0,
-    backgroundColor: backgroundColor,
-    iconTheme: iconTheme,
-    primary: primary,
-    titleSpacing: titleSpacing,
-    toolbarHeight: toolbarHeight,
-    leading: Padding(
-        padding: const EdgeInsets.only(top: 20, left: 25), child: leading),
-    shape: shape,
-    shadowColor: shadowColor,
-    key: key,
+  return PreferredSize(
+    preferredSize: Size.fromHeight(height),
+    child: AppBar(
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          leading ?? SizedBox(),
+          title ?? SizedBox(),
+          actions ?? SizedBox()
+        ],
+      ),
+      centerTitle: true,
+      bottom: expandAppbar ? AppHeaderBottom(type: type) : null,
+      elevation: 0,
+      backgroundColor: backgroundColor,
+      iconTheme: iconTheme,
+      primary: primary,
+      titleSpacing: titleSpacing,
+      toolbarHeight: 120,
+      automaticallyImplyLeading: automaticallyImplyLeading,
+      shape: shape,
+      shadowColor: shadowColor,
+    ),
   );
 }
 
