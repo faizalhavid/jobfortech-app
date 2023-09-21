@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:jobfortech/app/modules/Dashboard/views/project_team_view.dart';
+import 'package:jobfortech/app/modules/Dashboard/views/completed_task_view.dart';
+import 'package:jobfortech/app/modules/Dashboard/views/my_task_detail.dart';
 import 'package:jobfortech/components/AppAvatar/index.dart';
 import 'package:jobfortech/components/AppCard/index.dart';
 import 'package:jobfortech/components/AppSafeArea/index.dart';
@@ -145,7 +146,7 @@ class MyTaskView extends GetView {
             ),
             GestureDetector(
               onTap: () {
-                Get.to(() => ProjectTeamView());
+                Get.to(() => MyTaskDetailView());
               },
               child: AppCard(
                   height: 80,
@@ -470,85 +471,92 @@ class MyTaskView extends GetView {
             SizedBox(
               height: 16,
             ),
-            AppCard(
-                height: 80,
-                width: 320,
-                radius: 20,
-                color: AppColor.white,
-                boxShadow: [
-                  BoxShadow(
-                    color: AppColor.blue.withOpacity(0.2),
-                    spreadRadius: 2.5,
-                    blurRadius: 5,
-                    offset: Offset(0, 5),
-                  ),
-                ],
-                children: [
-                  Row(
-                    children: [
-                      Container(
-                        width: 50,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          color: AppColor.blue,
-                          shape: BoxShape.circle,
-                        ),
-                        child: Center(
-                          child: Text(
-                            '100%',
-                            style: AppBasicStyle(
-                              fontColor: AppColor.white,
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
+            GestureDetector(
+              onTap: () {
+                Get.to(() => CompletedTaskView());
+              },
+              child: AppCard(
+                  height: 80,
+                  width: 320,
+                  radius: 20,
+                  color: AppColor.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColor.blue.withOpacity(0.2),
+                      spreadRadius: 2.5,
+                      blurRadius: 5,
+                      offset: Offset(0, 5),
+                    ),
+                  ],
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          width: 50,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            color: AppColor.blue,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Center(
+                            child: Text(
+                              '100%',
+                              style: AppBasicStyle(
+                                fontColor: AppColor.white,
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      SizedBox(
-                        width: 8,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Feature MNOP',
-                            style: AppBasicStyle(
-                                fontColor: AppColor.black,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                'Due date: 23 / 12 / 22',
-                                style: AppBasicStyle(
-                                    fontSize: 12, fontWeight: FontWeight.w500),
-                              ),
-                              SizedBox(
-                                width: 40,
-                              ),
-                              Text(
-                                '30/100',
-                                style: AppBasicStyle(
-                                    fontSize: 12, fontWeight: FontWeight.w500),
-                              )
-                            ],
-                          )
-                        ],
-                      ),
-                      SizedBox(
-                        width: 4,
-                      ),
-                      AppIcon(
-                          svgPath: 'assets/svgs/arrow-right.svg',
-                          size: 20,
-                          editColor: true,
-                          color: AppColor.grey),
-                    ],
-                  ),
-                ]),
+                        SizedBox(
+                          width: 8,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Feature MNOP',
+                              style: AppBasicStyle(
+                                  fontColor: AppColor.black,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Row(
+                              children: [
+                                Text(
+                                  'Due date: 23 / 12 / 22',
+                                  style: AppBasicStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                SizedBox(
+                                  width: 40,
+                                ),
+                                Text(
+                                  '30/100',
+                                  style: AppBasicStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w500),
+                                )
+                              ],
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          width: 4,
+                        ),
+                        AppIcon(
+                            svgPath: 'assets/svgs/arrow-right.svg',
+                            size: 20,
+                            editColor: true,
+                            color: AppColor.grey),
+                      ],
+                    ),
+                  ]),
+            ),
             SizedBox(
               height: 16,
             ),

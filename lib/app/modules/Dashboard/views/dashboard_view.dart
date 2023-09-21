@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:jobfortech/app/modules/Profile/views/profile_view.dart';
 import 'package:jobfortech/components/AppAvatar/index.dart';
 import 'package:jobfortech/components/AppBadge/index.dart';
+import 'package:jobfortech/components/AppButton/index.dart';
 import 'package:jobfortech/components/AppCard/index.dart';
 import 'package:jobfortech/components/AppHeaderBar/index.dart';
 import 'package:jobfortech/components/AppStack/index.dart';
@@ -171,7 +172,7 @@ class DashboardView extends GetView<DashboardController> {
             ),
             AppStack(
               spacing: 10,
-              safearea: {'horizontal': 38, 'vertical': 20},
+              safearea: {'horizontal': 20, 'vertical': 20},
               children: [
                 Text(
                   'Meet Schedule',
@@ -436,33 +437,177 @@ class DashboardView extends GetView<DashboardController> {
                           ),
                   ),
                 ),
-                // Row(
-                //   mainAxisSize: MainAxisSize.max,
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   children: [
-                //     SizedBox(
-                //       width: Get.width * 0.6,
-                //       child: Text(
-                //         'Erat at nibh viverra erat pharetra quis egestas morbi maecenas.',
-                //         style: AppBasicStyle(
-                //           fontWeight: FontWeight.w500,
-                //           fontSize: 14,
-                //           fontColor: AppColor.grey,
-                //         ),
-                //       ),
-                //     ),
-                //     AppButton(
-                //       child: Text(
-                //         'Find Work',
-                //         style: AppBasicStyle(
-                //             fontSize: 16,
-                //             fontColor: AppColor.darkBlue,
-                //             fontWeight: FontWeight.bold),
-                //       ),
-                //       onPressed: () {},
-                //     )
-                //   ],
-                // ),
+                Row(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    SizedBox(
+                      width: Get.width * 0.5,
+                      child: Text(
+                        'Erat at nibh viverra erat pharetra quis egestas morbi maecenas.',
+                        style: AppBasicStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 11,
+                          fontColor: AppColor.grey,
+                        ),
+                      ),
+                    ),
+                    Spacer(),
+                    Text(
+                      'Find Work',
+                      style: AppBasicStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                          fontColor: AppColor.osean),
+                    ),
+                    AppIconButton(
+                        svgPath: 'assets/svgs/zoom-in.svg',
+                        size: 18,
+                        onPressed: () {})
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    AppCard(
+                        height: 100,
+                        width: 100,
+                        radius: 20,
+                        color: AppColor.white,
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppColor.blue.withOpacity(0.2),
+                            spreadRadius: 1.5,
+                            blurRadius: 4,
+                            offset: Offset(0, 5),
+                          ),
+                        ],
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Project Available',
+                                style: AppBasicStyle(
+                                    fontColor: AppColor.grey,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              SizedBox(
+                                height: 8,
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    '10',
+                                    style: AppBasicStyle(
+                                        fontSize: 25,
+                                        fontColor: AppColor.black,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Spacer(),
+                                  AppIcon(
+                                    svgPath: 'assets/svgs/desktop.svg',
+                                    size: 18,
+                                  )
+                                ],
+                              )
+                            ],
+                          )
+                        ]),
+                    AppCard(
+                        height: 100,
+                        width: 100,
+                        radius: 20,
+                        color: AppColor.white,
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppColor.blue.withOpacity(0.2),
+                            spreadRadius: 1.5,
+                            blurRadius: 4,
+                            offset: Offset(0, 5),
+                          ),
+                        ],
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Project Available',
+                                style: AppBasicStyle(
+                                    fontColor: AppColor.grey,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              SizedBox(
+                                height: 8,
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    '10',
+                                    style: AppBasicStyle(
+                                        fontSize: 25,
+                                        fontColor: AppColor.black,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Spacer(),
+                                  AppIcon(
+                                    svgPath: 'assets/svgs/notes.svg',
+                                    size: 18,
+                                  )
+                                ],
+                              )
+                            ],
+                          )
+                        ]),
+                    AppCard(
+                        height: 100,
+                        width: 100,
+                        radius: 20,
+                        color: AppColor.white,
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppColor.blue.withOpacity(0.2),
+                            spreadRadius: 1.5,
+                            blurRadius: 4,
+                            offset: Offset(0, 5),
+                          ),
+                        ],
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Project Available',
+                                style: AppBasicStyle(
+                                    fontColor: AppColor.grey,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              SizedBox(
+                                height: 8,
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    '10',
+                                    style: AppBasicStyle(
+                                        fontSize: 25,
+                                        fontColor: AppColor.black,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Spacer(),
+                                  AppIcon(
+                                    svgPath: 'assets/svgs/bag.svg',
+                                    size: 18,
+                                  )
+                                ],
+                              )
+                            ],
+                          )
+                        ]),
+                  ],
+                )
               ],
             ),
           ],

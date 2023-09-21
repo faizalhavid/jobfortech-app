@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:jobfortech/app/modules/Dashboard/views/team_profile_view.dart';
+import 'package:jobfortech/components/AppAvatar/index.dart';
+import 'package:jobfortech/components/AppBadge/index.dart';
+import 'package:jobfortech/components/AppCard/index.dart';
+import 'package:jobfortech/components/AppSafeArea/index.dart';
 import 'package:jobfortech/constant/icons.dart';
 import 'package:jobfortech/constant/theme.dart';
-import 'package:percent_indicator/circular_percent_indicator.dart';
 
 class ProjectTeamView extends GetView {
   const ProjectTeamView({Key? key}) : super(key: key);
@@ -11,131 +15,870 @@ class ProjectTeamView extends GetView {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        elevation: 0.0,
-        titleSpacing: 0.5,
-        title: Row(
-          children: [
-            const Text('My Task'),
-            SizedBox(
-              width: 180,
-            ),
-            AppIcon(
-              svgPath: 'assets/svgs/search.svg',
-              editColor: true,
-              color: AppColor.white,
-              size: 20,
-            ),
-          ],
-        ),
+        title: const Text('Project Team'),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              height: 100,
-              width: Get.width,
-              color: AppColor.blue,
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 24.0,
-                  vertical: 16,
-                ),
-                child: Row(
-                  children: [
-                    SizedBox(
-                      child: CircularPercentIndicator(
-                        radius: 25,
-                        lineWidth: 3,
-                        animation: true,
-                        percent: 0.30,
-                        center: new Text(
-                          "30%",
-                          style: AppBasicStyle(
-                            fontColor: AppColor.white,
-                            fontSize: 12,
-                          ),
-                        ),
-                        circularStrokeCap: CircularStrokeCap.round,
-                        progressColor: AppColor.white,
-                        backgroundColor: AppColor.darkBlue,
+      body: AppSafeArea(
+        safearea: {'horizontal': 3, 'vertical': 10},
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                GestureDetector(
+                  onTap: () {
+                    Get.to(() => TeamProfileView());
+                  },
+                  child: AppCard(
+                    height: 100,
+                    width: 350,
+                    radius: 20,
+                    color: AppColor.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppColor.blue.withOpacity(0.2),
+                        spreadRadius: 0.5,
+                        blurRadius: 5,
+                        offset: Offset(0, 5),
                       ),
+                    ],
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          AppAvatar(radius: 20),
+                          SizedBox(
+                            width: 16,
+                          ),
+                          Row(
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Text(
+                                        'Makenna Carder',
+                                        style: AppBasicStyle(
+                                            fontColor: AppColor.black,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      SizedBox(
+                                        width: 4,
+                                      ),
+                                      Icon(
+                                        Icons.verified_outlined,
+                                        size: 15,
+                                        color: AppColor.darkBlue,
+                                      )
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 16,
+                                  ),
+                                  Text(
+                                    'Front End Developer',
+                                    style: AppBasicStyle(
+                                        fontSize: 12, fontColor: AppColor.grey),
+                                  ),
+                                  SizedBox(
+                                    height: 4,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.star,
+                                        color: AppColor.yellow,
+                                        size: 14,
+                                      ),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Text(
+                                        '4.9',
+                                        style: AppBasicStyle(
+                                          fontSize: 12,
+                                          fontColor: AppColor.yellow,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 8,
+                                      ),
+                                      AppBadge(
+                                          height: 3,
+                                          width: 10,
+                                          backgroundColor: AppColor.lightBlue,
+                                          child: Text(
+                                            'Senior',
+                                            style: AppBasicStyle(
+                                                fontSize: 10,
+                                                fontWeight: FontWeight.bold),
+                                          ))
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                width: 60,
+                              ),
+                              AppIcon(
+                                  svgPath: 'assets/svgs/document-text.svg',
+                                  size: 25)
+                            ],
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+                AppCard(
+                  height: 100,
+                  width: 350,
+                  radius: 20,
+                  color: AppColor.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColor.blue.withOpacity(0.2),
+                      spreadRadius: 0.5,
+                      blurRadius: 5,
+                      offset: Offset(0, 5),
                     ),
-                    SizedBox(
-                      width: 16,
-                    ),
-                    Column(
+                  ],
+                  children: [
+                    Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Row(
-                          children: [
-                            Text(
-                              'Feature ABCD',
-                              style: AppBasicStyle(
-                                  fontColor: AppColor.white,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            SizedBox(
-                              width: 100,
-                            ),
-                            Text(
-                              '25/100',
-                              style: AppBasicStyle(
-                                  fontSize: 12, fontColor: AppColor.white),
-                            )
-                          ],
-                        ),
+                        AppAvatar(radius: 20),
                         SizedBox(
-                          height: 4,
+                          width: 16,
                         ),
                         Row(
                           children: [
-                            Text(
-                              'Updated : 23/12/22',
-                              style: AppBasicStyle(
-                                  fontColor: AppColor.white, fontSize: 12),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                      'Makenna Carder',
+                                      style: AppBasicStyle(
+                                          fontColor: AppColor.black,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(
+                                      width: 4,
+                                    ),
+                                    Icon(
+                                      Icons.verified_outlined,
+                                      size: 15,
+                                      color: AppColor.darkBlue,
+                                    )
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 16,
+                                ),
+                                Text(
+                                  'Front End Developer',
+                                  style: AppBasicStyle(
+                                      fontSize: 12, fontColor: AppColor.grey),
+                                ),
+                                SizedBox(
+                                  height: 4,
+                                ),
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.star,
+                                      color: AppColor.yellow,
+                                      size: 14,
+                                    ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Text(
+                                      '4.9',
+                                      style: AppBasicStyle(
+                                        fontSize: 12,
+                                        fontColor: AppColor.yellow,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 8,
+                                    ),
+                                    AppBadge(
+                                        height: 3,
+                                        width: 10,
+                                        backgroundColor: AppColor.lightBlue,
+                                        child: Text(
+                                          'Senior',
+                                          style: AppBasicStyle(
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.bold),
+                                        ))
+                                  ],
+                                ),
+                              ],
                             ),
                             SizedBox(
-                              width: 40,
+                              width: 60,
                             ),
-                            Text(
-                              'Due : 23/12/22',
-                              style: AppBasicStyle(
-                                  fontColor: AppColor.white, fontSize: 12),
-                            )
+                            AppIcon(
+                                svgPath: 'assets/svgs/document-text.svg',
+                                size: 25)
                           ],
                         )
                       ],
-                    )
+                    ),
                   ],
                 ),
-              ),
+                SizedBox(
+                  height: 8,
+                ),
+                AppCard(
+                  height: 100,
+                  width: 350,
+                  radius: 20,
+                  color: AppColor.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColor.blue.withOpacity(0.2),
+                      spreadRadius: 0.5,
+                      blurRadius: 5,
+                      offset: Offset(0, 5),
+                    ),
+                  ],
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        AppAvatar(radius: 20),
+                        SizedBox(
+                          width: 16,
+                        ),
+                        Row(
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                      'Makenna Carder',
+                                      style: AppBasicStyle(
+                                          fontColor: AppColor.black,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(
+                                      width: 4,
+                                    ),
+                                    Icon(
+                                      Icons.verified_outlined,
+                                      size: 15,
+                                      color: AppColor.darkBlue,
+                                    )
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 16,
+                                ),
+                                Text(
+                                  'Front End Developer',
+                                  style: AppBasicStyle(
+                                      fontSize: 12, fontColor: AppColor.grey),
+                                ),
+                                SizedBox(
+                                  height: 4,
+                                ),
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.star,
+                                      color: AppColor.yellow,
+                                      size: 14,
+                                    ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Text(
+                                      '4.9',
+                                      style: AppBasicStyle(
+                                        fontSize: 12,
+                                        fontColor: AppColor.yellow,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 8,
+                                    ),
+                                    AppBadge(
+                                        height: 3,
+                                        width: 10,
+                                        backgroundColor: AppColor.lightBlue,
+                                        child: Text(
+                                          'Senior',
+                                          style: AppBasicStyle(
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.bold),
+                                        ))
+                                  ],
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              width: 60,
+                            ),
+                            AppIcon(
+                                svgPath: 'assets/svgs/document-text.svg',
+                                size: 25)
+                          ],
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+                AppCard(
+                  height: 100,
+                  width: 350,
+                  radius: 20,
+                  color: AppColor.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColor.blue.withOpacity(0.2),
+                      spreadRadius: 0.5,
+                      blurRadius: 5,
+                      offset: Offset(0, 5),
+                    ),
+                  ],
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        AppAvatar(radius: 20),
+                        SizedBox(
+                          width: 16,
+                        ),
+                        Row(
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                      'Makenna Carder',
+                                      style: AppBasicStyle(
+                                          fontColor: AppColor.black,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(
+                                      width: 4,
+                                    ),
+                                    Icon(
+                                      Icons.verified_outlined,
+                                      size: 15,
+                                      color: AppColor.darkBlue,
+                                    )
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 16,
+                                ),
+                                Text(
+                                  'Front End Developer',
+                                  style: AppBasicStyle(
+                                      fontSize: 12, fontColor: AppColor.grey),
+                                ),
+                                SizedBox(
+                                  height: 4,
+                                ),
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.star,
+                                      color: AppColor.yellow,
+                                      size: 14,
+                                    ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Text(
+                                      '4.9',
+                                      style: AppBasicStyle(
+                                        fontSize: 12,
+                                        fontColor: AppColor.yellow,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 8,
+                                    ),
+                                    AppBadge(
+                                        height: 3,
+                                        width: 10,
+                                        backgroundColor: AppColor.lightBlue,
+                                        child: Text(
+                                          'Senior',
+                                          style: AppBasicStyle(
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.bold),
+                                        ))
+                                  ],
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              width: 60,
+                            ),
+                            AppIcon(
+                                svgPath: 'assets/svgs/document-text.svg',
+                                size: 25)
+                          ],
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+                AppCard(
+                  height: 100,
+                  width: 350,
+                  radius: 20,
+                  color: AppColor.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColor.blue.withOpacity(0.2),
+                      spreadRadius: 0.5,
+                      blurRadius: 5,
+                      offset: Offset(0, 5),
+                    ),
+                  ],
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        AppAvatar(radius: 20),
+                        SizedBox(
+                          width: 16,
+                        ),
+                        Row(
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                      'Makenna Carder',
+                                      style: AppBasicStyle(
+                                          fontColor: AppColor.black,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(
+                                      width: 4,
+                                    ),
+                                    Icon(
+                                      Icons.verified_outlined,
+                                      size: 15,
+                                      color: AppColor.darkBlue,
+                                    )
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 16,
+                                ),
+                                Text(
+                                  'Front End Developer',
+                                  style: AppBasicStyle(
+                                      fontSize: 12, fontColor: AppColor.grey),
+                                ),
+                                SizedBox(
+                                  height: 4,
+                                ),
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.star,
+                                      color: AppColor.yellow,
+                                      size: 14,
+                                    ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Text(
+                                      '4.9',
+                                      style: AppBasicStyle(
+                                        fontSize: 12,
+                                        fontColor: AppColor.yellow,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 8,
+                                    ),
+                                    AppBadge(
+                                        height: 3,
+                                        width: 10,
+                                        backgroundColor: AppColor.lightBlue,
+                                        child: Text(
+                                          'Senior',
+                                          style: AppBasicStyle(
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.bold),
+                                        ))
+                                  ],
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              width: 60,
+                            ),
+                            AppIcon(
+                                svgPath: 'assets/svgs/document-text.svg',
+                                size: 25)
+                          ],
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+                AppCard(
+                  height: 100,
+                  width: 350,
+                  radius: 20,
+                  color: AppColor.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColor.blue.withOpacity(0.2),
+                      spreadRadius: 0.5,
+                      blurRadius: 5,
+                      offset: Offset(0, 5),
+                    ),
+                  ],
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        AppAvatar(radius: 20),
+                        SizedBox(
+                          width: 16,
+                        ),
+                        Row(
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                      'Makenna Carder',
+                                      style: AppBasicStyle(
+                                          fontColor: AppColor.black,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(
+                                      width: 4,
+                                    ),
+                                    Icon(
+                                      Icons.verified_outlined,
+                                      size: 15,
+                                      color: AppColor.darkBlue,
+                                    )
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 16,
+                                ),
+                                Text(
+                                  'Front End Developer',
+                                  style: AppBasicStyle(
+                                      fontSize: 12, fontColor: AppColor.grey),
+                                ),
+                                SizedBox(
+                                  height: 4,
+                                ),
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.star,
+                                      color: AppColor.yellow,
+                                      size: 14,
+                                    ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Text(
+                                      '4.9',
+                                      style: AppBasicStyle(
+                                        fontSize: 12,
+                                        fontColor: AppColor.yellow,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 8,
+                                    ),
+                                    AppBadge(
+                                        height: 3,
+                                        width: 10,
+                                        backgroundColor: AppColor.lightBlue,
+                                        child: Text(
+                                          'Senior',
+                                          style: AppBasicStyle(
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.bold),
+                                        ))
+                                  ],
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              width: 60,
+                            ),
+                            AppIcon(
+                                svgPath: 'assets/svgs/document-text.svg',
+                                size: 25)
+                          ],
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+                AppCard(
+                  height: 100,
+                  width: 350,
+                  radius: 20,
+                  color: AppColor.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColor.blue.withOpacity(0.2),
+                      spreadRadius: 0.5,
+                      blurRadius: 5,
+                      offset: Offset(0, 5),
+                    ),
+                  ],
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        AppAvatar(radius: 20),
+                        SizedBox(
+                          width: 16,
+                        ),
+                        Row(
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                      'Makenna Carder',
+                                      style: AppBasicStyle(
+                                          fontColor: AppColor.black,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(
+                                      width: 4,
+                                    ),
+                                    Icon(
+                                      Icons.verified_outlined,
+                                      size: 15,
+                                      color: AppColor.darkBlue,
+                                    )
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 16,
+                                ),
+                                Text(
+                                  'Front End Developer',
+                                  style: AppBasicStyle(
+                                      fontSize: 12, fontColor: AppColor.grey),
+                                ),
+                                SizedBox(
+                                  height: 4,
+                                ),
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.star,
+                                      color: AppColor.yellow,
+                                      size: 14,
+                                    ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Text(
+                                      '4.9',
+                                      style: AppBasicStyle(
+                                        fontSize: 12,
+                                        fontColor: AppColor.yellow,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 8,
+                                    ),
+                                    AppBadge(
+                                        height: 3,
+                                        width: 10,
+                                        backgroundColor: AppColor.lightBlue,
+                                        child: Text(
+                                          'Senior',
+                                          style: AppBasicStyle(
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.bold),
+                                        ))
+                                  ],
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              width: 60,
+                            ),
+                            AppIcon(
+                                svgPath: 'assets/svgs/document-text.svg',
+                                size: 25)
+                          ],
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+                AppCard(
+                  height: 100,
+                  width: 350,
+                  radius: 20,
+                  color: AppColor.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColor.blue.withOpacity(0.2),
+                      spreadRadius: 0.5,
+                      blurRadius: 5,
+                      offset: Offset(0, 5),
+                    ),
+                  ],
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        AppAvatar(radius: 20),
+                        SizedBox(
+                          width: 16,
+                        ),
+                        Row(
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                      'Makenna Carder',
+                                      style: AppBasicStyle(
+                                          fontColor: AppColor.black,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(
+                                      width: 4,
+                                    ),
+                                    Icon(
+                                      Icons.verified_outlined,
+                                      size: 15,
+                                      color: AppColor.darkBlue,
+                                    )
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 16,
+                                ),
+                                Text(
+                                  'Front End Developer',
+                                  style: AppBasicStyle(
+                                      fontSize: 12, fontColor: AppColor.grey),
+                                ),
+                                SizedBox(
+                                  height: 4,
+                                ),
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.star,
+                                      color: AppColor.yellow,
+                                      size: 14,
+                                    ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Text(
+                                      '4.9',
+                                      style: AppBasicStyle(
+                                        fontSize: 12,
+                                        fontColor: AppColor.yellow,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 8,
+                                    ),
+                                    AppBadge(
+                                        height: 3,
+                                        width: 10,
+                                        backgroundColor: AppColor.lightBlue,
+                                        child: Text(
+                                          'Senior',
+                                          style: AppBasicStyle(
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.bold),
+                                        ))
+                                  ],
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              width: 60,
+                            ),
+                            AppIcon(
+                                svgPath: 'assets/svgs/document-text.svg',
+                                size: 25)
+                          ],
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+              ],
             ),
-            SizedBox(
-              height: 24,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 28.0),
-              child: Row(
-                children: [
-                  Text(
-                    'On Going',
-                    style: AppBasicStyle(
-                        fontColor: AppColor.black, fontWeight: FontWeight.bold),
-                  ),
-                  Spacer(),
-                  Text(
-                    '5',
-                    style: AppBasicStyle(
-                        fontColor: AppColor.grey, fontWeight: FontWeight.bold),
-                  ),
-                  AppIcon(svgPath: 'drop-down-up-outline.svg', size: 20)
-                ],
-              ),
-            )
-          ],
-        ),
+          )
+        ],
       ),
     );
   }

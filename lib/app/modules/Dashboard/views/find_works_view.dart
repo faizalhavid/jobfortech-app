@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:jobfortech/app/modules/Dashboard/views/project_team_view.dart';
 import 'package:jobfortech/app/modules/Dashboard/views/work_detail_view.dart';
 import 'package:jobfortech/components/AppBadge/index.dart';
 import 'package:jobfortech/components/AppButton/index.dart';
@@ -56,95 +57,101 @@ class FindWorksView extends GetView {
                     ),
                     Row(
                       children: [
-                        AppCard(
-                          height: 190,
-                          width: 150,
-                          radius: 15,
-                          color: AppColor.white,
-                          boxShadow: [
-                            BoxShadow(
-                              color: AppColor.blue.withOpacity(0.2),
-                              spreadRadius: 0.5,
-                              blurRadius: 5,
-                              offset: Offset(0, 5),
-                            ),
-                          ],
-                          children: [
-                            Row(
-                              children: [
-                                Image.asset(
-                                  'assets/images/company.png',
-                                  width: 50,
-                                  height: 50,
-                                ),
-                                Spacer(),
-                                AppIcon(
-                                    svgPath: 'assets/svgs/arrow-right.svg',
-                                    size: 18)
-                              ],
-                            ),
-                            SizedBox(
-                              height: 16,
-                            ),
-                            Text(
-                              'E-Commerce Project',
-                              style: AppBasicStyle(
-                                fontColor: AppColor.black,
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
+                        GestureDetector(
+                          onTap: () {
+                            Get.to(() => ProjectTeamView());
+                          },
+                          child: AppCard(
+                            height: 190,
+                            width: 150,
+                            radius: 15,
+                            color: AppColor.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: AppColor.blue.withOpacity(0.2),
+                                spreadRadius: 0.5,
+                                blurRadius: 5,
+                                offset: Offset(0, 5),
                               ),
-                            ),
-                            SizedBox(
-                              height: 4,
-                            ),
-                            Text(
-                              'Company Name',
-                              style: AppBasicStyle(
-                                  fontColor: AppColor.grey, fontSize: 11),
-                            ),
-                            Spacer(),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  ' BE : ',
-                                  style: AppBasicStyle(
-                                      fontColor: AppColor.grey, fontSize: 7),
+                            ],
+                            children: [
+                              Row(
+                                children: [
+                                  Image.asset(
+                                    'assets/images/company.png',
+                                    width: 50,
+                                    height: 50,
+                                  ),
+                                  Spacer(),
+                                  AppIcon(
+                                      svgPath: 'assets/svgs/arrow-right.svg',
+                                      size: 18)
+                                ],
+                              ),
+                              SizedBox(
+                                height: 16,
+                              ),
+                              Text(
+                                'E-Commerce Project',
+                                style: AppBasicStyle(
+                                  fontColor: AppColor.black,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
                                 ),
-                                Text(
-                                  ' 2/3  ',
-                                  style: AppBasicStyle(
-                                      fontColor: AppColor.blue,
-                                      fontSize: 7,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                Text(
-                                  ' FE : ',
-                                  style: AppBasicStyle(
-                                      fontColor: AppColor.grey, fontSize: 7),
-                                ),
-                                Text(
-                                  ' 1/3  ',
-                                  style: AppBasicStyle(
-                                      fontColor: AppColor.blue,
-                                      fontSize: 7,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                Text(
-                                  ' MF : ',
-                                  style: AppBasicStyle(
-                                      fontColor: AppColor.grey, fontSize: 7),
-                                ),
-                                Text(
-                                  ' 3/3  ',
-                                  style: AppBasicStyle(
-                                      fontColor: AppColor.blue,
-                                      fontSize: 7,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ],
-                            ),
-                          ],
+                              ),
+                              SizedBox(
+                                height: 4,
+                              ),
+                              Text(
+                                'Company Name',
+                                style: AppBasicStyle(
+                                    fontColor: AppColor.grey, fontSize: 11),
+                              ),
+                              Spacer(),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    ' BE : ',
+                                    style: AppBasicStyle(
+                                        fontColor: AppColor.grey, fontSize: 7),
+                                  ),
+                                  Text(
+                                    ' 2/3  ',
+                                    style: AppBasicStyle(
+                                        fontColor: AppColor.blue,
+                                        fontSize: 7,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                    ' FE : ',
+                                    style: AppBasicStyle(
+                                        fontColor: AppColor.grey, fontSize: 7),
+                                  ),
+                                  Text(
+                                    ' 1/3  ',
+                                    style: AppBasicStyle(
+                                        fontColor: AppColor.blue,
+                                        fontSize: 7,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                    ' MF : ',
+                                    style: AppBasicStyle(
+                                        fontColor: AppColor.grey, fontSize: 7),
+                                  ),
+                                  Text(
+                                    ' 3/3  ',
+                                    style: AppBasicStyle(
+                                        fontColor: AppColor.blue,
+                                        fontSize: 7,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                         Spacer(),
                         AppCard(
