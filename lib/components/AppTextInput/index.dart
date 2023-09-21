@@ -11,6 +11,7 @@ TextField AppTextInput({
   required TextEditingController controller,
   TextInputType keyboardType = TextInputType.text,
   bool readOnly = false,
+  Function(String)? onChanged,
   // required TextInputAction textInputAction,
   // required FocusNode focusNode,
   // required Function(String) validator,
@@ -19,7 +20,7 @@ TextField AppTextInput({
 }) {
   return TextField(
     controller: controller, readOnly: readOnly,
-
+    onChanged: onChanged,
     decoration: AppTextInputDecoration(
       suffix: suffix,
       prefix: prefix,

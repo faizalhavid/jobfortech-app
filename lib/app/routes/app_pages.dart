@@ -4,8 +4,8 @@ import '../modules/Auth/bindings/auth_binding.dart';
 import '../modules/Auth/views/login_view.dart';
 import '../modules/Dashboard/bindings/dashboard_binding.dart';
 import '../modules/Dashboard/views/dashboard_view.dart';
-import '../modules/Menu/bindings/menu_binding.dart';
-import '../modules/Menu/views/menu_view.dart';
+import '../modules/Profile/bindings/menu_binding.dart';
+import '../modules/Profile/views/menu_view.dart';
 
 part 'app_routes.dart';
 

@@ -1,21 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:jobfortech/app/modules/Profile/controllers/profile_controller.dart';
 import 'package:jobfortech/components/AppButton/index.dart';
 import 'package:jobfortech/components/AppSafeArea/index.dart';
 import 'package:jobfortech/components/AppTextInput/index.dart';
 import 'package:jobfortech/constant/icons.dart';
 import 'package:jobfortech/constant/theme.dart';
 
-class EditProfileView extends StatefulWidget {
-  const EditProfileView({Key? key}) : super(key: key);
-
-  @override
-  // ignore: library_private_types_in_public_api
-  _EditProfileViewState createState() => _EditProfileViewState();
-}
-
-class _EditProfileViewState extends State<EditProfileView> {
+class EditProfileView extends GetView<ProfileController> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _dropdown = TextEditingController();
@@ -26,12 +19,12 @@ class _EditProfileViewState extends State<EditProfileView> {
 
   String _selectedCountryCode = '+62';
 
-  @override
-  void dispose() {
-    _nameController.dispose();
-    _emailController.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   _nameController.dispose();
+  //   _emailController.dispose();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -190,9 +183,9 @@ class _EditProfileViewState extends State<EditProfileView> {
                                         )),
                                   ],
                                   onChanged: (String? newValue) {
-                                    setState(() {
-                                      _selectedCountryCode = newValue!;
-                                    });
+                                    // setState(() {
+                                    //   _selectedCountryCode = newValue!;
+                                    // });
                                   },
                                 ),
                               ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppColor {
@@ -20,6 +21,7 @@ class AppColor {
   static const Color lightGrey2 = Color(0xFFD9D9D9);
   static const Color yellow = Color(0xFFFFD233);
   static const Color transparent = Color(0x00000000);
+  static const Color whitebone = Color(0xFFD9D9D9);
 }
 
 ColorScheme AppColorScheme = const ColorScheme(
@@ -56,3 +58,10 @@ TextStyle AppBasicStyle({
 }
 
 TextStyle AppTitleHeader = TextStyle(fontSize: 30, color: AppColor.blue);
+
+Map<String, double> resSafeArea = {
+  'horizontal': Get.width * 0.08,
+  'vertical': Get.width * 0.05
+};
+
+double resSpacing = Get.height * 0.02;

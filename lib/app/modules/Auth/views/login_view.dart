@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jobfortech/app/modules/Auth/controllers/auth_controller.dart';
-import 'package:jobfortech/app/modules/Dashboard/views/dashboard_view.dart';
 import 'package:jobfortech/app/modules/Dashboard/views/navigation.dart';
-import 'package:jobfortech/app/modules/Menu/views/profile_view.dart';
-import 'package:jobfortech/components/AppAvatar/index.dart';
 import 'package:jobfortech/components/AppButton/index.dart';
-import 'package:jobfortech/components/AppHeaderBar/index.dart';
 import 'package:jobfortech/components/AppSafeArea/index.dart';
-import 'package:jobfortech/components/AppStack/index.dart';
 import 'package:jobfortech/constant/icons.dart';
 import 'package:jobfortech/components/AppTextInput/index.dart';
 import 'package:jobfortech/constant/theme.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class LoginView extends GetView {
   const LoginView({Key? key}) : super(key: key);
@@ -24,8 +20,9 @@ class LoginView extends GetView {
     return Scaffold(
       body: AppSafeArea(
         spacing: 20,
-        safearea: {'horizontal': 40, 'vertical': 80},
+        safearea: {'horizontal': Get.width * 0.13, 'vertical': Get.width * 0.2},
         children: [
+          SizedBox(height: Get.height * 0.03),
           AppIcon(
             svgPath: 'assets/svgs/jobfortech-logo.svg',
             size: 48.0,
@@ -74,7 +71,12 @@ class LoginView extends GetView {
                   fontWeight: FontWeight.bold),
             ),
             onPressed: () {
-              Get.to(() => NavigationView());
+              EasyLoading.show(
+                  status: 'loading...', maskType: EasyLoadingMaskType.custom);
+              Future.delayed(const Duration(seconds: 5), () {
+                Get.to(() => NavigationView());
+                EasyLoading.dismiss();
+              });
             },
           ),
           AppButton(
@@ -87,7 +89,14 @@ class LoginView extends GetView {
                   fontColor: AppColor.darkBlue,
                   fontWeight: FontWeight.bold),
             ),
-            onPressed: () {},
+            onPressed: () {
+              EasyLoading.show(
+                  status: 'loading...', maskType: EasyLoadingMaskType.custom);
+              Future.delayed(const Duration(seconds: 5), () {
+                Get.to(() => NavigationView());
+                EasyLoading.dismiss();
+              });
+            },
             type: 'outline',
           ),
         ],

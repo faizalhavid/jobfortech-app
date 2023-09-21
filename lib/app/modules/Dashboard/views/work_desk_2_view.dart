@@ -5,7 +5,7 @@ import 'package:jobfortech/app/modules/Dashboard/controllers/dashboard_controlle
 import 'package:jobfortech/app/modules/Dashboard/views/find_works_view.dart';
 import 'package:jobfortech/app/modules/Dashboard/views/my_task_view.dart';
 import 'package:jobfortech/app/modules/Dashboard/views/my_work_view.dart';
-import 'package:jobfortech/app/modules/Menu/views/profile_view.dart';
+import 'package:jobfortech/app/modules/Profile/views/profile_view.dart';
 import 'package:jobfortech/components/AppAvatar/index.dart';
 import 'package:jobfortech/components/AppBadge/index.dart';
 import 'package:jobfortech/components/AppCard/index.dart';

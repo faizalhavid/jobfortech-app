@@ -70,9 +70,10 @@ ButtonStyle AppButtonStyle({
         minimumSize: MaterialStateProperty.all<Size>(Size(width, height)),
         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
           RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(borderRadius),
-            side: BorderSide(color: backgroundColor),
-          ),
+              borderRadius: BorderRadius.circular(borderRadius),
+              side: BorderSide(
+                color: AppColor.whitebone,
+              )),
         ),
       );
       break;

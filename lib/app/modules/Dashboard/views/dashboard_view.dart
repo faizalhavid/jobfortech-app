@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:jobfortech/app/modules/Dashboard/views/work_desk_view.dart';
-import 'package:jobfortech/app/modules/Menu/views/profile_view.dart';
+import 'package:jobfortech/app/modules/Profile/views/profile_view.dart';
 import 'package:jobfortech/components/AppAvatar/index.dart';
 import 'package:jobfortech/components/AppBadge/index.dart';
-import 'package:jobfortech/components/AppButton/index.dart';
 import 'package:jobfortech/components/AppCard/index.dart';
 import 'package:jobfortech/components/AppHeaderBar/index.dart';
-import 'package:jobfortech/components/AppSafeArea/index.dart';
 import 'package:jobfortech/components/AppStack/index.dart';
 import 'package:jobfortech/constant/icons.dart';
 import 'package:jobfortech/constant/theme.dart';
@@ -63,8 +60,11 @@ class DashboardView extends GetView<DashboardController> {
         child: Column(
           children: [
             AppStack(
-              spacing: 15,
-              safearea: {'horizontal': 38, 'vertical': 20},
+              spacing: resSpacing,
+              safearea: {
+                'horizontal': resSafeArea['horizontal']!,
+                'vertical': resSafeArea['vertical']!,
+              },
               backgroundcolor: AppColor.white,
               children: [
                 Text(
@@ -181,7 +181,8 @@ class DashboardView extends GetView<DashboardController> {
                     fontColor: AppColor.black,
                   ),
                 ),
-                AppBadge(
+                AppBadgeButton(
+                  onPressed: () {},
                   backgroundColor: AppColor.lightOrange,
                   height: 10,
                   child: Row(

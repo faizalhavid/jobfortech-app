@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jobfortech/app/modules/Dashboard/controllers/dashboard_controller.dart';
 import 'package:jobfortech/app/modules/Dashboard/views/messages_detail_view.dart';
-import 'package:jobfortech/app/modules/Menu/views/profile_view.dart';
+import 'package:jobfortech/app/modules/Profile/views/profile_view.dart';
 import 'package:jobfortech/components/AppAvatar/index.dart';
 import 'package:jobfortech/components/AppBadge/AppMessages/index.dart';
 import 'package:jobfortech/components/AppHeaderBar/index.dart';

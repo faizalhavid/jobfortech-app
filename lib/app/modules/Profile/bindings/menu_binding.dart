@@ -1,12 +1,12 @@
 import 'package:get/get.dart';
 
-import '../controllers/menu_controller.dart';
+import '../controllers/profile_controller.dart';
 
 class MenuBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<MenuController>(
-      () => MenuController(),
+    Get.lazyPut<ProfileController>(
+      () => ProfileController(),
     );
   }
 }
