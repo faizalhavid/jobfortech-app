@@ -1,0 +1,56 @@
+{
+  "project_info": {
+    "project_number": "680237989785",
+    "firebase_url": "https://jtech-bc8ff-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "jtech-bc8ff",
+    "storage_bucket": "jtech-bc8ff.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:680237989785:android:d40cbbb71e26a2b9a41d08",
+        "android_client_info": {
+          "package_name": "com.jobfortech.jobfortech"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "680237989785-5nuolbcm3a36n82vqmaik0uovccodjo0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jobfortech.jobfortech",
+            "certificate_hash": "3f8a98d926d6af8a58c6095bec6a9fd0a6bf734e"
+          }
+        },
+        {
+          "client_id": "680237989785-ttbadsr1gprek9f32e97bqrc5oghe687.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jobfortech.jobfortech",
+            "certificate_hash": "50087116f53991c84b78f0554c3260f38c434009"
+          }
+        },
+        {
+          "client_id": "680237989785-aeqifa2btq28q9l9kj65r41msa2gg8im.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDdrn_eEST0Ar0TGVs-U5raqhY_tm5DB-I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "680237989785-aeqifa2btq28q9l9kj65r41msa2gg8im.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

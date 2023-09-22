@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jobfortech/app/modules/Dashboard/controllers/dashboard_controller.dart';
 import 'package:jobfortech/components/AppBadge/index.dart';
 import 'package:jobfortech/components/AppCard/index.dart';
 import 'package:jobfortech/constant/icons.dart';
@@ -71,6 +72,7 @@ Container AppHeaderContent({
   required String type,
 }) {
   Container typeContent;
+  final user = Get.find<DashboardController>().user.value;
   switch (type) {
     case 'dashboard':
       typeContent = Container(
@@ -92,7 +94,7 @@ Container AppHeaderContent({
                     Row(
                       children: [
                         Text(
-                          'Jaxson Rosser',
+                          user?.displayName ?? 'User Name',
                           style: AppBasicStyle(
                             fontColor: AppColor.white,
                             fontWeight: FontWeight.w700,

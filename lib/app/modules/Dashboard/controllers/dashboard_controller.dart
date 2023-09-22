@@ -1,24 +1,16 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jobfortech/constant/theme.dart';
 
 class DashboardController extends GetxController {
-  //TODO: Implement DashboardController
   RxBool isNotify = false.obs;
+  Rx<User?> user = Rx<User?>(null);
   final count = 0.obs;
   @override
   void onInit() {
+    fetchUserData();
     super.onInit();
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
   }
 
   RxBool isArrowUp = true.obs;
@@ -34,4 +26,17 @@ class DashboardController extends GetxController {
     Color colorDisable = AppColor.lightBlue,
   }) =>
       currentIndex == index ? colorActive : colorDisable;
+  Future<void> fetchUserData() async {
+    try {
+      User? userData = FirebaseAuth.instance.currentUser;
+      if (userData != null) {
+        user.value = userData;
+      }
+    } catch (e) {
+      Get.snackbar('Unathorized', 'Please login first');
+      Future.delayed(Duration(seconds: 2), () {
+        Get.offAllNamed('/login');
+      });
+    }
+  }
 }

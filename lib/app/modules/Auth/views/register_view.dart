@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:jobfortech/app/modules/Auth/controllers/auth_controller.dart';
 import 'package:jobfortech/components/AppButton/index.dart';
 import 'package:jobfortech/components/AppDropDown/index.dart';
@@ -7,6 +8,7 @@ import 'package:jobfortech/components/AppSafeArea/index.dart';
 import 'package:jobfortech/constant/icons.dart';
 import 'package:jobfortech/components/AppTextInput/index.dart';
 import 'package:jobfortech/constant/theme.dart';
+import 'package:jobfortech/utils/authentication.dart';
 
 class RegisterView extends GetView<AuthController> {
   const RegisterView({Key? key}) : super(key: key);
@@ -160,19 +162,37 @@ class RegisterView extends GetView<AuthController> {
                 controller.registering();
               },
             ),
-            AppButton(
-              prefix: Image.asset('assets/images/google-logo.png'),
-              height: 54,
-              child: Text(
-                'Sign In with Google',
-                style: AppBasicStyle(
-                    fontSize: 16,
-                    fontColor: AppColor.darkBlue,
-                    fontWeight: FontWeight.bold),
-              ),
-              onPressed: () {},
-              type: 'outline',
-            ),
+            FutureBuilder(
+                future: Authentication.initializerFirebase(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return Text('Error initializing Firebase');
+                  }
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    return AppButton(
+                      prefix: Image.asset('assets/images/google-logo.png'),
+                      height: 54,
+                      child: Text(
+                        'Sign In with Google',
+                        style: AppBasicStyle(
+                            fontSize: 16,
+                            fontColor: AppColor.darkBlue,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      onPressed: () {
+                        // EasyLoading.show(
+                        //     status: 'loading...', maskType: EasyLoadingMaskType.custom);
+                        // Future.delayed(const Duration(seconds: 5), () {
+                        //   Get.to(() => NavigationView());
+                        //   EasyLoading.dismiss();
+                        // });
+                        Authentication.signInGoogle(context: context);
+                      },
+                      type: 'outline',
+                    );
+                  }
+                  return CircularProgressIndicator();
+                }),
           ],
         ),
       ),

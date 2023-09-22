@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:jobfortech/app/modules/Auth/providers/user_provider.dart';
 import 'package:jobfortech/app/modules/Auth/user_model.dart';
 import 'package:flutter/services.dart';
@@ -10,6 +11,13 @@ import 'dart:convert';
 import 'package:jobfortech/app/modules/Dashboard/views/navigation.dart';
 
 class AuthController extends GetxController {
+  late GoogleSignInAccount? currentUser;
+  final GoogleSignIn _googleSignIn = GoogleSignIn(
+    scopes: <String>[
+      'email',
+      'https://www.googleapis.com/auth/contacts.readonly',
+    ],
+  );
   RxBool eyeIconPassword = false.obs;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   var name = TextEditingController();
@@ -20,6 +28,18 @@ class AuthController extends GetxController {
   var country = TextEditingController();
   var password = TextEditingController();
   var confirmPassword = TextEditingController();
+
+  void init() {
+    super.onInit();
+    _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount? account) {
+      currentUser = account;
+      if (currentUser != null) {
+        // Get.offAll(() => Navigation());
+        print('auth ok');
+      }
+    });
+    _googleSignIn.signInSilently();
+  }
 
   @override
   void onClose() {
@@ -95,10 +115,27 @@ class AuthController extends GetxController {
       });
     }
   }
-}
 
-class LoadingController extends GetxController {
-  RxBool isLoading = true.obs;
+  Future<void> googleSignIn() async {
+    try {
+      await _googleSignIn.signIn();
+       EasyLoading.show(status: 'loading...');
+      Future.delayed(Duration(seconds: 2), () {
+        EasyLoading.dismiss();
+        Get.offAll(() => LoginView());
+      });
+    } on PlatformException catch (e) {
+      print(' error : ${e}');
+    }
+  }
+
+  Future<void> googleSignOut() async {
+    try {
+      await _googleSignIn.signOut();
+    } on PlatformException catch (e) {
+      print(' error : ${e}');
+    }
+  }
 }
 
 class UserController extends GetxController with StateMixin<User?> {
@@ -111,21 +148,4 @@ class UserController extends GetxController with StateMixin<User?> {
       change(null, status: RxStatus.error(err.toString()));
     });
   }
-
-  // @override
-  // void onInit() {
-  //   super.onInit();
-  //   getUser();
-  // }
-
-  // Future<User?> getUser() async {
-  //   try {
-  //     final jsonString = await rootBundle.loadString('assets/json/user.json');
-  //     final Map<String, dynamic> userData = json.decode(jsonString);
-  //     user.value = User.fromJson(userData);
-  //   } catch (e) {
-  //     print('Error fetching user: $e');
-  //     return null;
-  //   }
-  // }
 }

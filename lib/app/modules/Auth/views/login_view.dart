@@ -90,12 +90,13 @@ class LoginView extends GetView<AuthController> {
                   fontWeight: FontWeight.bold),
             ),
             onPressed: () {
-              EasyLoading.show(
-                  status: 'loading...', maskType: EasyLoadingMaskType.custom);
-              Future.delayed(const Duration(seconds: 5), () {
-                Get.to(() => NavigationView());
-                EasyLoading.dismiss();
-              });
+              // EasyLoading.show(
+              //     status: 'loading...', maskType: EasyLoadingMaskType.custom);
+              // Future.delayed(const Duration(seconds: 5), () {
+              //   Get.to(() => NavigationView());
+              //   EasyLoading.dismiss();
+              // });
+              controller.googleSignOut();
             },
             type: 'outline',
           ),

@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:jobfortech/app/modules/Profile/views/profile_view.dart';
 import 'package:jobfortech/components/AppAvatar/index.dart';
 import 'package:jobfortech/components/AppBadge/index.dart';
-import 'package:jobfortech/components/AppButton/index.dart';
 import 'package:jobfortech/components/AppCard/index.dart';
 import 'package:jobfortech/components/AppHeaderBar/index.dart';
 import 'package:jobfortech/components/AppStack/index.dart';
@@ -37,7 +36,13 @@ class DashboardView extends GetView<DashboardController> {
         type: 'dashboard',
         expandAppbar: true,
         leading: InkWell(
-          child: AppAvatar(),
+          child: Obx(() {
+            print(controller.user.value);
+            return controller.user.value != null
+                ? AppAvatar(
+                    image: NetworkImage(controller.user.value?.photoURL ?? ''))
+                : AppAvatar();
+          }),
           onTap: () {
             Get.to(() => ProfileView());
           },
