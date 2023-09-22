@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:jobfortech/app/modules/Auth/views/register_view.dart';
 
 import '../modules/Auth/bindings/auth_binding.dart';
 import '../modules/Auth/views/login_view.dart';
@@ -17,7 +18,7 @@ class AppPages {
   static final routes = [
     GetPage(
       name: _Paths.AUTH,
-      page: () => const LoginView(),
+      page: () => const RegisterView(),
       binding: AuthBinding(),
     ),
     GetPage(

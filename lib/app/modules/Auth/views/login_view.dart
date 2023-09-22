@@ -9,13 +9,12 @@ import 'package:jobfortech/components/AppTextInput/index.dart';
 import 'package:jobfortech/constant/theme.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
-class LoginView extends GetView {
+class LoginView extends GetView<AuthController> {
   const LoginView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     TextEditingController email = TextEditingController();
     TextEditingController password = TextEditingController();
-    final eyeController = Get.put(EyeController());
 
     return Scaffold(
       body: AppSafeArea(
@@ -50,13 +49,14 @@ class LoginView extends GetView {
               hintText: '*********',
               errorText: 'Invalid password address',
               keyboardType: TextInputType.visiblePassword,
-              obscureText: eyeController.isClose.value,
+              obscureText: controller.eyeIconPassword.value,
               suffix: AppIconButton(
-                  svgPath: eyeController.isClose.value
+                  svgPath: controller.eyeIconPassword.value
                       ? 'assets/svgs/eye-closed.svg'
                       : 'assets/svgs/eye-opened.svg',
                   onPressed: () {
-                    eyeController.isClose.value = !eyeController.isClose.value;
+                    controller.eyeIconPassword.value =
+                        !controller.eyeIconPassword.value;
                   }),
             ),
           ),

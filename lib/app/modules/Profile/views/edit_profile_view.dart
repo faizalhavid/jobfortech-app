@@ -101,14 +101,10 @@ class EditProfileView extends GetView<ProfileController> {
               ],
             ),
             const SizedBox(height: 20),
-            AppTextInput(
-                controller: _nameController,
-                labelText: 'Full Name',
-                hintText: ''),
+            AppTextInput(labelText: 'Full Name', hintText: ''),
             const SizedBox(height: 20),
             AppTextInput(
               readOnly: true,
-              controller: _dropdown,
               labelText: 'Your Tech, Role',
               hintText: '',
               suffix: PopupMenuButton<String>(
@@ -141,7 +137,6 @@ class EditProfileView extends GetView<ProfileController> {
             ),
             AppTextInput(
               readOnly: true,
-              controller: _phonenumber,
               labelText: '',
               hintText: '',
               prefix: Column(
@@ -200,7 +195,6 @@ class EditProfileView extends GetView<ProfileController> {
               height: 20,
             ),
             AppTextInput(
-              controller: _emailController,
               labelText: 'Email',
               hintText: '',
             ),
@@ -209,7 +203,6 @@ class EditProfileView extends GetView<ProfileController> {
             ),
             AppTextInput(
                 readOnly: true,
-                controller: _birthdate,
                 labelText: 'Birth Date',
                 hintText: '',
                 suffix: const Icon(
@@ -220,7 +213,6 @@ class EditProfileView extends GetView<ProfileController> {
               height: 20,
             ),
             AppTextInput(
-              controller: _address,
               labelText: 'Address',
               hintText: '',
             ),
@@ -229,7 +221,6 @@ class EditProfileView extends GetView<ProfileController> {
             ),
             AppTextInput(
               readOnly: true,
-              controller: _city,
               labelText: 'City',
               hintText: '',
               suffix: PopupMenuButton<String>(

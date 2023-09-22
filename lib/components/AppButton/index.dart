@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:jobfortech/constant/theme.dart';
 
-ElevatedButton AppButton(
-    {required Widget child,
-    required Function() onPressed,
-    Color backgroundColor = AppColor.darkBlue,
-    double width = double.infinity,
-    double height = 48,
-    double borderRadius = 99,
-    String type = 'default',
-    Widget? prefix,
-    Widget? suffix,
-    double spacing = 8}) {
+ElevatedButton AppButton({
+  required Widget child,
+  required Function() onPressed,
+  Color backgroundColor = AppColor.darkBlue,
+  double width = double.infinity,
+  double height = 48,
+  double borderRadius = 99,
+  String type = 'default',
+  Widget? prefix,
+  Widget? suffix,
+  double spacing = 8,
+}) {
   return ElevatedButton(
     onPressed: onPressed,
     style: AppButtonStyle(

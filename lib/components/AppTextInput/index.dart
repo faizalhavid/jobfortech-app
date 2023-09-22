@@ -1,26 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:jobfortech/constant/theme.dart';
 
-TextField AppTextInput({
+TextFormField AppTextInput({
   String hintText = 'TextInput hint',
   String labelText = 'TextInput label',
   String errorText = 'TextInput error',
   bool obscureText = false,
   Widget? suffix,
   Widget? prefix,
-  required TextEditingController controller,
   TextInputType keyboardType = TextInputType.text,
   bool readOnly = false,
   Function(String)? onChanged,
-  // required TextInputAction textInputAction,
-  // required FocusNode focusNode,
-  // required Function(String) validator,
-  // required Function(String) onFieldSubmitted,
-  // required Function(String) onChanged,
+  TextInputAction? textInputAction,
+  FocusNode? focusNode,
+  String? Function(String?)? validator,
+  Function(String)? onFieldSubmitted,
+  List<TextInputFormatter>? inputFormatters,
+  Function()? onTap,
+  int? maxLines = 1,
+  TextEditingController? controller,
 }) {
-  return TextField(
-    controller: controller, readOnly: readOnly,
+  return TextFormField(
+    controller: controller,
+    inputFormatters: inputFormatters,
+    readOnly: readOnly,
     onChanged: onChanged,
+    maxLines: maxLines,
     decoration: AppTextInputDecoration(
       suffix: suffix,
       prefix: prefix,
@@ -29,10 +35,10 @@ TextField AppTextInput({
     ),
     obscureText: obscureText,
     keyboardType: keyboardType,
-    // textInputAction: textInputAction,
-    // focusNode: focusNode,
-    // onChanged: onChanged,
-    // onSubmitted: onFieldSubmitted,
+    textInputAction: textInputAction,
+    focusNode: focusNode,
+    onTap: onTap,
+    validator: validator,
   );
 }
 
