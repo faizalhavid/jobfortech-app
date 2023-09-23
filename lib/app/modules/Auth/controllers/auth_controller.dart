@@ -6,9 +6,6 @@ import 'package:jobfortech/app/modules/Auth/providers/user_provider.dart';
 import 'package:jobfortech/app/modules/Auth/user_model.dart';
 import 'package:flutter/services.dart';
 import 'package:jobfortech/app/modules/Auth/views/login_view.dart';
-import 'dart:convert';
-
-import 'package:jobfortech/app/modules/Dashboard/views/navigation.dart';
 
 class AuthController extends GetxController {
   late GoogleSignInAccount? currentUser;
@@ -119,7 +116,7 @@ class AuthController extends GetxController {
   Future<void> googleSignIn() async {
     try {
       await _googleSignIn.signIn();
-       EasyLoading.show(status: 'loading...');
+      EasyLoading.show(status: 'loading...');
       Future.delayed(Duration(seconds: 2), () {
         EasyLoading.dismiss();
         Get.offAll(() => LoginView());

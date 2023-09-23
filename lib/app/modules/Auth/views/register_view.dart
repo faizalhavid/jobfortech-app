@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:jobfortech/app/modules/Auth/controllers/auth_controller.dart';
+import 'package:jobfortech/app/modules/Dashboard/views/navigation.dart';
 import 'package:jobfortech/components/AppButton/index.dart';
 import 'package:jobfortech/components/AppDropDown/index.dart';
 import 'package:jobfortech/components/AppSafeArea/index.dart';
@@ -91,7 +91,7 @@ class RegisterView extends GetView<AuthController> {
                 onPressed: () {
                   _showDatePicker(context, controller.birthDate);
                 },
-                icon: Icon(Icons.calendar_today),
+                icon: const Icon(Icons.calendar_today),
               ),
               keyboardType: TextInputType.datetime,
             ),
@@ -159,14 +159,15 @@ class RegisterView extends GetView<AuthController> {
                     fontWeight: FontWeight.bold),
               ),
               onPressed: () {
-                controller.registering();
+                // controller.registering();
+                Get.to(() => NavigationView());
               },
             ),
             FutureBuilder(
                 future: Authentication.initializerFirebase(),
                 builder: (context, snapshot) {
                   if (snapshot.hasError) {
-                    return Text('Error initializing Firebase');
+                    return const Text('Error initializing Firebase');
                   }
                   if (snapshot.connectionState == ConnectionState.done) {
                     return AppButton(

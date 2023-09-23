@@ -44,3 +44,36 @@ Stack AppIconButton({
     ],
   );
 }
+
+CircleAvatar AppSkillsIcon({required String skill}) {
+  var svgPath = '';
+
+  switch (skill) {
+    case 'javascript':
+      svgPath = 'assets/svgs/nodejs-logo.svg';
+      break;
+    case 'golang':
+      svgPath = 'assets/svgs/golang-logo.svg';
+      break;
+    case 'python':
+      svgPath = 'assets/svgs/phyton-logo.svg';
+      break;
+    case 'php':
+      svgPath = 'assets/svgs/php-logo.svg';
+      break;
+    case 'java':
+      svgPath = 'assets/svgs/java-logo.svg';
+      break;
+    default:
+      svgPath = 'assets/svgs/golang-logo.svg';
+  }
+
+  return CircleAvatar(
+    backgroundColor: AppColor.white,
+    child: SvgPicture.asset(
+      svgPath,
+      width: 35,
+      height: 35,
+    ),
+  );
+}

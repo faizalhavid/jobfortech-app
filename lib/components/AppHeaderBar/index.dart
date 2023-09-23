@@ -37,7 +37,7 @@ PreferredSize AppHeaderbar({
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           leading ?? SizedBox(),
-          title ?? SizedBox(),
+          Expanded(child: title ?? SizedBox(), flex: 1),
           actions ?? SizedBox()
         ],
       ),
@@ -58,7 +58,7 @@ PreferredSize AppHeaderbar({
 
 PreferredSize AppHeaderBottom({required String type}) {
   return PreferredSize(
-    preferredSize: Size.fromHeight(type == 'default' ? 18 : 150),
+    preferredSize: Size.fromHeight(type == 'default' ? 18 : 100),
     child: Container(
       color: AppColor.blue,
       height: type == 'default' ? 0 : 135,
@@ -76,7 +76,9 @@ Container AppHeaderContent({
   switch (type) {
     case 'dashboard':
       typeContent = Container(
-        padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 15),
+        padding:
+            EdgeInsets.symmetric(horizontal: Get.width * 0.06, vertical: 15),
+        height: Get.height * 0.2,
         child: Column(
           children: [
             Row(
