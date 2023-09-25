@@ -1,36 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jobfortech/app/modules/Auth/controllers/auth_controller.dart';
-import 'package:jobfortech/app/modules/Dashboard/views/navigation.dart';
+import 'package:jobfortech/app/modules/Auth/views/login_view.dart';
 import 'package:jobfortech/components/AppButton/index.dart';
-import 'package:jobfortech/components/AppDropDown/index.dart';
 import 'package:jobfortech/components/AppSafeArea/index.dart';
 import 'package:jobfortech/constant/icons.dart';
 import 'package:jobfortech/components/AppTextInput/index.dart';
 import 'package:jobfortech/constant/theme.dart';
-import 'package:jobfortech/utils/authentication.dart';
+import 'package:jobfortech/utils/validation.dart';
 
-class RegisterView extends GetView<AuthController> {
+class RegisterView extends GetView {
   const RegisterView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final List<String> jobList = [
-      'Mobile developer',
-      'UI UX',
-      'Backend developer',
-      'Frontend developer'
-    ];
-    final List<String> countryList = [
-      'Mobile developer',
-      'UI UX',
-      'Backend developer',
-      'Frontend developer'
-    ];
+    AuthController controller = Get.put(AuthController());
+    GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
     return Scaffold(
       body: Form(
         autovalidateMode: AutovalidateMode.onUserInteraction,
-        key: controller.formKey,
+        key: formKey,
         child: AppSafeArea(
           spacing: 25,
           safearea: {
@@ -52,67 +41,18 @@ class RegisterView extends GetView<AuthController> {
             ),
 
             AppTextInput(
-              labelText: 'Name',
-              hintText: 'Enter your name',
-              keyboardType: TextInputType.name,
+              onChanged: (value) {
+                controller.email.text = value;
+              },
+              labelText: 'Email',
+              hintText: 'Enter email address',
+              errorText: 'Invalid email address',
+              keyboardType: TextInputType.emailAddress,
               validator: (value) {
-                return controller.validateName(value!);
+                return validateEmail(value!);
               },
             ),
-            AppTextInput(
-                onChanged: (value) {
-                  controller.email.text = value;
-                },
-                labelText: 'Email',
-                hintText: 'Enter email address',
-                errorText: 'Invalid email address',
-                keyboardType: TextInputType.emailAddress,
-                validator: (value) {
-                  return controller.validateEmail(value!);
-                }),
-            AppDropDown(
-                label: 'Job Role',
-                items: jobList,
-                controller: controller.jobRoleDropdownCtrl,
-                errorText: 'Invalid job role'),
-            AppTextInput(
-              controller: controller.birthDate,
-              onTap: () {
-                _showDatePicker(context, controller.birthDate);
-              },
-              readOnly: true,
-              labelText: 'Birth Date',
-              hintText: 'Enter birth date',
-              errorText: 'Invalid birth date',
-              validator: (value) {
-                return controller.validateDate(value!);
-              },
-              suffix: IconButton(
-                onPressed: () {
-                  _showDatePicker(context, controller.birthDate);
-                },
-                icon: const Icon(Icons.calendar_today),
-              ),
-              keyboardType: TextInputType.datetime,
-            ),
-            AppTextInput(
-                onChanged: (value) {
-                  controller.address.text = value;
-                },
-                labelText: 'Address',
-                hintText: 'Enter address',
-                errorText: 'Invalid address',
-                maxLines: 3,
-                keyboardType: TextInputType.streetAddress,
-                validator: (value) {
-                  return controller.validateAddress(value!);
-                }),
-            AppDropDown(
-              label: 'Country',
-              items: countryList,
-              controller: controller.country,
-              errorText: 'Invalid country',
-            ),
+
             Obx(
               () => AppTextInput(
                 onChanged: (value) {
@@ -120,7 +60,7 @@ class RegisterView extends GetView<AuthController> {
                 },
                 labelText: 'Password',
                 validator: (value) {
-                  return controller.validatePassword(value!);
+                  return validatePassword(value!);
                 },
                 hintText: '*********',
                 errorText: 'Invalid password address',
@@ -141,12 +81,36 @@ class RegisterView extends GetView<AuthController> {
                 labelText: 'Confirm Password',
                 hintText: '*********',
                 validator: (value) {
-                  return controller.validateConfirmPassword(value!);
+                  return validateConfirmPassword(value!, controller.password);
                 },
                 errorText: 'Password not match !',
                 keyboardType: TextInputType.visiblePassword,
                 obscureText: controller.eyeIconPassword.value,
               ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Already have an account?',
+                  style: AppBasicStyle(
+                      fontSize: 14,
+                      fontColor: AppColor.grey,
+                      fontWeight: FontWeight.normal),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Get.to(() => LoginView());
+                  },
+                  child: Text(
+                    'Sign In',
+                    style: AppBasicStyle(
+                        fontSize: 14,
+                        fontColor: AppColor.blue,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ],
             ),
             const SizedBox(height: 34),
             AppButton(
@@ -159,56 +123,27 @@ class RegisterView extends GetView<AuthController> {
                     fontWeight: FontWeight.bold),
               ),
               onPressed: () {
-                // controller.registering();
-                Get.to(() => NavigationView());
+                controller.registering(formKey);
               },
             ),
-            FutureBuilder(
-                future: Authentication.initializerFirebase(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasError) {
-                    return const Text('Error initializing Firebase');
-                  }
-                  if (snapshot.connectionState == ConnectionState.done) {
-                    return AppButton(
-                      prefix: Image.asset('assets/images/google-logo.png'),
-                      height: 54,
-                      child: Text(
-                        'Sign In with Google',
-                        style: AppBasicStyle(
-                            fontSize: 16,
-                            fontColor: AppColor.darkBlue,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      onPressed: () {
-                        // EasyLoading.show(
-                        //     status: 'loading...', maskType: EasyLoadingMaskType.custom);
-                        // Future.delayed(const Duration(seconds: 5), () {
-                        //   Get.to(() => NavigationView());
-                        //   EasyLoading.dismiss();
-                        // });
-                        Authentication.signInGoogle(context: context);
-                      },
-                      type: 'outline',
-                    );
-                  }
-                  return CircularProgressIndicator();
-                }),
+            AppButton(
+              prefix: Image.asset('assets/images/google-logo.png'),
+              height: 54,
+              child: Text(
+                'Sign In with Google',
+                style: AppBasicStyle(
+                    fontSize: 16,
+                    fontColor: AppColor.darkBlue,
+                    fontWeight: FontWeight.bold),
+              ),
+              onPressed: () {
+                controller.googleSignIn();
+              },
+              type: 'outline',
+            )
           ],
         ),
       ),
     );
-  }
-}
-
-void _showDatePicker(context, birthDate) async {
-  DateTime? selectedDate = await showDatePicker(
-    context: context,
-    initialDate: DateTime.now(),
-    firstDate: DateTime(1900),
-    lastDate: DateTime(2100),
-  );
-  if (selectedDate != null) {
-    birthDate.text = selectedDate.toString().split(' ')[0];
   }
 }

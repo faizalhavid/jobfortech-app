@@ -1,4 +1,4 @@
-// class User {
+// class UserModel {
 //   User? user;
 
 //   User({this.user});
@@ -16,68 +16,58 @@
 //   }
 // }
 
-class User {
-  String? name;
-  String? email;
-  String? password;
-  String? phone;
-  String? photoProfile;
-  String? address;
-  int? role;
-  String? bio;
-  String? birthDate;
-  String? country;
-  SocialMedia? socialMedia;
-  int? workDesk;
+class UserModel {
+  String? uid;
+  String? techRoles; //relation
 
-  User({
+  String? name;
+  String? bio;
+  String? photoProfile;
+  String? phoneNumber;
+  String? email;
+  String? birthDate;
+  String? address;
+  String? country;
+  UserModel({
+    this.uid,
+    this.techRoles, //relation
+
     this.name,
-    this.email,
-    this.password,
-    this.phone,
-    this.photoProfile,
-    this.address,
-    this.role,
     this.bio,
+    this.photoProfile,
+    this.phoneNumber,
+    this.email,
     this.birthDate,
+    this.address,
     this.country,
-    this.socialMedia,
-    this.workDesk,
   });
 
-  User.fromJson(Map<String, dynamic> json) {
-    name = json['name'];
-    email = json['email'];
-    password = json['password'];
-    phone = json['phone'];
-    photoProfile = json['photo_profile'];
-    address = json['address'];
-    role = json['role'];
-    bio = json['bio'];
-    birthDate = json['birth_date'];
-    country = json['country'];
-    socialMedia = json['social_media'] != null
-        ? SocialMedia.fromJson(json['social_media'])
-        : null;
-    workDesk = json['work_desk'];
-  }
+  UserModel.fromJson(Map<String, dynamic> json) {
+    uid = json['uid'];
+    techRoles = json['techRoles']; //relation
 
+    name = json['name'];
+    bio = json['bio'];
+    photoProfile = json['photoProfile'];
+    phoneNumber = json['phoneNumber'];
+    email = json['email'];
+    birthDate = json['birthDate'];
+    address = json['address'];
+    country = json['country'];
+  }
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
+    data['uid'] = uid;
+    data['techRoles'] = techRoles; //relation
+
     data['name'] = name;
-    data['email'] = email;
-    data['password'] = password;
-    data['phone'] = phone;
-    data['photo_profile'] = photoProfile;
-    data['address'] = address;
-    data['role'] = role;
     data['bio'] = bio;
-    data['birth_date'] = birthDate;
+    data['photoProfile'] = photoProfile;
+    data['phoneNumber'] = phoneNumber;
+    data['email'] = email;
+    data['birthDate'] = birthDate;
+    data['address'] = address;
     data['country'] = country;
-    if (socialMedia != null) {
-      data['social_media'] = socialMedia?.toJson();
-    }
-    data['work_desk'] = workDesk;
     return data;
   }
 }

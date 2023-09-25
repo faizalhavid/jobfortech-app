@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:jobfortech/app/modules/Auth/views/register_view.dart';
+import 'package:jobfortech/app/modules/Dashboard/views/navigation.dart';
 
 import '../modules/Auth/bindings/auth_binding.dart';
 import '../modules/Auth/views/login_view.dart';
@@ -12,24 +14,33 @@ part 'app_routes.dart';
 
 class AppPages {
   AppPages._();
+  static FirebaseAuth _auth = FirebaseAuth.instance;
+  static String get INITIAL => initialRouteMiddleware();
 
-  static const INITIAL = Routes.AUTH;
+  static List<GetPage> get routes => [
+        GetPage(
+          name: _Paths.AUTH,
+          page: () => const LoginView(),
+          binding: AuthBinding(),
+        ),
+        GetPage(
+          name: _Paths.DASHBOARD,
+          page: () => const NavigationView(),
+          binding: DashboardBinding(),
+        ),
+        GetPage(
+          name: _Paths.MENU,
+          page: () => const MenuView(),
+          binding: MenuBinding(),
+        ),
+      ];
 
-  static final routes = [
-    GetPage(
-      name: _Paths.AUTH,
-      page: () => const RegisterView(),
-      binding: AuthBinding(),
-    ),
-    GetPage(
-      name: _Paths.DASHBOARD,
-      page: () => const DashboardView(),
-      binding: DashboardBinding(),
-    ),
-    GetPage(
-      name: _Paths.MENU,
-      page: () => const MenuView(),
-      binding: MenuBinding(),
-    ),
-  ];
+  static String initialRouteMiddleware() {
+    User? user = _auth.currentUser;
+    if (user != null && user.emailVerified) {
+      return Routes.DASHBOARD;
+    } else {
+      return Routes.AUTH;
+    }
+  }
 }

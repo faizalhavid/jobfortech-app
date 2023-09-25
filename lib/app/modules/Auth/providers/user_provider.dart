@@ -7,8 +7,9 @@ class UserProvider extends GetConnect {
   @override
   void onInit() {
     httpClient.defaultDecoder = (map) {
-      if (map is Map<String, dynamic>) return User.fromJson(map);
-      if (map is List) return map.map((item) => User.fromJson(item)).toList();
+      if (map is Map<String, dynamic>) return UserModel.fromJson(map);
+      if (map is List)
+        return map.map((item) => UserModel.fromJson(item)).toList();
     };
     httpClient.baseUrl = 'YOUR-API-URL';
   }
@@ -17,18 +18,18 @@ class UserProvider extends GetConnect {
   //   final response = await get('user/$id');
   //   return response.body;
   // }
-
-  Future<User?> getUser(int id) async {
-    try {
-      final jsonString = await rootBundle.loadString('lib/app/data/user.json');
-      final Map<String, dynamic> userData = json.decode(jsonString);
-      return User.fromJson(userData);
-    } catch (e) {
-      print('Error fetching user: $e');
-      return null;
-    }
-  }
-
-  Future<Response<User>> postUser(User user) async => await post('user', user);
-  Future<Response> deleteUser(int id) async => await delete('user/$id');
 }
+//   Future<User?> getUser(int id) async {
+//     try {
+//       final jsonString = await rootBundle.loadString('lib/app/data/user.json');
+//       final Map<String, dynamic> userData = json.decode(jsonString);
+//       return User.fromJson(userData);
+//     } catch (e) {
+//       print('Error fetching user: $e');
+//       return null;
+//     }
+//   }
+
+//   Future<Response<User>> postUser(User user) async => await post('user', user);
+//   Future<Response> deleteUser(int id) async => await delete('user/$id');
+// }

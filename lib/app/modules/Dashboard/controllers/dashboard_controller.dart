@@ -3,7 +3,10 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jobfortech/app/modules/Auth/user_model.dart';
+import 'package:jobfortech/app/modules/Auth/views/login_view.dart';
 import 'package:jobfortech/constant/theme.dart';
+import 'package:jobfortech/services/Firebase_Database.dart';
 
 class DashboardController extends GetxController {
   RxBool isNotify = false.obs;
@@ -11,6 +14,7 @@ class DashboardController extends GetxController {
   RxBool isArrowUp = true.obs;
   RxString statusTask = 'Pending'.obs;
   Rx<Duration> duration = Duration(seconds: 0).obs;
+  final UserRepository userRepository = UserRepository();
   Timer? timer;
   @override
   void onInit() {
@@ -68,11 +72,19 @@ class DashboardController extends GetxController {
       User? userData = FirebaseAuth.instance.currentUser;
       if (userData != null) {
         user.value = userData;
+
+        UserModel userModel = UserModel(
+          uid: userData.uid,
+          name: userData.displayName,
+          email: userData.email,
+        );
+
+        await userRepository.getUser(userModel);
       }
     } catch (e) {
       Get.snackbar('Unathorized', 'Please login first');
       Future.delayed(Duration(seconds: 2), () {
-        Get.offAllNamed('/login');
+        Get.offAll(() => LoginView());
       });
     }
   }

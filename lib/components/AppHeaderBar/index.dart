@@ -96,7 +96,7 @@ Container AppHeaderContent({
                     Row(
                       children: [
                         Text(
-                          user?.displayName ?? 'User Name',
+                          user?.displayName ?? user?.email ?? 'User Name',
                           style: AppBasicStyle(
                             fontColor: AppColor.white,
                             fontWeight: FontWeight.w700,

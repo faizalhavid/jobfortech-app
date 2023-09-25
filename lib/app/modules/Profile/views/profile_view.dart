@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jobfortech/app/modules/Auth/controllers/auth_controller.dart';
 import 'package:jobfortech/app/modules/Profile/controllers/profile_controller.dart';
 import 'package:jobfortech/app/modules/Profile/views/edit_profile_view.dart';
 import 'package:jobfortech/app/modules/Profile/views/latest_work_view.dart';
@@ -174,7 +175,8 @@ class ProfileView extends GetView<ProfileController> {
                 size: 26),
             text: 'Log Out',
             onTap: () {
-              print('Log Out tapped');
+              final logoutCOntroller = Get.put(AuthController());
+              logoutCOntroller.googleSignOut();
             },
           ),
         ],
