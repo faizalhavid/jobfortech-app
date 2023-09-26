@@ -5,14 +5,15 @@ class UserRepository {
   final DatabaseReference _userRef = FirebaseDatabase.instance.ref();
   final DatabaseReference _jobroles =
       FirebaseDatabase.instance.ref().child('jobRoles');
+
   Future<void> addUser(UserModel user, String uid) async {
     Map<String, dynamic> userData = user.toJson();
     _userRef.child('user/${uid}').set(userData);
   }
 
-  Future<void> updateUser(UserModel user) async {
+  Future<void> updateUser(UserModel user, String uid) async {
     Map<String, dynamic> userData = user.toJson();
-    _userRef.update(userData);
+    _userRef.child('user/${uid}').update(userData);
   }
 
   Future<void> deleteUser(UserModel user) async {

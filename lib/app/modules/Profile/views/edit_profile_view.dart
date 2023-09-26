@@ -117,14 +117,22 @@ class EditProfileView extends GetView<ProfileController> {
                   validator: (value) {
                     return validateAddress(value!);
                   }),
-              Obx(
-                () => AppDropDown(
-                  label: 'Your Tech, Role',
-                  items: controller.jobRole,
-                  controller: controller.jobRoles,
-                  errorText: 'Invalid job role',
-                ),
-              ),
+              FutureBuilder(
+                  future: controller.getJobRole(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      return AppDropDown(
+                        label: 'Job Role',
+                        items: controller.jobRole,
+                        controller: controller.jobRoles,
+                        errorText: 'Invalid job role',
+                      );
+                    } else {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                  }),
               Text(
                 'Contact',
                 style: AppTitleHeader,

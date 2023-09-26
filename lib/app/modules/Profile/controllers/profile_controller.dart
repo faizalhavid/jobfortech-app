@@ -53,7 +53,7 @@ class ProfileController extends GetxController {
             country: country.text,
           );
           UserRepository userRepository = UserRepository();
-          await userRepository.updateUser(userModel);
+          await userRepository.updateUser(userModel, user!.uid);
           EasyLoading.showToast('Update Success');
         }
       } catch (e) {
