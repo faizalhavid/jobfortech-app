@@ -38,10 +38,10 @@ class PayrollView extends GetView {
                               'Sign In with Google',
                               style: AppBasicStyle(
                                   fontSize: 16,
-                                  fontColor: AppColor.darkBlue,
+                                  fontColor: AppColor.white,
                                   fontWeight: FontWeight.bold),
                             ),
-                            width: 14,
+                            width: 8,
                             borderRadius: 10,
                             onPressed: () {},
                             suffix: AppIcon(

@@ -8,11 +8,13 @@ import 'package:jobfortech/components/AppButton/index.dart';
 import 'package:jobfortech/components/AppDropDown/index.dart';
 import 'package:jobfortech/components/AppHeaderBar/index.dart';
 import 'package:jobfortech/components/AppSafeArea/index.dart';
+import 'package:jobfortech/components/AppShimmer/index.dart';
 import 'package:jobfortech/components/AppTextInput/index.dart';
 import 'package:jobfortech/constant/icons.dart';
 import 'package:jobfortech/constant/theme.dart';
 import 'package:jobfortech/utils/functions.dart';
 import 'package:jobfortech/utils/validation.dart';
+import 'package:shimmer/shimmer.dart';
 
 class EditProfileView extends GetView<ProfileController> {
   final controller = Get.put(ProfileController());
@@ -105,103 +107,219 @@ class EditProfileView extends GetView<ProfileController> {
                   )
                 ],
               ),
-              AppTextInput(
-                  controller: controller.name,
-                  onChanged: (value) {
-                    controller.address.text = value;
-                  },
-                  labelText: 'Full Name',
-                  hintText: 'Enter address',
-                  errorText: 'Invalid address',
-                  keyboardType: TextInputType.streetAddress,
-                  validator: (value) {
-                    return validateAddress(value!);
-                  }),
               FutureBuilder(
-                  future: controller.getJobRole(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      return AppDropDown(
-                        label: 'Job Role',
-                        items: controller.jobRole,
-                        controller: controller.jobRoles,
-                        errorText: 'Invalid job role',
-                      );
-                    } else {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
-                  }),
+                future: controller.getUser(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    return AppTextInput(
+                      controller: controller.name,
+                      onChanged: (value) {
+                        controller.address.text = value;
+                      },
+                      labelText: 'Full Name',
+                      hintText: 'Enter address',
+                      errorText: 'Invalid address',
+                      keyboardType: TextInputType.streetAddress,
+                    );
+                  } else {
+                    return Center(
+                      child: AppShimmer(
+                        child: Container(
+                          height: 40,
+                          width: Get.width,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: AppColor.smoke,
+                          ),
+                        ),
+                      ),
+                    );
+                  }
+                },
+              ),
+              FutureBuilder(
+                future: controller.getJobRole(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    return AppDropDown(
+                      label: 'Job Role',
+                      items: controller.jobRole,
+                      controller: controller.jobRoles,
+                      errorText: 'Invalid job role',
+                    );
+                  } else {
+                    return Center(
+                      child: AppShimmer(
+                        child: Container(
+                          height: 40,
+                          width: Get.width,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: AppColor.smoke,
+                          ),
+                        ),
+                      ),
+                    );
+                  }
+                },
+              ),
               Text(
                 'Contact',
                 style: AppTitleHeader,
               ),
-              AppTextInput(
-                controller: controller.phoneNumber,
-                onChanged: (value) {
-                  controller.phoneNumber.text = value;
-                },
-                labelText: 'Phone Number',
-                hintText: 'Enter Phone number',
-                errorText: 'Invalid phone number',
-                keyboardType: TextInputType.phone,
-                validator: (value) {
-                  return validatePhoneNumber(value!);
-                },
-              ),
-              AppTextInput(
-                controller: controller.email,
-                onChanged: (value) {
-                  controller.email.text = value;
-                },
-                labelText: 'Email',
-                hintText: 'Enter email address',
-                errorText: 'Invalid email address',
-                keyboardType: TextInputType.emailAddress,
-                validator: (value) {
-                  return validateEmail(value!);
-                },
-              ),
-              AppTextInput(
-                controller: controller.birthDate,
-                onTap: () {
-                  showDate(context, controller.birthDate);
-                },
-                readOnly: true,
-                labelText: 'Birth Date',
-                hintText: 'Enter birth date',
-                errorText: 'Invalid birth date',
-                validator: (value) {
-                  return validateDate(value!);
-                },
-                suffix: IconButton(
-                  onPressed: () {
-                    showDate(context, controller.birthDate);
-                  },
-                  icon: const Icon(Icons.calendar_today),
-                ),
-                keyboardType: TextInputType.datetime,
-              ),
-              AppTextInput(
-                controller: controller.address,
-                onChanged: (value) {
-                  controller.address.text = value;
-                },
-                labelText: 'Address',
-                hintText: 'Enter address',
-                errorText: 'Invalid address',
-                maxLines: 3,
-                keyboardType: TextInputType.streetAddress,
-                validator: (value) {
-                  return validateAddress(value!);
+              FutureBuilder(
+                future: controller.getUser(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    return AppTextInput(
+                      controller: controller.phoneNumber,
+                      onChanged: (value) {
+                        controller.phoneNumber.text = value;
+                      },
+                      labelText: 'Phone Number',
+                      hintText: 'Enter Phone number',
+                      errorText: 'Invalid phone number',
+                      keyboardType: TextInputType.phone,
+                    );
+                  } else {
+                    return Center(
+                      child: AppShimmer(
+                        child: Container(
+                          height: 40,
+                          width: Get.width,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: AppColor.smoke,
+                          ),
+                        ),
+                      ),
+                    );
+                  }
                 },
               ),
-              AppDropDown(
-                label: 'Country',
-                items: countryList,
-                controller: controller.country,
-                errorText: 'Invalid country',
+              FutureBuilder(
+                future: controller.getUser(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    return AppTextInput(
+                      controller: controller.email,
+                      onChanged: (value) {
+                        controller.email.text = value;
+                      },
+                      labelText: 'Email',
+                      hintText: 'Enter email address',
+                      errorText: 'Invalid email address',
+                      keyboardType: TextInputType.emailAddress,
+                    );
+                  } else {
+                    return Center(
+                      child: AppShimmer(
+                        child: Container(
+                          height: 40,
+                          width: Get.width,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: AppColor.smoke,
+                          ),
+                        ),
+                      ),
+                    );
+                  }
+                },
+              ),
+              FutureBuilder(
+                future: controller.getUser(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    return AppTextInput(
+                      controller: controller.birthDate,
+                      onTap: () {
+                        showDate(context, controller.birthDate);
+                      },
+                      readOnly: true,
+                      labelText: 'Birth Date',
+                      hintText: 'Enter birth date',
+                      errorText: 'Invalid birth date',
+                      suffix: IconButton(
+                        onPressed: () {
+                          showDate(context, controller.birthDate);
+                        },
+                        icon: const Icon(Icons.calendar_today),
+                      ),
+                      keyboardType: TextInputType.datetime,
+                    );
+                  } else {
+                    return Center(
+                      child: AppShimmer(
+                        child: Container(
+                          height: 40,
+                          width: Get.width,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: AppColor.smoke,
+                          ),
+                        ),
+                      ),
+                    );
+                  }
+                },
+              ),
+              FutureBuilder(
+                future: controller.getUser(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    return AppTextInput(
+                      controller: controller.address,
+                      onChanged: (value) {
+                        controller.address.text = value;
+                      },
+                      labelText: 'Address',
+                      hintText: 'Enter address',
+                      errorText: 'Invalid address',
+                      maxLines: 3,
+                      keyboardType: TextInputType.streetAddress,
+                    );
+                  } else {
+                    return Center(
+                      child: AppShimmer(
+                        child: Container(
+                          height: 40,
+                          width: Get.width,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: AppColor.smoke,
+                          ),
+                        ),
+                      ),
+                    );
+                  }
+                },
+              ),
+              FutureBuilder(
+                future: controller.getJobRole(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    return AppDropDown(
+                      label: 'Country',
+                      items: countryList,
+                      controller: controller.country,
+                      errorText: 'Invalid country',
+                    );
+                  } else {
+                    return Center(
+                      child: AppShimmer(
+                        child: Container(
+                          height: 40,
+                          width: Get.width,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: AppColor.smoke,
+                          ),
+                        ),
+                      ),
+                    );
+                  }
+                },
               ),
               Text(
                 'Link Account',

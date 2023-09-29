@@ -190,10 +190,10 @@ class DashboardView extends GetView<DashboardController> {
                     ),
                     buildAvailabelProject(
                       totalProject: 7,
-                      iconPath: 'assets/svgs/note.svg',
+                      iconPath: 'assets/svgs/notes.svg',
                     ),
                     buildAvailabelProject(
-                      totalProject: 100,
+                      totalProject: 20,
                       iconPath: 'assets/svgs/bag.svg',
                     ),
                   ],

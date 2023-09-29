@@ -10,6 +10,7 @@ import 'package:jobfortech/services/Firebase_Database.dart';
 class ProfileController extends GetxController {
   Rx<XFile?> selectedImage = Rx<XFile?>(null);
   RxList<String> jobRole = RxList<String>([]);
+  RxInt badgecount = 1.obs;
 
   final user = FirebaseAuth.instance.currentUser;
   var name = TextEditingController();
