@@ -11,13 +11,14 @@ Container AppBadge({
   Color? outlineColor = AppColor.blue,
 }) {
   return Container(
-    padding: EdgeInsets.symmetric(vertical: height, horizontal: width),
+    width: width,
+    height: height,
     decoration: BoxDecoration(
       color: backgroundColor,
       borderRadius: BorderRadius.circular(radius),
       border: showOutline ? Border.all(color: outlineColor!, width: 1) : null,
     ),
-    child: child,
+    child: Center(child: child),
   );
 }
 

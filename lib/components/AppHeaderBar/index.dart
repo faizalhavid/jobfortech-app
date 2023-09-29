@@ -100,7 +100,7 @@ Container AppHeaderContent({
                           style: AppBasicStyle(
                             fontColor: AppColor.white,
                             fontWeight: FontWeight.w700,
-                            fontSize: 20,
+                            fontSize: 16,
                           ),
                         ),
                         const SizedBox(width: 5),
@@ -284,6 +284,8 @@ Container AppHeaderContent({
         ),
       );
       break;
+    case 'assestment':
+      typeContent = Container();
 
     default:
       typeContent = Container();

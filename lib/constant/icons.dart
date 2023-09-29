@@ -23,6 +23,7 @@ Stack AppIconButton({
   double size = 24.0,
   Color color = AppColor.blue,
   bool isbadge = false,
+  bool editColor = false,
 }) {
   return Stack(
     children: [
@@ -33,6 +34,7 @@ Stack AppIconButton({
           svgPath: svgPath,
           size: size,
           color: color,
+          editColor: editColor,
         ),
       ),
       if (isbadge) // Hanya menambahkan Positioned jika isbadge true

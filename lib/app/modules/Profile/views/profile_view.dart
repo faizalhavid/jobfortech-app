@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jobfortech/app/modules/Auth/controllers/auth_controller.dart';
 import 'package:jobfortech/app/modules/Profile/controllers/profile_controller.dart';
+import 'package:jobfortech/app/modules/Profile/views/assessment_view.dart';
 import 'package:jobfortech/app/modules/Profile/views/edit_profile_view.dart';
 import 'package:jobfortech/app/modules/Profile/views/latest_work_view.dart';
 import 'package:jobfortech/app/modules/Profile/views/payroll_view.dart';
@@ -74,6 +75,17 @@ class ProfileView extends GetView<ProfileController> {
             onTap: () {
               Get.to(() => EditProfileView());
               print('Edit Profile tapped');
+            },
+          ),
+          AppListTile(
+            leading: AppIcon(
+                svgPath: 'assets/svgs/assessment.svg',
+                color: AppColor.blue,
+                size: 26),
+            text: 'Profile Assessment',
+            onTap: () {
+              Get.to(() => AssessmentView());
+              print('Profile Assessment tapped');
             },
           ),
           SizedBox(
