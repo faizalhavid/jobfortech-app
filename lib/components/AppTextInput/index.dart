@@ -47,27 +47,36 @@ InputDecoration AppTextInputDecoration({
   required String hintText,
   required String labelText,
   Widget? prefix,
-  EdgeInsets contentPadding = const EdgeInsets.all(0),
 }) {
   return InputDecoration(
+    label: Text(
+      labelText,
+      style: AppBasicStyle(
+        height: 1,
+        fontColor: AppColor.black,
+        fontSize: 18,
+        fontWeight: FontWeight.bold,
+        textAlign: TextAlign.start,
+      ),
+    ),
     floatingLabelBehavior: FloatingLabelBehavior.always,
     suffixIcon: suffix,
     suffixStyle: AppBasicStyle(fontSize: 12),
     prefixIcon: prefix,
     prefixStyle: AppBasicStyle(fontSize: 12),
     hintText: hintText,
-    labelText: labelText,
-    contentPadding: contentPadding,
-    labelStyle: AppBasicStyle(
-      fontColor: AppColor.black,
-      fontSize: 18,
-      fontWeight: FontWeight.bold,
+    errorMaxLines: 2,
+    hintStyle: AppBasicStyle(
+      height: 2,
+      fontColor: AppColor.grey,
+      fontSize: 15,
+      fontWeight: FontWeight.w400,
       textAlign: TextAlign.start,
     ),
     enabledBorder: const UnderlineInputBorder(
       borderSide: BorderSide(
         color: AppColor.grey,
-        width: 1,
+        width: 0.5,
       ),
     ),
   );

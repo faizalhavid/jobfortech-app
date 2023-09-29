@@ -11,10 +11,17 @@ String? validateName(String value) {
   return null;
 }
 
+String? validateEmpty(String value, String message) {
+  if (value.isEmpty || value == '') {
+    return message;
+  }
+  return null;
+}
+
 String? validateEmail(String value) {
   final emailRegExp = RegExp(r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$');
   if (value.isEmpty || value == '') {
-    return 'Name is required';
+    return 'Email is required';
   } else if (!emailRegExp.hasMatch(value)) {
     return 'Email invalid format';
   }
@@ -25,7 +32,7 @@ String? validatePassword(String value) {
   final passwordRegExp =
       RegExp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$');
   if (value.isEmpty || value == '') {
-    return 'Name is required';
+    return 'Password is required';
   } else if (!passwordRegExp.hasMatch(value)) {
     return 'Password must be at least 8 characters, 1 uppercase, 1 lowercase, and 1 number';
   }
@@ -58,5 +65,7 @@ String? validateAddress(value) {
 String? validatePhoneNumber(value) {
   if (value.isEmpty || value == '') {
     return 'Phone number is required';
+  } else if (value.length < 13) {
+    return 'Phone number must be at least 10 digits';
   }
 }

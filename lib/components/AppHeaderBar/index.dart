@@ -72,9 +72,9 @@ Container AppHeaderContent({
   required String type,
 }) {
   Container typeContent;
-  final user = Get.find<DashboardController>().user.value;
   switch (type) {
     case 'dashboard':
+      final user = Get.find<DashboardController>().user.value;
       typeContent = Container(
         padding:
             EdgeInsets.symmetric(horizontal: Get.width * 0.06, vertical: 15),

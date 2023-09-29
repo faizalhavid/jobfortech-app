@@ -4,7 +4,7 @@ Container AppStack({
   List<Widget>? children,
   double spacing = 10,
   Color? backgroundcolor,
-  Map<String, double> safearea = const {'horizontal': 40, 'vertical': 90},
+  Map<String, double> safearea = const {'horizontal': 0, 'vertical': 0},
   MainAxisAlignment mAlignment = MainAxisAlignment.start,
   CrossAxisAlignment cAlignment = CrossAxisAlignment.start,
 }) {
