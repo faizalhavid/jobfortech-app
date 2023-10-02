@@ -19,6 +19,7 @@ class AppColor {
   static const Color black = Color(0xFF000000);
   static const Color lightGrey = Color(0xFFFAFAFA);
   static const Color lightGrey2 = Color(0xFFD9D9D9);
+  static const Color lightGrey3 = Color(0xFFFAFAFA);
   static const Color smoke = Color(0xFFEEEDED);
   static const Color yellow = Color(0xFFFFD233);
   static const Color transparent = Color(0x00000000);

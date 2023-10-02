@@ -16,25 +16,23 @@ Container AppCard({
   return Container(
     width: width,
     height: height,
+    padding: const EdgeInsets.all(15.0),
     decoration: BoxDecoration(
       color: color,
       borderRadius: BorderRadius.all(Radius.circular(radius)),
       border: is_outline ? Border.all(color: outline_color) : null,
       boxShadow: boxShadow,
     ),
-    child: Padding(
-      padding: const EdgeInsets.all(15.0),
-      child: horizontal
-          ? Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: children ?? [],
-            )
-          : Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: children ?? [],
-            ),
-    ),
+    child: horizontal
+        ? Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: children ?? [],
+          )
+        : Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: children ?? [],
+          ),
   );
 }
