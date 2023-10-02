@@ -108,9 +108,11 @@ class ProfileView extends GetView<ProfileController> {
                       fontSize: 12,
                       fontColor: AppColor.white,
                       fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
                 ),
                 radius: 20,
-                height: 5,
+                height: 25,
+                width: 25,
                 backgroundColor: AppColor.blue),
           ),
           AppListTile(
@@ -143,7 +145,8 @@ class ProfileView extends GetView<ProfileController> {
                       fontWeight: FontWeight.bold),
                 ),
                 radius: 20,
-                height: 5,
+                height: 25,
+                width: 25,
                 backgroundColor: AppColor.blue),
           ),
           AppListTile(

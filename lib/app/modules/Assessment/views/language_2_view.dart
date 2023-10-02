@@ -205,7 +205,7 @@ class Language2View extends StatelessWidget {
                                 fontColor: AppColor.darkBlue,
                                 fontWeight: FontWeight.bold),
                           ),
-                          width: 65,
+                          width: 80,
                           height: 30,
                         ),
                       ),

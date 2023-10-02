@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jobfortech/app/modules/Assessment/views/language_view.dart';
 import 'package:jobfortech/app/modules/Profile/controllers/assessment_controller.dart';
 import 'package:jobfortech/components/AppCard/index.dart';
 import 'package:jobfortech/components/AppHeaderBar/index.dart';
@@ -15,27 +16,54 @@ class AssessmentView extends GetView {
     final controller = Get.put(AssessmentController());
     bool isChecked2 = false;
     return Scaffold(
-        appBar: AppHeaderbar(
-          title: Text(
-            'Profile Assessment',
-            style: AppBasicStyle(
-              fontSize: 16,
-              fontColor: AppColor.white,
-              fontWeight: FontWeight.w600,
-            ),
+      appBar: AppHeaderbar(
+        title: Text(
+          'Profile Assessment',
+          style: AppBasicStyle(
+            fontSize: 16,
+            fontColor: AppColor.white,
+            fontWeight: FontWeight.w600,
           ),
-          automaticallyImplyLeading: true,
         ),
-        body: AppSafeArea(
-            safearea: {'horizontal': 20, 'vertical': 20},
-            spacing: 30,
+        automaticallyImplyLeading: true,
+      ),
+      body: AppSafeArea(
+        safearea: {'horizontal': 20, 'vertical': 20},
+        spacing: 30,
+        children: [
+          Text(
+            'Before you start you need to complete these profile assessment',
+            style: AppBasicStyle(fontWeight: FontWeight.w500),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Before you start you need to complete these profile assessment',
-                style: AppBasicStyle(fontWeight: FontWeight.w500),
+                'Language & Personality Test',
+                style: AppBasicStyle(
+                    fontColor: AppColor.black, fontWeight: FontWeight.w700),
               ),
-              buildAssessment(),
-            ]));
+              Text(
+                '*Required',
+                style: AppBasicStyle(
+                    fontSize: 12,
+                    fontColor: AppColor.red,
+                    fontWeight: FontWeight.w500),
+              )
+            ],
+          ),
+          Spacer(),
+          AppIconButton(
+              svgPath: 'assets/svgs/arrow-right.svg',
+              size: 25,
+              color: AppColor.grey,
+              editColor: true,
+              onPressed: () {
+                Get.to(() => LanguageView());
+              })
+        ],
+      ),
+    );
   }
 
   Container buildAssessment() {
@@ -53,50 +81,46 @@ class AssessmentView extends GetView {
         ),
       ],
       children: [
-        Row(
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            InkWell(
-              onTap: () {
-                // setState(() {
-                //   isChecked2 = !isChecked2;
-                // });
-              },
-              // child: Checkbox(
-              //   value: isChecked2,
-              //   onChanged: (bool? value) {
-              //     // setState(() {
-              //     //   isChecked2 = value!;
-              //     // });
-              //   },
-              //   checkColor: Colors.white,
-              // ),
+            Text(
+              'Profile Check',
+              style: AppBasicStyle(
+                  fontColor: AppColor.black, fontWeight: FontWeight.w700),
             ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Profile Check',
-                  style: AppBasicStyle(
-                      fontColor: AppColor.black, fontWeight: FontWeight.w700),
-                ),
-                Text(
-                  '*Required',
-                  style: AppBasicStyle(
-                      fontSize: 12,
-                      fontColor: AppColor.red,
-                      fontWeight: FontWeight.w500),
-                )
-              ],
-            ),
-            Spacer(),
-            AppIconButton(
-                svgPath: 'assets/svgs/arrow-right.svg',
-                size: 25,
-                color: AppColor.grey,
-                editColor: true,
-                onPressed: () {})
+            Text(
+              '*Required',
+              style: AppBasicStyle(
+                  fontSize: 12,
+                  fontColor: AppColor.red,
+                  fontWeight: FontWeight.w500),
+            )
           ],
         ),
+        InkWell(
+          onTap: () {
+            // setState(() {
+            //   isChecked2 = !isChecked2;
+            // });
+          },
+          // child: Checkbox(
+          //   value: isChecked2,
+          //   onChanged: (bool? value) {
+          //     // setState(() {
+          //     //   isChecked2 = value!;
+          //     // });
+          //   },
+          //   checkColor: Colors.white,
+          // ),
+        ),
+        Spacer(),
+        AppIconButton(
+            svgPath: 'assets/svgs/arrow-right.svg',
+            size: 25,
+            color: AppColor.grey,
+            editColor: true,
+            onPressed: () {}),
       ],
     );
   }

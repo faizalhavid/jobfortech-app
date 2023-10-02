@@ -31,8 +31,8 @@ Container AppCard({
               children: children ?? [],
             )
           : Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: children ?? [],
             ),
     ),
