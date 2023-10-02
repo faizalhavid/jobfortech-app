@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:jobfortech/app/modules/Dashboard/controllers/dashboard_controller.dart';
+import 'package:jobfortech/app/modules/Auth/controllers/navigation_controller.dart';
 import 'package:jobfortech/components/AppBadge/index.dart';
 import 'package:jobfortech/constant/icons.dart';
 import 'package:jobfortech/constant/theme.dart';
@@ -11,25 +11,29 @@ BottomNavigationBarItem AppNav(
   String svgPath,
   String label,
 ) {
-  final navcontroller = Get.put(DashboardController());
+  final controller = Get.put(NavigationController());
   return BottomNavigationBarItem(
-    icon: AppBadge(
-      backgroundColor: navcontroller.changeColorTapped(
-        currentIndex: currentIndex,
-        index: index,
-      ),
-      height: 8,
-      radius: 10,
-      width: 8,
-      child: AppIcon(
-        svgPath: svgPath,
-        size: 20,
-        editColor: true,
-        color: navcontroller.changeColorTapped(
+    icon: Container(
+      margin: EdgeInsets.symmetric(vertical: Get.height * 0.005),
+      child: AppBadge(
+        backgroundColor: controller.changeColorTapped(
           currentIndex: currentIndex,
           index: index,
-          colorActive: AppColor.white,
-          colorDisable: AppColor.blue,
+        ),
+        height: Get.height * 0.05,
+        width: Get.width * 0.105,
+        padding: 10,
+        radius: 15,
+        child: AppIcon(
+          svgPath: svgPath,
+          size: 90,
+          editColor: true,
+          color: controller.changeColorTapped(
+            currentIndex: currentIndex,
+            index: index,
+            colorActive: AppColor.white,
+            colorDisable: AppColor.blue,
+          ),
         ),
       ),
     ),

@@ -157,6 +157,9 @@ Container AppHeaderContent({
                     Row(
                       children: [
                         AppBadge(
+                          padding: 0,
+                          height: 19,
+                          width: 90,
                           child: Text(
                             'Rockstar',
                             style: AppBasicStyle(

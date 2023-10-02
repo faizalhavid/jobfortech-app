@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:jobfortech/constant/theme.dart';
 
-Container AppBadge({
-  Widget? child,
-  Color? backgroundColor = AppColor.red,
-  double width = 10,
-  double height = 2,
-  double radius = 30,
-  bool showOutline = false,
-  Color? outlineColor = AppColor.blue,
-}) {
+Container AppBadge(
+    {Widget? child,
+    Color? backgroundColor = AppColor.red,
+    double width = 10,
+    double height = 2,
+    double radius = 30,
+    bool showOutline = false,
+    Color? outlineColor = AppColor.blue,
+    double? padding = 15}) {
   return Container(
+    padding:
+        EdgeInsets.symmetric(horizontal: padding!, vertical: padding * 0.2),
     width: width,
     height: height,
     decoration: BoxDecoration(

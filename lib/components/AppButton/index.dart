@@ -83,6 +83,21 @@ ButtonStyle AppButtonStyle({
       );
       break;
 
+    case 'disabled':
+      buttonStyle = ButtonStyle(
+        overlayColor: MaterialStateProperty.all<Color>(AppColor.grey),
+        backgroundColor: MaterialStateProperty.all<Color>(AppColor.lightGrey2),
+        foregroundColor: MaterialStateProperty.all<Color>(AppColor.grey),
+        elevation: MaterialStateProperty.all<double>(0.0),
+        minimumSize: MaterialStateProperty.all<Size>(Size(width, height)),
+        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(borderRadius),
+          ),
+        ),
+      );
+      break;
+
     default:
       buttonStyle = ButtonStyle();
   }

@@ -59,14 +59,6 @@ class DashboardController extends GetxController {
     isArrowUp.value = !isArrowUp.value;
   }
 
-  Color changeColorTapped({
-    required int currentIndex,
-    required int index,
-    Color colorActive = AppColor.blue,
-    Color colorDisable = AppColor.lightBlue,
-  }) =>
-      currentIndex == index ? colorActive : colorDisable;
-
   Future<void> fetchUserData() async {
     try {
       User? userData = FirebaseAuth.instance.currentUser;

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:jobfortech/app/modules/Profile/views/profile_view.dart';
 import 'package:jobfortech/components/AppAvatar/index.dart';
 import 'package:jobfortech/components/AppBadge/index.dart';
@@ -32,6 +33,7 @@ class DashboardView extends GetView<DashboardController> {
     List<String> skill = ['php', 'go', 'javascript', 'python'];
     DashboardController controller1 = DashboardController();
     DashboardController controller2 = DashboardController();
+
     return Scaffold(
       backgroundColor: AppColor.lightGrey,
       appBar: AppHeaderbar(
@@ -136,7 +138,7 @@ class DashboardView extends GetView<DashboardController> {
                   title: 'Task 1',
                   time: '00:15:01',
                   description: 'Description for Task 1',
-                  endDate: DateTime(2023, 9, 22),
+                  endDate: DateTime(2023, 10, 5),
                   instanceController:
                       controller1, // Gunakan controller untuk task 1
                 ),
@@ -144,7 +146,7 @@ class DashboardView extends GetView<DashboardController> {
                   title: 'Task 2',
                   time: '00:15:01',
                   description: 'Description for Task 2',
-                  endDate: DateTime(2023, 9, 26),
+                  endDate: DateTime(2023, 10, 1),
                   instanceController:
                       controller2, // Gunakan controller untuk task 2
                 ),
@@ -293,7 +295,8 @@ class DashboardView extends GetView<DashboardController> {
                                             'Ongoing'
                                         ? AppColor.blue
                                         : AppColor.orange,
-                            height: 6,
+                            height: Get.width * 0.065,
+                            width: Get.width * 0.25,
                             child: Obx(
                               () => Text(
                                 instanceController.statusTask.value,
@@ -307,10 +310,12 @@ class DashboardView extends GetView<DashboardController> {
                           const SizedBox(width: 10),
                           AppBadge(
                             backgroundColor: AppColor.lightOrange,
-                            height: 6,
+                            height: Get.width * 0.065,
+                            width: Get.width * 0.4,
                             child: Obx(
                               () => Text(
                                 '${instanceController.duration.value.inHours.toString().padLeft(2, '0')}:${instanceController.duration.value.inMinutes.toString().padLeft(2, '0')}:${instanceController.duration.value.inSeconds.toString().padLeft(2, '0')}',
+                                overflow: TextOverflow.ellipsis,
                                 style: AppBasicStyle(
                                   fontSize: 13,
                                   fontColor: AppColor.darkOrange,
@@ -385,7 +390,8 @@ class DashboardView extends GetView<DashboardController> {
     return AppBadgeButton(
       onPressed: () {},
       backgroundColor: AppColor.lightOrange,
-      height: 10,
+      height: 45,
+      width: Get.width,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.max,
@@ -446,9 +452,10 @@ class DashboardView extends GetView<DashboardController> {
               print(items[index]);
             },
             height: 2,
-            width: 10,
+            width: 120,
             child: Text(
               items[index],
+              overflow: TextOverflow.ellipsis,
               style: AppBasicStyle(
                 fontSize: 14,
                 fontColor: AppColor.blue,
