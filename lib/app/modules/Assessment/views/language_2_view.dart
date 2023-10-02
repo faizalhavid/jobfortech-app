@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jobfortech/app/modules/Assessment/views/finish_language_view.dart';
 import 'package:jobfortech/app/modules/Dashboard/controllers/profile_assesment_controller.dart';
-import 'package:jobfortech/app/modules/Profile/views/finish_language_view.dart';
 import 'package:jobfortech/components/AppBadge/index.dart';
 import 'package:jobfortech/components/AppButton/index.dart';
-import 'package:jobfortech/components/AppCard/index.dart';
 import 'package:jobfortech/components/AppHeaderBar/index.dart';
-import 'package:jobfortech/components/AppSafeArea/index.dart';
 import 'package:jobfortech/components/AppStack/index.dart';
 import 'package:jobfortech/constant/theme.dart';
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:jobfortech/app/modules/Profile/views/language_2_view.dart';
+import 'package:jobfortech/app/modules/Assessment/views/language_2_view.dart';
 import 'package:jobfortech/components/AppButton/index.dart';
 import 'package:jobfortech/components/AppCard/index.dart';
 import 'package:jobfortech/components/AppHeaderBar/index.dart';

@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jobfortech/app/modules/Profile/controllers/assessment_controller.dart';
-import 'package:jobfortech/app/modules/Profile/views/language_view.dart';
 import 'package:jobfortech/components/AppCard/index.dart';
 import 'package:jobfortech/components/AppHeaderBar/index.dart';
 import 'package:jobfortech/components/AppSafeArea/index.dart';
 import 'package:jobfortech/constant/icons.dart';
 import 'package:jobfortech/constant/theme.dart';
 
-class ProfileAssessment extends GetView {
-  ProfileAssessment({super.key});
+class AssessmentView extends GetView {
+  const AssessmentView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
