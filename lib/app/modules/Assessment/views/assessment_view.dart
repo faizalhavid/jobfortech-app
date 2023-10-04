@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:jobfortech/app/modules/Assessment/views/language_view.dart';
+import 'package:jobfortech/app/modules/Assessment/views/skill_test_view.dart';
 import 'package:jobfortech/app/modules/Assessment/views/verification_profile_view.dart';
 import 'package:jobfortech/app/modules/Profile/controllers/assessment_controller.dart';
 import 'package:jobfortech/components/AppBadge/index.dart';
@@ -57,7 +58,7 @@ class AssessmentView extends GetView<AssessmentController> {
                 onPressed: () {
                   controller.langgpersonalityStatus.value =
                       StatusAssessment.done;
-                  // Get.to(() => LanguageView());
+                  Get.to(() => LanguageView());
                 },
                 lastUpdate:
                     '${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}',
@@ -68,6 +69,7 @@ class AssessmentView extends GetView<AssessmentController> {
                 messsage: 'Result will be available in 2 days',
                 onPressed: () {
                   controller.skillTest.value = StatusAssessment.done;
+                  Get.to(() => SkillTestView());
                 },
                 lastUpdate:
                     '${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}',
