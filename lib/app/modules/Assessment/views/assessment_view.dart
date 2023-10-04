@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:jobfortech/app/modules/Assessment/views/language_view.dart';
+import 'package:jobfortech/app/modules/Assessment/views/verification_profile_view.dart';
 import 'package:jobfortech/app/modules/Profile/controllers/assessment_controller.dart';
 import 'package:jobfortech/components/AppBadge/index.dart';
 import 'package:jobfortech/components/AppButton/index.dart';
@@ -29,81 +31,106 @@ class AssessmentView extends GetView<AssessmentController> {
         ),
         automaticallyImplyLeading: true,
       ),
-      body: AppSafeArea(
-          safearea: {'horizontal': 20, 'vertical': 20},
-          spacing: 30,
-          children: [
-            Text(
-              'Before you start you need to complete these profile assessment',
-              style: AppBasicStyle(fontWeight: FontWeight.w500),
-            ),
-            buildAssessment(
-              statusAssement: controller.status,
-              title: 'Profile Check',
-              onPressed: () {},
-              lastUpdate:
-                  '${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}',
-            ),
-            buildAssessment(
-              statusAssement: 'onProgress',
-              title: 'Language & Personality Test',
-              messsage: 'Result will be available in 2 days',
-              onPressed: () {},
-              lastUpdate:
-                  '${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}',
-            ),
-            buildAssessment(
-              statusAssement: 'done',
-              title: 'Skill Test',
-              messsage: 'Result will be available in 2 days',
-              onPressed: () {},
-              lastUpdate:
-                  '${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}',
-            ),
-            buildAssessment(
-              statusAssement: 'done',
-              title: 'Project Test',
-              messsage: 'Result will be available in 2 days',
-              onPressed: () {},
-              lastUpdate:
-                  '${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}',
-            ),
-          ]),
-      bottomSheet: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-        child: AppButton(
-            child: Text(
-              'Next',
-              style: AppBasicStyle(
-                  fontColor: AppColor.white, fontWeight: FontWeight.w600),
-            ),
-            onPressed: () {}),
+      body: Obx(
+        () => AppSafeArea(
+            safearea: {'horizontal': 20, 'vertical': 20},
+            spacing: 30,
+            children: [
+              Text(
+                'Before you start you need to complete these profile assessment',
+                style: AppBasicStyle(fontWeight: FontWeight.w500),
+              ),
+              buildAssessment(
+                statusAssement: controller.profileStatus.value,
+                title: 'Profile Check',
+                onPressed: () {
+                  controller.profileStatus.value = StatusAssessment.done;
+                  print(StatusAssessment);
+                },
+                lastUpdate:
+                    '${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}',
+              ),
+              buildAssessment(
+                statusAssement: controller.langgpersonalityStatus.value,
+                title: 'Language & Personality Test',
+                messsage: 'Result will be available in 2 days',
+                onPressed: () {
+                  controller.langgpersonalityStatus.value =
+                      StatusAssessment.done;
+                  // Get.to(() => LanguageView());
+                },
+                lastUpdate:
+                    '${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}',
+              ),
+              buildAssessment(
+                statusAssement: controller.skillTest.value,
+                title: 'Skill Test',
+                messsage: 'Result will be available in 2 days',
+                onPressed: () {
+                  controller.skillTest.value = StatusAssessment.done;
+                },
+                lastUpdate:
+                    '${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}',
+              ),
+              buildAssessment(
+                statusAssement: controller.projectStatus.value,
+                title: 'Project Test',
+                messsage: 'Result will be available in 2 days',
+                onPressed: () {
+                  controller.projectStatus.value = StatusAssessment.done;
+                },
+                lastUpdate:
+                    '${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}',
+              ),
+            ]),
+      ),
+      bottomSheet: Obx(
+        () => Container(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+          child: AppButton(
+              type: controller.assessmentDone.value ? 'default' : 'disabled',
+              backgroundColor: controller.assessmentDone.value
+                  ? AppColor.blue
+                  : AppColor.grey,
+              child: Text(
+                'Next',
+                style: AppBasicStyle(
+                    fontColor: AppColor.white, fontWeight: FontWeight.w600),
+              ),
+              onPressed: () {
+                if (controller.assessmentDone.value) {
+                  Get.to(() => VerificationAssessment());
+                }
+              }),
+        ),
       ),
     );
   }
 
   Widget buildAssessment({
-    required statusAssement,
+    required StatusAssessment statusAssement,
     required String title,
     required Function() onPressed,
     String? lastUpdate = '',
     String? messsage = '',
   }) {
     return InkWell(
-      splashColor: AppColor.blue,
-      highlightColor: AppColor.lightBlue,
+      splashColor: AppColor.lightBlue,
+      highlightColor: AppColor.blue,
       radius: 20,
       borderRadius: BorderRadius.circular(20),
-      onTap: onPressed,
+      onTap: () {
+        onPressed();
+      },
       child: AppCard(
         height: 80,
         width: Get.width,
         radius: 20,
-        color: statusAssement == 'done'
+        color: statusAssement == StatusAssessment.done
             ? AppColor.lightBlue.withOpacity(0.5)
-            : statusAssement == 'onProgress'
+            : statusAssement == StatusAssessment.onProgress
                 ? AppColor.lightOrange
-                : AppColor.white,
+                : AppColor.lightGrey3.withOpacity(0.6),
         boxShadow: [
           BoxShadow(
             color: AppColor.grey.withOpacity(0.1),
@@ -124,17 +151,17 @@ class AssessmentView extends GetView<AssessmentController> {
                     width: 26,
                     height: 26,
                     decoration: BoxDecoration(
-                      color: statusAssement == 'done'
+                      color: statusAssement == StatusAssessment.done
                           ? AppColor.blue
-                          : statusAssement == 'onProgress'
+                          : statusAssement == StatusAssessment.onProgress
                               ? AppColor.orange
                               : AppColor.grey,
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Icon(
-                      (statusAssement == 'done')
+                      (statusAssement == StatusAssessment.done)
                           ? Icons.check
-                          : (statusAssement == 'onProgress')
+                          : (statusAssement == StatusAssessment.onProgress)
                               ? Icons.error
                               : Icons.rectangle,
                       color: AppColor.white,
@@ -157,16 +184,16 @@ class AssessmentView extends GetView<AssessmentController> {
                         ),
                       ),
                       Text(
-                        statusAssement == 'done'
+                        statusAssement == StatusAssessment.done
                             ? 'Last Update: ${lastUpdate!}'
-                            : statusAssement == 'onProgress'
+                            : statusAssement == StatusAssessment.onProgress
                                 ? messsage!
                                 : '*Required',
                         style: AppBasicStyle(
                           fontSize: 12,
-                          fontColor: statusAssement == 'done'
+                          fontColor: statusAssement == StatusAssessment.done
                               ? AppColor.blue
-                              : statusAssement == 'onProgress'
+                              : statusAssement == StatusAssessment.onProgress
                                   ? AppColor.orange
                                   : AppColor.red,
                           fontWeight: FontWeight.w500,
@@ -179,9 +206,9 @@ class AssessmentView extends GetView<AssessmentController> {
               AppIconButton(
                   svgPath: 'assets/svgs/arrow-right.svg',
                   size: 25,
-                  color: statusAssement == 'done'
+                  color: statusAssement == StatusAssessment.done
                       ? AppColor.blue
-                      : statusAssement == 'onProgress'
+                      : statusAssement == StatusAssessment.onProgress
                           ? AppColor.orange
                           : AppColor.grey,
                   editColor: true,

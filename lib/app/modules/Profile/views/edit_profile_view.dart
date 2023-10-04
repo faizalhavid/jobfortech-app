@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:jobfortech/app/modules/Profile/controllers/profile_controller.dart';
 import 'package:jobfortech/components/AppAvatar/index.dart';
 import 'package:jobfortech/components/AppButton/index.dart';
@@ -423,21 +424,39 @@ class EditProfileView extends GetView<ProfileController> {
                   ],
                 ),
               ),
+              Text(
+                'CV',
+                style: AppTitleHeader,
+              ),
+              AppButton(
+                  type: 'outline',
+                  outlineColor: AppColor.darkBlue,
+                  backgroundColor: AppColor.white,
+                  child: Text(
+                    'Upload CV',
+                    style: AppBasicStyle(fontWeight: FontWeight.w600),
+                  ),
+                  onPressed: () {}),
+              Text(
+                'CV must be PDF format and no larger than 10MB.',
+                style: AppBasicStyle(
+                    fontColor: AppColor.grey,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 12),
+              ),
               const SizedBox(height: 20),
               SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () {
-                    controller.editProfileHandling(formKey);
-                  },
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                  ),
-                  child: const Text('Save Changes'),
-                ),
-              ),
+                  width: double.infinity,
+                  child: AppButton(
+                      child: Text(
+                        'Save',
+                        style: AppBasicStyle(
+                            fontColor: AppColor.white,
+                            fontWeight: FontWeight.w700),
+                      ),
+                      onPressed: () {
+                        controller.editProfileHandling(formKey);
+                      })),
             ],
           ),
         ));

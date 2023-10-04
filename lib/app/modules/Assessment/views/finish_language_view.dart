@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:jobfortech/app/modules/Profile/views/verification_profile_view.dart';
+import 'package:jobfortech/app/modules/Assessment/views/verification_profile_view.dart';
 import 'package:jobfortech/components/AppButton/index.dart';
 import 'package:jobfortech/components/AppCard/index.dart';
 import 'package:jobfortech/components/AppSafeArea/index.dart';
@@ -146,7 +146,7 @@ class FinishLanguageView extends GetView {
                     fontColor: AppColor.white, fontWeight: FontWeight.w700),
               ),
               onPressed: () {
-                Get.to(() => VerificationProfileView());
+                Get.to(() => VerificationAssessment());
               })
         ],
       ),

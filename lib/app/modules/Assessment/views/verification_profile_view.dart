@@ -5,8 +5,8 @@ import 'package:jobfortech/components/AppSafeArea/index.dart';
 import 'package:jobfortech/constant/icons.dart';
 import 'package:jobfortech/constant/theme.dart';
 
-class VerificationProfileView extends GetView {
-  const VerificationProfileView({Key? key}) : super(key: key);
+class VerificationAssessment extends GetView {
+  const VerificationAssessment({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
