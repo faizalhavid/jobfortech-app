@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:jobfortech/app/modules/Assessment/views/assessment_view.dart';
 import 'package:jobfortech/app/modules/Auth/controllers/auth_controller.dart';
 import 'package:jobfortech/app/modules/Profile/controllers/profile_controller.dart';
 import 'package:jobfortech/app/modules/Profile/views/edit_profile_view.dart';
-import 'package:jobfortech/app/modules/Profile/views/latest_work_view.dart';
 import 'package:jobfortech/app/modules/Profile/views/payroll_view.dart';
-import 'package:jobfortech/app/modules/Profile/views/referral_program_view.dart';
-import 'package:jobfortech/app/modules/Profile/views/reviews_view.dart';
 import 'package:jobfortech/components/AppAvatar/index.dart';
 import 'package:jobfortech/components/AppBadge/index.dart';
 import 'package:jobfortech/components/AppHeaderBar/index.dart';
@@ -77,17 +73,6 @@ class ProfileView extends GetView<ProfileController> {
               print('Edit Profile tapped');
             },
           ),
-          AppListTile(
-            leading: AppIcon(
-                svgPath: 'assets/svgs/assessment.svg',
-                color: AppColor.blue,
-                size: 26),
-            text: 'Profile Assessment',
-            onTap: () {
-              Get.to(() => AssessmentView());
-              print('Profile Assessment tapped');
-            },
-          ),
           SizedBox(
             height: 5,
           ),
@@ -114,51 +99,6 @@ class ProfileView extends GetView<ProfileController> {
                 height: 25,
                 width: 25,
                 backgroundColor: AppColor.blue),
-          ),
-          AppListTile(
-            leading: AppIcon(
-                svgPath: 'assets/svgs/notes-list.svg',
-                color: AppColor.blue,
-                size: 26),
-            text: 'Latest Work',
-            onTap: () {
-              Get.to(() => LatestWorkView());
-              print('Latest Work tapped');
-            },
-          ),
-          AppListTile(
-            leading: AppIcon(
-                svgPath: 'assets/svgs/reviews-icon.svg',
-                color: AppColor.blue,
-                size: 26),
-            text: 'Reviews',
-            onTap: () {
-              Get.to(() => ReviewsView());
-              print('Reviews tapped');
-            },
-            trailing: AppBadge(
-                child: Text(
-                  '1',
-                  style: AppBasicStyle(
-                      fontSize: 12,
-                      fontColor: AppColor.white,
-                      fontWeight: FontWeight.bold),
-                ),
-                radius: 20,
-                height: 25,
-                width: 25,
-                backgroundColor: AppColor.blue),
-          ),
-          AppListTile(
-            leading: AppIcon(
-                svgPath: 'assets/svgs/money-ticket.svg',
-                color: AppColor.blue,
-                size: 26),
-            text: 'Referral Program',
-            onTap: () {
-              Get.to(() => ReferralProgramView());
-              print('Referral Program tapped');
-            },
           ),
           SizedBox(
             height: 5,
