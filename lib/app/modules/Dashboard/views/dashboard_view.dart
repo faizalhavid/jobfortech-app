@@ -35,7 +35,7 @@ class DashboardView extends GetView<DashboardController> {
     DashboardController controller2 = DashboardController();
 
     return Scaffold(
-      backgroundColor: AppColor.lightGrey,
+      backgroundColor: AppColor.white,
       appBar: AppHeaderbar(
         height: 210,
         type: 'dashboard',
@@ -73,6 +73,128 @@ class DashboardView extends GetView<DashboardController> {
       body: SingleChildScrollView(
         child: Column(
           children: [
+            SizedBox(
+              height: 24,
+            ),
+            AppCard(
+              height: 100,
+              width: 320,
+              radius: 10,
+              color: AppColor.blue,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      height: 70,
+                      width: 150,
+                      decoration: BoxDecoration(
+                        color: AppColor.white,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                AppIcon(
+                                  svgPath: 'assets/svgs/wallet.svg',
+                                  size: 20,
+                                  editColor: true,
+                                  color: AppColor.darkBlue,
+                                ),
+                                SizedBox(
+                                  width: 4,
+                                ),
+                                Text(
+                                  'Saldo',
+                                  style: AppBasicStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 12),
+                                )
+                              ],
+                            ),
+                            SizedBox(
+                              height: 4,
+                            ),
+                            Text(
+                              'RP. 7000.000',
+                              style: AppBasicStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 30,
+                    ),
+                    Column(
+                      children: [
+                        Container(
+                          height: 40,
+                          width: 40,
+                          decoration: BoxDecoration(
+                            color: AppColor.white,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              AppIcon(
+                                  svgPath: 'assets/svgs/tarik-uang.svg',
+                                  size: 30,
+                                  editColor: true,
+                                  color: AppColor.darkBlue),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: 4,
+                        ),
+                        Text(
+                          'Tarik',
+                          style: AppBasicStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600,
+                              fontColor: AppColor.white),
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Column(
+                      children: [
+                        Container(
+                          height: 40,
+                          width: 40,
+                          decoration: BoxDecoration(
+                            color: AppColor.white,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: AppIcon(
+                              svgPath: 'assets/svgs/history.svg', size: 25),
+                        ),
+                        SizedBox(
+                          height: 4,
+                        ),
+                        Text(
+                          'History',
+                          style: AppBasicStyle(
+                              fontSize: 12,
+                              fontColor: AppColor.white,
+                              fontWeight: FontWeight.w600),
+                        )
+                      ],
+                    ),
+                  ],
+                )
+              ],
+            ),
+            SizedBox(
+              height: 16,
+            ),
             AppStack(
               spacing: resSpacing,
               safearea: {
@@ -85,7 +207,7 @@ class DashboardView extends GetView<DashboardController> {
                   'Top Industries',
                   style: AppBasicStyle(
                     fontWeight: FontWeight.w800,
-                    fontSize: 18,
+                    fontSize: 16,
                     fontColor: AppColor.black,
                   ),
                 ),
@@ -95,13 +217,13 @@ class DashboardView extends GetView<DashboardController> {
             ),
             AppStack(
               spacing: 10,
-              safearea: {'horizontal': 20, 'vertical': 20},
+              safearea: {'horizontal': 20, 'vertical': 0},
               children: [
                 Text(
                   'Meet Schedule',
                   style: AppBasicStyle(
                     fontWeight: FontWeight.w800,
-                    fontSize: 18,
+                    fontSize: 16,
                     fontColor: AppColor.black,
                   ),
                 ),
@@ -115,7 +237,7 @@ class DashboardView extends GetView<DashboardController> {
                       'On Going',
                       style: AppBasicStyle(
                         fontWeight: FontWeight.w800,
-                        fontSize: 18,
+                        fontSize: 16,
                         fontColor: AppColor.black,
                       ),
                     ),
@@ -139,67 +261,15 @@ class DashboardView extends GetView<DashboardController> {
                   time: '00:15:01',
                   description: 'Description for Task 1',
                   endDate: DateTime(2023, 10, 5),
-                  instanceController:
-                      controller1, // Gunakan controller untuk task 1
+                  instanceController: controller1,
                 ),
                 buildTaskList(
                   title: 'Task 2',
                   time: '00:15:01',
                   description: 'Description for Task 2',
                   endDate: DateTime(2023, 10, 1),
-                  instanceController:
-                      controller2, // Gunakan controller untuk task 2
+                  instanceController: controller2,
                 ),
-                Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SizedBox(
-                      width: Get.width * 0.5,
-                      child: Text(
-                        'Erat at nibh viverra erat pharetra quis egestas morbi maecenas.',
-                        style: AppBasicStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 11,
-                          fontColor: AppColor.grey,
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 140,
-                      child: AppButton(
-                          backgroundColor: AppColor.lightGrey,
-                          child: Text(
-                            'Find Work',
-                            style: AppBasicStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500,
-                                fontColor: AppColor.osean),
-                          ),
-                          onPressed: () {},
-                          prefix: AppIcon(
-                            svgPath: 'assets/svgs/zoom-in.svg',
-                            size: 18,
-                          )),
-                    )
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    buildAvailabelProject(
-                      totalProject: 10,
-                    ),
-                    buildAvailabelProject(
-                      totalProject: 7,
-                      iconPath: 'assets/svgs/notes.svg',
-                    ),
-                    buildAvailabelProject(
-                      totalProject: 20,
-                      iconPath: 'assets/svgs/bag.svg',
-                    ),
-                  ],
-                )
               ],
             ),
           ],
@@ -301,7 +371,7 @@ class DashboardView extends GetView<DashboardController> {
                               () => Text(
                                 instanceController.statusTask.value,
                                 style: AppBasicStyle(
-                                    fontSize: 13,
+                                    fontSize: 12,
                                     fontColor: AppColor.white,
                                     fontWeight: FontWeight.w600),
                               ),
@@ -317,7 +387,7 @@ class DashboardView extends GetView<DashboardController> {
                                 '${instanceController.duration.value.inHours.toString().padLeft(2, '0')}:${instanceController.duration.value.inMinutes.toString().padLeft(2, '0')}:${instanceController.duration.value.inSeconds.toString().padLeft(2, '0')}',
                                 overflow: TextOverflow.ellipsis,
                                 style: AppBasicStyle(
-                                  fontSize: 13,
+                                  fontSize: 12,
                                   fontColor: AppColor.darkOrange,
                                   fontWeight: FontWeight.w600,
                                 ),
@@ -336,7 +406,7 @@ class DashboardView extends GetView<DashboardController> {
                             Text(
                               'Task 3 Integrate Third Party Program',
                               style: AppBasicStyle(
-                                fontSize: 16,
+                                fontSize: 14,
                                 fontColor: AppColor.blue,
                                 fontWeight: FontWeight.w600,
                               ),
@@ -348,7 +418,7 @@ class DashboardView extends GetView<DashboardController> {
                             Text(
                               'Erat at nibh viverra erat pharetra quis egestas morbi maecenas. Lectus egestas turpis ut adipiscing.',
                               style: AppBasicStyle(
-                                fontSize: 13,
+                                fontSize: 12,
                                 fontColor: AppColor.grey,
                                 fontWeight: FontWeight.w500,
                               ),
@@ -373,7 +443,7 @@ class DashboardView extends GetView<DashboardController> {
                   Text(
                     'Task 3 Integrate Third Party Program',
                     style: AppBasicStyle(
-                      fontSize: 14,
+                      fontSize: 12,
                       fontColor: AppColor.blue,
                       fontWeight: FontWeight.w600,
                     ),
@@ -408,7 +478,7 @@ class DashboardView extends GetView<DashboardController> {
               title,
               style: AppBasicStyle(
                 fontWeight: FontWeight.w600,
-                fontSize: 13,
+                fontSize: 12,
                 fontColor: AppColor.orange,
               ),
               overflow: TextOverflow.ellipsis,
@@ -418,7 +488,7 @@ class DashboardView extends GetView<DashboardController> {
             date,
             style: AppBasicStyle(
               fontWeight: FontWeight.w500,
-              fontSize: 13,
+              fontSize: 12,
               fontColor: AppColor.orange,
             ),
           ),
@@ -426,7 +496,7 @@ class DashboardView extends GetView<DashboardController> {
             time,
             style: AppBasicStyle(
               fontWeight: FontWeight.w500,
-              fontSize: 13,
+              fontSize: 12,
               fontColor: AppColor.orange,
             ),
           ),
@@ -452,12 +522,12 @@ class DashboardView extends GetView<DashboardController> {
               print(items[index]);
             },
             height: 2,
-            width: 120,
+            width: 100,
             child: Text(
               items[index],
               overflow: TextOverflow.ellipsis,
               style: AppBasicStyle(
-                fontSize: 14,
+                fontSize: 12,
                 fontColor: AppColor.blue,
                 fontWeight: FontWeight.w500,
               ),
@@ -488,46 +558,44 @@ class DashboardView extends GetView<DashboardController> {
             style: AppBasicStyle(
                 fontColor: AppColor.grey,
                 fontWeight: FontWeight.w500,
-                fontSize: 16),
+                fontSize: 14),
           ),
           Text(
             'Outsource',
             style: AppBasicStyle(
                 fontColor: AppColor.grey,
                 fontWeight: FontWeight.w500,
-                fontSize: 16),
+                fontSize: 14),
           ),
           Text(
             'Skills',
             style: AppBasicStyle(
                 fontColor: AppColor.grey,
                 fontWeight: FontWeight.w500,
-                fontSize: 16),
+                fontSize: 14),
           ),
         ]),
         TableRow(children: [
           Container(
-            padding: EdgeInsets.only(top: 15),
             child: Text(
               project,
               style: AppBasicStyle(
-                fontSize: 35,
+                fontSize: 25,
                 fontWeight: FontWeight.w800,
               ),
             ),
           ),
           Container(
-            padding: EdgeInsets.only(top: 15),
             child: Text(
               outsource,
               style: AppBasicStyle(
-                fontSize: 35,
+                fontSize: 25,
                 fontWeight: FontWeight.w800,
               ),
             ),
           ),
           Container(
-            padding: EdgeInsets.only(top: 15),
+            padding: EdgeInsets.only(top: 8),
             height: 60,
             child: Stack(
               children: skills.map((skill) {
