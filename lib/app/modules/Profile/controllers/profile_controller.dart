@@ -5,7 +5,6 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:jobfortech/app/modules/Auth/user_model.dart';
-import 'package:jobfortech/services/Firebase_Database.dart';
 
 class ProfileController extends GetxController {
   Rx<XFile?> selectedImage = Rx<XFile?>(null);
@@ -52,8 +51,7 @@ class ProfileController extends GetxController {
             address: address.text,
             country: country.text,
           );
-          UserRepository userRepository = UserRepository();
-          await userRepository.updateUser(userModel, user!.uid);
+
           EasyLoading.showToast('Update Success');
         }
       } catch (e) {

@@ -30,7 +30,8 @@ String? validateEmail(String value) {
 
 String? validatePassword(String value) {
   final passwordRegExp =
-      RegExp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$');
+      RegExp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_])[A-Za-z\d\W_]{8,}$');
+
   if (value.isEmpty || value == '') {
     return 'Password is required';
   } else if (!passwordRegExp.hasMatch(value)) {

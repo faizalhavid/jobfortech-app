@@ -288,6 +288,7 @@ Container AppHeaderContent({
       );
       break;
 
+    case 'assessment':
     default:
       typeContent = Container();
   }

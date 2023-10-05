@@ -1,23 +1,25 @@
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 
 class AssessmentController extends GetxController {
-  //TODO: Implement AssessmentController
-
-  final count = 0.obs;
   @override
   void onInit() {
+    fetchUserData();
     super.onInit();
   }
 
-  @override
-  void onReady() {
-    super.onReady();
+  Future<void> fetchUserData() async {
+    try {
+      final url =
+          'https://the-trivia-api.com/v2/questions?category=food_and_drink';
+      final response = await http.get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        print('response : $response.body}');
+      } else {
+        print(response.statusCode);
+      }
+    } catch (e) {
+      print(e);
+    }
   }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
 }

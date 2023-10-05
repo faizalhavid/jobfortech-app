@@ -7,6 +7,7 @@ Container AppStack({
   Map<String, double> safearea = const {'horizontal': 0, 'vertical': 0},
   MainAxisAlignment mAlignment = MainAxisAlignment.start,
   CrossAxisAlignment cAlignment = CrossAxisAlignment.start,
+  MainAxisSize mainAxisSize = MainAxisSize.max,
 }) {
   return Container(
     color: backgroundcolor ?? null,
@@ -15,6 +16,7 @@ Container AppStack({
     child: Column(
       mainAxisAlignment: mAlignment,
       crossAxisAlignment: cAlignment,
+      mainAxisSize: mainAxisSize,
       children: children!
           .map((e) => Padding(
                 padding: EdgeInsets.only(bottom: spacing),

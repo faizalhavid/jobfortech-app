@@ -1,12 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
+import 'package:jobfortech/app/data/repository/UserRepo.dart';
 import 'package:jobfortech/app/modules/Auth/controllers/auth_controller.dart';
-import 'package:jobfortech/app/modules/Auth/user_model.dart';
-import 'package:jobfortech/app/modules/Auth/views/email_verify_view.dart';
-import 'package:jobfortech/app/modules/Auth/views/login_view.dart';
-import 'package:jobfortech/services/Firebase_Database.dart';
+
+import '../../../data/models/User.dart';
 
 class RegisterController extends GetxController {
   var firstName = TextEditingController();
@@ -25,104 +22,100 @@ class RegisterController extends GetxController {
     confirmPassword.dispose();
   }
 
-  Future<User?> registerWithEmailAndPassword({
-    required String email,
-    required String password,
-  }) async {
-    FirebaseAuth auth = FirebaseAuth.instance;
+  // Future<User?> registerWithEmailAndPassword({
+  //   required String email,
+  //   required String password,
+  // }) async {
+  //   FirebaseAuth auth = FirebaseAuth.instance;
 
-    try {
-      UserCredential userCredential = await auth.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-      final sendEmailVerify =
-          await userCredential.user!.sendEmailVerification();
-      authController.emailVerifySuccess.value = true;
+  //   try {
+  //     UserCredential userCredential = await auth.createUserWithEmailAndPassword(
+  //       email: email,
+  //       password: password,
+  //     );
+  //     final sendEmailVerify =
+  //         await userCredential.user!.sendEmailVerification();
+  //     authController.emailVerifySuccess.value = true;
 
-      EasyLoading.showToast(
-        'Register Success ! Please Login',
-        toastPosition: EasyLoadingToastPosition.bottom,
-        duration: Duration(seconds: 2),
-      );
-      Get.offAll(() => EmailVerifyView());
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'email-already-in-use') {
-        Get.dialog(
-          AlertDialog(
-            title: Text('Email already in use'),
-            content: Text('Do you want Login?'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Get.to(() => LoginView());
-                },
-                child: Text('OK'),
-              ),
-              TextButton(
-                onPressed: () {
-                  Get.back();
-                },
-                child: Text('Cancel'),
-              ),
-            ],
-          ),
-        );
-      }
-    } catch (e) {
-      Get.dialog(
-        AlertDialog(
-          title: Text('Error'),
-          content: Text('Something went wrong , please try again'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Get.back();
-              },
-              child: Text('OK'),
-            ),
-            TextButton(
-              onPressed: () {
-                Get.back();
-              },
-              child: Text('Cancel'),
-            ),
-          ],
-        ),
-      );
-      print('An error occurred while registering: $e');
-    }
-    return null;
-  }
+  //     EasyLoading.showToast(
+  //       'Register Success ! Please Login',
+  //       toastPosition: EasyLoadingToastPosition.bottom,
+  //       duration: Duration(seconds: 2),
+  //     );
+  //     Get.offAll(() => EmailVerifyView());
+  //   } on FirebaseAuthException catch (e) {
+  //     if (e.code == 'email-already-in-use') {
+  //       Get.dialog(
+  //         AlertDialog(
+  //           title: Text('Email already in use'),
+  //           content: Text('Do you want Login?'),
+  //           actions: [
+  //             TextButton(
+  //               onPressed: () {
+  //                 Get.to(() => LoginView());
+  //               },
+  //               child: Text('OK'),
+  //             ),
+  //             TextButton(
+  //               onPressed: () {
+  //                 Get.back();
+  //               },
+  //               child: Text('Cancel'),
+  //             ),
+  //           ],
+  //         ),
+  //       );
+  //     }
+  //   } catch (e) {
+  //     Get.dialog(
+  //       AlertDialog(
+  //         title: Text('Error'),
+  //         content: Text('Something went wrong , please try again'),
+  //         actions: [
+  //           TextButton(
+  //             onPressed: () {
+  //               Get.back();
+  //             },
+  //             child: Text('OK'),
+  //           ),
+  //           TextButton(
+  //             onPressed: () {
+  //               Get.back();
+  //             },
+  //             child: Text('Cancel'),
+  //           ),
+  //         ],
+  //       ),
+  //     );
+  //     print('An error occurred while registering: $e');
+  //   }
+  //   return null;
+  // }
 
   void registering(GlobalKey<FormState> formKey) async {
+    final UserRepository userRepo = UserRepository();
+    final User userModel = User(
+      firstName: firstName.text,
+      lastName: lastName.text,
+      email: email.text,
+    );
     var connection = await authController.checkConnection();
 
     if (connection) {
-      final jobRoleCollection = authController.database.ref('jobRoles');
-      print('${email.text} ${password.text}');
-      if (formKey.currentState!.validate()) {
-        User? user = await registerWithEmailAndPassword(
-          email: email.text,
-          password: password.text,
-        );
-
-        if (user != null) {
-          UserModel userModel = UserModel(
-            uid: user.uid,
+      try {
+        if (formKey.currentState!.validate()) {
+          final user = await userRepo.register(
             email: email.text,
-            name: '',
-            bio: 'you can edit this bio',
-            phoneNumber: '',
-            photoProfile: '',
-            techRoles: '',
-            birthDate: '',
-            address: '',
-            country: '',
+            password: password.text,
+            password2: confirmPassword.text,
+            firstName: firstName.text,
+            lastName: lastName.text,
           );
-          UserRepository userRepository = UserRepository();
-          await userRepository.addUser(userModel, user.uid);
+
+          print('success register');
         }
+      } catch (e) {
+        print(e);
       }
     }
   }

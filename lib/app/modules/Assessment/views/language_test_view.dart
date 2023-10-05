@@ -8,8 +8,8 @@ import 'package:jobfortech/components/AppHeaderBar/index.dart';
 import 'package:jobfortech/components/AppStack/index.dart';
 import 'package:jobfortech/constant/theme.dart';
 
-class Language2View extends StatelessWidget {
-  const Language2View({Key? key}) : super(key: key);
+class LanguageTestView extends StatelessWidget {
+  const LanguageTestView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,12 +18,16 @@ class Language2View extends StatelessWidget {
 
     return Scaffold(
       appBar: AppHeaderbar(
-          title: Text('Language & Personality Test',
-              style: AppBasicStyle(
-                  fontSize: 16,
-                  fontColor: AppColor.white,
-                  fontWeight: FontWeight.w600)),
-          automaticallyImplyLeading: true),
+        title: Text(
+          'Language & Personality Test',
+          style: AppBasicStyle(
+            fontSize: 16,
+            fontColor: AppColor.white,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        automaticallyImplyLeading: true,
+      ),
       body: SingleChildScrollView(
         child: AppStack(
           safearea: {'horizontal': 0, 'vertical': 0},
@@ -52,19 +56,21 @@ class Language2View extends StatelessWidget {
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (context, index) {
                           return AppBadgeButton(
-                              width: 35,
-                              height: 35,
-                              radius: 90,
-                              backgroundColor: AppColor.lightGrey2,
-                              child: Text(
-                                (index + 1).toString(),
-                                style: AppBasicStyle(
-                                    fontColor: AppColor.grey,
-                                    fontWeight: FontWeight.w700),
-                              ),
-                              onPressed: () {
-                                print(index + 1);
-                              });
+                            padding: 0,
+                            width: 35,
+                            height: 35,
+                            radius: 90,
+                            backgroundColor: AppColor.smoke,
+                            child: Text(
+                              (index + 1).toString(),
+                              style: AppBasicStyle(
+                                  fontColor: AppColor.grey,
+                                  fontWeight: FontWeight.w700),
+                            ),
+                            onPressed: () {
+                              print(index + 1);
+                            },
+                          );
                         },
                         separatorBuilder: (context, index) =>
                             const SizedBox(width: 10),
@@ -151,6 +157,7 @@ class Language2View extends StatelessWidget {
                 ],
               ),
             ),
+            // card
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
               child: Row(

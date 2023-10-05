@@ -108,6 +108,9 @@ class RegisterView extends GetView<AuthController> {
             ),
             Obx(
               () => AppTextInput(
+                onChanged: (value) {
+                  registerController.confirmPassword.text = value;
+                },
                 labelText: 'Confirm Password',
                 hintText: '•••••••••',
                 validator: (value) {

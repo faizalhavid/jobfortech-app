@@ -1,13 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
-
-import '../modules/Assessment/bindings/assessment_binding.dart';
-import '../modules/Assessment/views/assessment_view.dart';
 import '../modules/Auth/bindings/auth_binding.dart';
 import '../modules/Auth/views/login_view.dart';
-import '../modules/Auth/views/register_view.dart';
 import '../modules/Dashboard/bindings/dashboard_binding.dart';
-import '../modules/Dashboard/views/dashboard_view.dart';
 import '../modules/Dashboard/views/navigation.dart';
 import '../modules/Profile/bindings/menu_binding.dart';
 import '../modules/Profile/views/menu_view.dart';
@@ -34,11 +29,6 @@ class AppPages {
           name: _Paths.MENU,
           page: () => const MenuView(),
           binding: MenuBinding(),
-        ),
-        GetPage(
-          name: _Paths.ASSESSMENT,
-          page: () => const AssessmentView(),
-          binding: AssessmentBinding(),
         ),
       ];
 

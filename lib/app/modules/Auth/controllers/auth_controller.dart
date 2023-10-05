@@ -11,7 +11,6 @@ import 'package:jobfortech/app/modules/Auth/views/email_verify_view.dart';
 import 'package:jobfortech/app/modules/Auth/views/login_view.dart';
 import 'package:jobfortech/app/modules/Dashboard/views/navigation.dart';
 import 'package:jobfortech/constant/theme.dart';
-import 'package:jobfortech/services/Firebase_Database.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AuthController extends GetxController {

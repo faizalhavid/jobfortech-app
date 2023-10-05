@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
+
 import 'package:get/get.dart';
-import 'package:jobfortech/app/modules/Assessment/views/language_view.dart';
+import 'package:jobfortech/app/modules/Assessment/views/get_started_view.dart';
+
 import 'package:jobfortech/app/modules/Assessment/views/verification_profile_view.dart';
 import 'package:jobfortech/app/modules/Profile/controllers/assessment_controller.dart';
-import 'package:jobfortech/components/AppBadge/index.dart';
+
 import 'package:jobfortech/components/AppButton/index.dart';
 import 'package:jobfortech/components/AppCard/index.dart';
 import 'package:jobfortech/components/AppHeaderBar/index.dart';
@@ -19,6 +20,32 @@ class AssessmentView extends GetView<AssessmentController> {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(AssessmentController());
+    List<Map> assessmentData = [
+      {
+        'title': 'Language & Personality Test',
+        'question': '100',
+        'time': '100',
+        'instruction': {
+          'Make sure you have a stable internet connection.',
+          'Read each question carefully.',
+          'You can navigate between questions using Next and Previous button.',
+          'You can mark the question for review',
+          'Timer will be displayed on the screen, and the test will automatically submit when the time is over.'
+        },
+      },
+      {
+        'title': 'Project Test',
+        'question': '100',
+        'time': '100',
+        'instruction': {
+          'Make sure you have a stable internet connection.',
+          'Read each question carefully.',
+          'You can navigate between questions using Next and Previous button.',
+          'You can mark the question for review',
+          'Timer will be displayed on the screen, and the test will automatically submit when the time is over.'
+        },
+      }
+    ];
     return Scaffold(
       appBar: AppHeaderbar(
         title: Text(
@@ -57,7 +84,10 @@ class AssessmentView extends GetView<AssessmentController> {
                 onPressed: () {
                   controller.langgpersonalityStatus.value =
                       StatusAssessment.done;
-                  // Get.to(() => LanguageView());
+                  Get.to(() => GetStartedTest(
+                        data: assessmentData,
+                        index: 0,
+                      ));
                 },
                 lastUpdate:
                     '${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}',
@@ -78,6 +108,10 @@ class AssessmentView extends GetView<AssessmentController> {
                 messsage: 'Result will be available in 2 days',
                 onPressed: () {
                   controller.projectStatus.value = StatusAssessment.done;
+                  Get.to(() => GetStartedTest(
+                        data: assessmentData,
+                        index: 1,
+                      ));
                 },
                 lastUpdate:
                     '${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}',

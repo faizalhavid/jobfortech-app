@@ -30,6 +30,7 @@ InkWell AppBadgeButton({
   double width = 10,
   double height = 2,
   double radius = 30,
+  double? padding = 15,
   Function()? onPressed,
 }) {
   return InkWell(
@@ -37,6 +38,7 @@ InkWell AppBadgeButton({
     highlightColor: AppColor.blue,
     onTap: onPressed,
     child: AppBadge(
+      padding: padding,
       width: width,
       height: height,
       backgroundColor: backgroundColor,
