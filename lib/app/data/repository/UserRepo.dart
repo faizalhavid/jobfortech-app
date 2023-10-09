@@ -181,8 +181,9 @@ class UserRepository {
     }
   }
 
-  Future<User> updateUser(
-      {required id, required token, required Map<String, dynamic> body}) async {
+  Future<User> updateUser({required Map<String, dynamic> body}) async {
+    final id = await secureStorage.read(key: 'id');
+    final token = await secureStorage.read(key: 'token');
     final uri = Uri.parse('$baseUrl/users/$id');
     final response = await http.patch(
       uri,

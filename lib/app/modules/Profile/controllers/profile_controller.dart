@@ -6,10 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:jobfortech/app/data/repository/UserRepo.dart';
 import 'package:jobfortech/app/modules/Auth/user_model.dart';
+import 'package:jobfortech/components/AppToast/index.dart';
 
 class ProfileController extends GetxController {
-  Rx<XFile?> selectedImage = Rx<XFile?>(null);
   RxList<String> jobRole = RxList<String>([]);
   RxInt badgecount = 1.obs;
 
@@ -25,7 +26,33 @@ class ProfileController extends GetxController {
   var password = TextEditingController();
   var social_name = TextEditingController();
   var social_url = TextEditingController();
-  final picker = ImagePicker();
+
+  final Rx<List<Map<String, String>>> userSocial =
+      Rx<List<Map<String, String>>>([
+    {
+      'name': 'Facebook',
+      'url': 'https://facebook.com/',
+    },
+    {
+      'name': 'Twitter',
+      'url': 'https://twitter.com/',
+    },
+    {
+      'name': 'Instagram',
+      'url': 'https://instagram.com/',
+    }
+  ]);
+
+  final Rx<List<String>> socialList = Rx<List<String>>([
+    'Facebook',
+    'Twitter',
+    'Instagram',
+    'Dribble',
+    'Github',
+    'Linkedin',
+    'Behance',
+    'Medium',
+  ]);
 
   @override
   void onInit() {
@@ -39,10 +66,58 @@ class ProfileController extends GetxController {
     social_url.dispose();
   }
 
-  Future getImage() async {
-    final pickFile = await picker.pickImage(source: ImageSource.gallery);
-    if (pickFile != null) {
-      selectedImage.value = pickFile;
+  void getSocmedIndex(int index) {
+    if (index >= 0 && index < userSocial.value.length) {
+      social_name.text = userSocial.value[index]['name']!;
+      social_url.text = userSocial.value[index]['url']!;
+
+      userSocial.value.removeAt(index);
+    }
+  }
+
+  void addSocmed() {
+    userSocial.update((val) {
+      val!.add({
+        'name': social_name.text,
+        'url': social_url.text,
+      });
+    });
+    social_name.clear();
+    social_url.clear();
+  }
+
+  void editSocmed(int index) {
+    social_name.text = userSocial.value[index]['name']!;
+    social_url.text = userSocial.value[index]['url']!;
+    userSocial.value.removeAt(index);
+  }
+
+  void deleteSocmed(int index) {
+    userSocial.value.removeAt(index);
+    userSocial.update((val) {});
+  }
+
+  Rx<String?> imageUrl = Rx<String?>(null);
+
+  Future<void> pickImage(ImageSource source) async {
+    final pickedImage = await ImagePicker().pickImage(source: source);
+    if (pickedImage != null) {
+      String uploadedImageUrl = await uploadImageToServer(pickedImage);
+
+      imageUrl.value = uploadedImageUrl;
+    }
+  }
+
+  Future<String> uploadImageToServer(XFile pickedImage) async {
+    try {
+      final upload = await UserRepository().updateUser(body: {
+        'photo_profile': await pickedImage.readAsBytes(),
+      });
+      final file_path = upload.profile?.photoProfile;
+      return file_path;
+    } catch (e) {
+      print('error upload : $e');
+      return 'Error Upload';
     }
   }
 

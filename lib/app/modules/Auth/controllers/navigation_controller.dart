@@ -51,9 +51,7 @@ class NavigationController extends GetxController
   }
 
   void updateStatus({required bool status}) async {
-    final token = await secureStorage.read(key: 'token');
-    final id = await secureStorage.read(key: 'id');
-    final response = await userRepo.updateUser(id: id, token: token, body: {
+    final response = await userRepo.updateUser(body: {
       'status': status,
     });
   }

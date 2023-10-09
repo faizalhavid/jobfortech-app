@@ -4,6 +4,7 @@ import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/utils/utils.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:jobfortech/app/data/models/User.dart';
 import 'package:jobfortech/app/data/repository/UserRepo.dart';
@@ -19,6 +20,7 @@ import 'package:jobfortech/components/AppSafeArea/index.dart';
 import 'package:jobfortech/components/AppShimmer/index.dart';
 import 'package:jobfortech/components/AppStack/index.dart';
 import 'package:jobfortech/components/AppTextInput/index.dart';
+import 'package:jobfortech/components/AppToast/index.dart';
 import 'package:jobfortech/constant/icons.dart';
 import 'package:jobfortech/constant/theme.dart';
 import 'package:jobfortech/app/utils/functions.dart';
@@ -39,20 +41,6 @@ class EditProfileView extends GetView<ProfileController> {
     'Frontend developer'
   ];
 
-  final List<String> social = [
-    'LinkedIn',
-    'Github',
-  ];
-
-  final List<Map<String, dynamic>> userSocial = [
-    {'label': 'LinkedIn', 'url': 'linkedin.com'},
-    {'label': 'Github', 'url': 'github.com'},
-  ];
-  // 'Dribble',
-  // 'Behance',
-  // 'Instagram',
-  // 'Facebook',
-  // 'Twitter'
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -110,8 +98,8 @@ class EditProfileView extends GetView<ProfileController> {
                           ),
                           spacing: 0,
                           onPressed: () async {
-                            // final pickImage = await controller.getImage();
-                            // print(pickImage);
+                            final pickedImage =
+                                await controller.pickImage(ImageSource.gallery);
                           },
                         ),
                         Text(
@@ -202,51 +190,95 @@ class EditProfileView extends GetView<ProfileController> {
                   'Link Account',
                   style: AppTitleHeader,
                 ),
-                Expanded(
-                  child: SizedBox(
-                    height: 200.0,
+                Obx(() {
+                  final double itemHeight = Get.height * 0.1;
+                  final double listHeight = itemHeight *
+                      controller.userSocial.value.length.toDouble();
+
+                  return Container(
+                    padding: EdgeInsets.symmetric(vertical: 10),
+                    height: listHeight,
                     child: ListView.builder(
                       physics: const NeverScrollableScrollPhysics(),
-                      itemCount: userSocial.length,
+                      itemCount: controller.userSocial.value.length,
                       itemBuilder: (context, index) {
-                        final String iconPath = userSocial[index]['label'];
-                        return ListTile(
-                          leading: AppIcon(
-                            svgPath:
-                                'assets/svgs/${iconPath.toLowerCase()}.svg',
-                            size: 30,
-                          ),
-                          title: Text(
-                            userSocial[index]['label'],
-                            style: AppBasicStyle(
-                              fontSize: 14,
-                              fontColor: AppColor.black,
-                              fontWeight: FontWeight.w500,
+                        if (controller.userSocial.value.isNotEmpty) {
+                          final String iconPath =
+                              controller.userSocial.value[index]['name']!;
+                          return ListTile(
+                            leading: AppIcon(
+                              svgPath:
+                                  'assets/svgs/${iconPath.toLowerCase()}.svg',
+                              size: 30,
                             ),
-                          ),
-                          trailing: AppIcon(
-                            svgPath: 'assets/svgs/link-minimalistic.svg',
-                            size: 22,
-                          ),
-                          subtitle: Text(
-                            userSocial[index]['url'],
-                            style: AppBasicStyle(
-                              fontSize: 12,
-                              fontColor: AppColor.grey,
-                              fontWeight: FontWeight.normal,
+                            title: Text(
+                              controller.userSocial.value[index]['name']!,
+                              style: AppBasicStyle(
+                                fontSize: 14,
+                                fontColor: AppColor.black,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
-                          ),
-                          onTap: () {
-                            popupSocmed(
-                              social: social,
-                              url: userSocial[index]['url'],
-                            );
-                          },
-                        );
+                            trailing: AppIconButton(
+                              svgPath: 'assets/svgs/link-minimalistic.svg',
+                              size: 22,
+                              onPressed: () {
+                                AppDialog(
+                                  title: 'Delete Social Media',
+                                  content: Text(
+                                    'Are you sure want to delete ${controller.userSocial.value[index]['name']}?',
+                                    maxLines: 2,
+                                    style: AppBasicStyle(
+                                      fontSize: 14,
+                                      fontColor: AppColor.black,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  onConfirm: () {
+                                    controller.deleteSocmed(index);
+                                    AppToast(message: 'Delete Success');
+                                    Get.back();
+                                  },
+                                  onCancel: () {
+                                    Get.back();
+                                  },
+                                );
+                              },
+                            ),
+                            subtitle: Text(
+                              controller.userSocial.value[index]['url']!,
+                              style: AppBasicStyle(
+                                fontSize: 12,
+                                fontColor: AppColor.grey,
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                            onTap: () {
+                              controller.getSocmedIndex(index);
+                              showSocialMediaDialog(
+                                title: 'Edit Social Media',
+                                item: controller.socialList.value,
+                                nameController: controller.social_name,
+                                urlController: controller.social_url,
+                                onConfirm: () {
+                                  controller.editSocmed(index);
+                                  Get.back();
+                                },
+                                onCancel: () {
+                                  Get.back();
+                                },
+                              );
+                            },
+                          );
+                        } else {
+                          return Container(
+                            child: Text('Social Link Empty'),
+                          );
+                        }
                       },
                     ),
-                  ),
-                ),
+                  );
+                }),
                 Container(
                   padding: EdgeInsets.symmetric(
                       horizontal: Get.width * 0.2, vertical: 0.1),
@@ -262,7 +294,19 @@ class EditProfileView extends GetView<ProfileController> {
                       textAlign: TextAlign.end,
                     ),
                     onPressed: () {
-                      popupSocmed(social: social);
+                      showSocialMediaDialog(
+                        title: 'Add Social Media',
+                        item: controller.socialList.value,
+                        nameController: controller.social_name,
+                        urlController: controller.social_url,
+                        onConfirm: () {
+                          controller.addSocmed();
+                          Get.back();
+                        },
+                        onCancel: () {
+                          Get.back();
+                        },
+                      );
                     },
                     suffix: AppIcon(
                       svgPath: 'assets/svgs/button-tambah.svg',
@@ -289,7 +333,7 @@ class EditProfileView extends GetView<ProfileController> {
                       children: [
                         SizedBox(
                             width: Get.width * 0.6,
-                            child: Text(
+                            child: const Text(
                               'filee.pdf',
                               overflow: TextOverflow.ellipsis,
                             )),
@@ -325,31 +369,33 @@ class EditProfileView extends GetView<ProfileController> {
       ),
     );
   }
+}
 
-  Future<void> popupSocmed({required List<String> social, String? url}) {
-    return AppDialog(
-      title: 'Add Social Media',
-      content: AppStack(children: [
-        // AppDropDown(
-        //   label: 'Job Role',
-        //   items: social,
-        //   controller: controller.jobRoles,
-        //   errorText: 'Invalid job role',
-        // ),
+void showSocialMediaDialog({
+  required String title,
+  required List<String> item,
+  required TextEditingController nameController,
+  required TextEditingController urlController,
+  required VoidCallback onConfirm,
+  required dynamic Function() onCancel,
+}) {
+  AppDialog(
+    title: title,
+    content: AppStack(
+      children: [
         AppDropDown(
+          isSearch: true,
           label: 'Social Media',
-          items: social,
-          controller: controller.jobRoles,
-          onChanged: (value) {
-            social.add(value);
-          },
+          items: item,
+          controller: nameController,
           errorText: 'Invalid job role',
           listItemBuilder: (context, result) {
-            print('assets/svgs/${result.toLowerCase()}.svg');
             return Row(
               children: [
-                AppIcon(svgPath: 'assets/svgs/${result.toLowerCase()}.svg'),
-                SizedBox(
+                AppIcon(
+                  svgPath: 'assets/svgs/${result.toLowerCase()}.svg',
+                ),
+                const SizedBox(
                   width: 10,
                 ),
                 Text(
@@ -365,31 +411,15 @@ class EditProfileView extends GetView<ProfileController> {
             );
           },
         ),
-        // AppTextInput(
-        //   controller: controller.social_name,
-        //   onChanged: (value) {
-        //     controller.social_name.text = value;
-        //   },
-        //   labelText: 'Social Media Name',
-        //   hintText: 'Input name',
-        //   keyboardType: TextInputType.text,
-        // ),
         AppTextInput(
-          initialValue: url,
-          controller: controller.social_name,
-          onChanged: (value) {
-            controller.social_url.text = value;
-            social.add(value);
-          },
+          controller: urlController,
           labelText: 'Social Media Url',
           hintText: 'Input url',
           keyboardType: TextInputType.url,
         )
-      ]),
-      onConfirm: () {},
-      onCancel: () {
-        Get.back();
-      },
-    );
-  }
+      ],
+    ),
+    onConfirm: onConfirm,
+    onCancel: onCancel,
+  );
 }
