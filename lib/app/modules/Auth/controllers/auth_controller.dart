@@ -1,23 +1,21 @@
+import 'dart:async';
+
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:flutter/services.dart';
-import 'package:jobfortech/app/modules/Auth/user_model.dart';
-import 'package:jobfortech/app/modules/Auth/views/email_verify_view.dart';
-import 'package:jobfortech/app/modules/Auth/views/login_view.dart';
-import 'package:jobfortech/app/modules/Dashboard/views/navigation.dart';
+import 'package:jobfortech/app/data/repository/UserRepo.dart';
 import 'package:jobfortech/constant/theme.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class AuthController extends GetxController {
   late GoogleSignInAccount? currentUser;
   final database = FirebaseDatabase.instance;
   RxBool eyeIconPassword = true.obs;
   RxBool eyeIconConfirmPassword = true.obs;
+  final secureStorage = FlutterSecureStorage();
   final GoogleSignIn _googleSignIn = GoogleSignIn(
     scopes: <String>[
       'email',
@@ -27,93 +25,32 @@ class AuthController extends GetxController {
 
   RxBool emailVerified = false.obs;
   RxBool emailVerifySuccess = false.obs;
+  RxInt countdownValue = 0.obs;
+  RxBool resendEmail = false.obs;
+  RxInt duration = 0.obs;
+  RxInt remainingMinutes = 0.obs;
+  RxInt remainingSeconds = 0.obs;
 
-  void init() {
+  @override
+  void onInit() {
     super.onInit();
+    startCountdown(3);
   }
 
-  // Future<void> googleSignIn() async {
-  //   var connection = await checkConnection();
-  //   try {
-  //     if (connection) {
-  //       await _googleSignIn.signIn();
+  void startCountdown(int durationInMinutes) async {
+    int durationInSeconds = durationInMinutes * 60;
+    countdownValue.value = durationInSeconds;
 
-  //       Future.delayed(Duration(seconds: 2), () {
-  //         EasyLoading.dismiss();
-  //         Get.offAll(() => LoginView());
-  //       });
-  //     }
-  //   } on PlatformException catch (e) {
-  //     Get.snackbar(
-  //       'Error',
-  //       'Something went wrong',
-  //       snackPosition: SnackPosition.BOTTOM,
-  //       backgroundColor: AppColor.red,
-  //       colorText: AppColor.white,
-  //     );
-  //     print('Error: $e');
-  //   }
-  // }
-
-  Future<void> googleSignIn() async {
-    var connection = await checkConnection();
-    try {
-      if (connection) {
-        final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-        final GoogleSignInAuthentication googleAuth =
-            await googleUser!.authentication;
-        final AuthCredential credential = GoogleAuthProvider.credential(
-          accessToken: googleAuth.accessToken,
-          idToken: googleAuth.idToken,
-        );
-        EasyLoading.show(status: 'loading...');
-        UserCredential userCredential =
-            await FirebaseAuth.instance.signInWithCredential(credential);
-        bool isNewUser = userCredential.additionalUserInfo!.isNewUser;
-
-        // if (isNewUser) {
-        //   UserModel userModel = UserModel(
-        //     uid: userCredential.user!.uid,
-        //     email: email,
-        //     name: '',
-        //     bio: '',
-        //     phoneNumber: '',
-        //     photoProfile: '',
-        //     techRoles: '',
-        //     birthDate: '',
-        //     address: '',
-        //     country: '',
-        //   );
-        //   UserRepository userRepository = UserRepository();
-        //   await userRepository.addUser(userModel, userCredential.user!.uid);
-        // }
-        EasyLoading.dismiss();
-        Get.offAll(() => NavigationView());
+    Timer.periodic(Duration(seconds: 1), (timer) {
+      if (countdownValue.value == 0) {
+        resendEmail.value = true;
+        timer.cancel();
+      } else {
+        countdownValue.value--;
+        remainingMinutes.value = countdownValue.value ~/ 60;
+        remainingSeconds.value = countdownValue.value % 60;
       }
-    } on PlatformException catch (e) {
-      Get.snackbar(
-        'Error',
-        'Something went wrong',
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: AppColor.red,
-        colorText: AppColor.white,
-      );
-      print(e);
-    }
-  }
-
-  Future<void> googleSignOut() async {
-    try {
-      await _googleSignIn.signOut();
-      await FirebaseAuth.instance.signOut();
-      EasyLoading.show(status: 'loading...');
-      Future.delayed(Duration(seconds: 2), () {
-        EasyLoading.dismiss();
-        Get.offAll(() => LoginView());
-      });
-    } on PlatformException catch (e) {
-      print(' error : ${e}');
-    }
+    });
   }
 
   Future<bool> checkConnection() async {
@@ -132,16 +69,30 @@ class AuthController extends GetxController {
     return true;
   }
 
-  sendEmailVerification() {
-    FirebaseAuth.instance.currentUser!.sendEmailVerification();
-    Get.snackbar(
-      'Success',
-      'Email verification has been sent',
-      snackPosition: SnackPosition.BOTTOM,
-    );
+  Future<void> resendEmailUser({required id, required email}) async {
+    print(id);
+    try {
+      var connection = await checkConnection();
+      UserRepository userRepo = UserRepository();
+      if (connection) {
+        EasyLoading.show();
+        await userRepo.resendEmail(id: id, email: email);
+        EasyLoading.dismiss();
+        EasyLoading.showToast('Email sent',
+            toastPosition: EasyLoadingToastPosition.bottom);
+        resendEmail.value = false;
+        startCountdown(3);
+      }
+    } on Exception catch (e) {
+      EasyLoading.dismiss();
+      EasyLoading.showToast(e.toString(),
+          toastPosition: EasyLoadingToastPosition.bottom);
+      print(e);
+      resendEmail.value = false;
+      startCountdown(1);
+    }
   }
 }
-
 
 // class UserController extends GetxController with StateMixin<User?> {
 //   final userProvider = UserProvider();
@@ -154,3 +105,4 @@ class AuthController extends GetxController {
 //     });
 //   }
 // }
+

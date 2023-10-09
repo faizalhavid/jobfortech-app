@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jobfortech/app/data/repository/UserRepo.dart';
 import 'package:jobfortech/app/modules/Auth/controllers/auth_controller.dart';
 import 'package:jobfortech/app/modules/Profile/controllers/profile_controller.dart';
 import 'package:jobfortech/app/modules/Profile/views/edit_profile_view.dart';
 import 'package:jobfortech/app/modules/Profile/views/payroll_view.dart';
+import 'package:jobfortech/app/utils/globalController.dart';
 import 'package:jobfortech/components/AppAvatar/index.dart';
 import 'package:jobfortech/components/AppBadge/index.dart';
 import 'package:jobfortech/components/AppHeaderBar/index.dart';
@@ -14,6 +16,7 @@ import 'package:jobfortech/constant/theme.dart';
 
 class ProfileView extends GetView<ProfileController> {
   const ProfileView({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,29 +26,45 @@ class ProfileView extends GetView<ProfileController> {
         toolbarHeight: 70,
         leading: Row(
           children: [
-            AppAvatar(radius: 20, outlineColor: AppColor.white),
+            GetX<UserController>(
+              builder: (controller2) {
+                return AppAvatar(
+                    radius: 20,
+                    outlineColor: AppColor.white,
+                    path: controller2.user.value.profile?.photoProfile ?? null);
+              },
+            ),
             SizedBox(
               width: 20,
             ),
             Column(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.max,
               children: [
-                Text(
-                  'Jaxson Rosser',
-                  style: AppBasicStyle(
-                    fontSize: 16,
-                    fontColor: AppColor.white,
-                    fontWeight: FontWeight.bold,
-                  ),
+                GetX<UserController>(
+                  builder: (controller2) {
+                    return Text(
+                      controller2.user.value.firstName ?? 'No data',
+                      style: AppBasicStyle(
+                        fontSize: 16,
+                        fontColor: AppColor.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    );
+                  },
                 ),
-                Text(
-                  'Rooserjaxon@mail.com',
-                  style: AppBasicStyle(
-                    fontSize: 14,
-                    fontColor: AppColor.white,
-                    fontWeight: FontWeight.normal,
-                  ),
+                GetX<UserController>(
+                  builder: (controller) {
+                    final email = controller.user.value.email ?? 'No';
+                    return Text(
+                      '$email',
+                      style: AppBasicStyle(
+                        fontSize: 12,
+                        fontColor: AppColor.white,
+                      ),
+                    );
+                  },
                 ),
               ],
             ),
@@ -70,7 +89,6 @@ class ProfileView extends GetView<ProfileController> {
             text: 'Edit Profile',
             onTap: () {
               Get.to(() => EditProfileView());
-              print('Edit Profile tapped');
             },
           ),
           SizedBox(
@@ -131,7 +149,6 @@ class ProfileView extends GetView<ProfileController> {
             text: 'Log Out',
             onTap: () {
               final logoutCOntroller = Get.put(AuthController());
-              logoutCOntroller.googleSignOut();
             },
           ),
         ],

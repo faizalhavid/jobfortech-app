@@ -8,7 +8,7 @@ import 'package:jobfortech/components/AppSafeArea/index.dart';
 import 'package:jobfortech/constant/icons.dart';
 import 'package:jobfortech/components/AppTextInput/index.dart';
 import 'package:jobfortech/constant/theme.dart';
-import 'package:jobfortech/utils/validation.dart';
+import 'package:jobfortech/app/utils/validation.dart';
 
 class RegisterView extends GetView<AuthController> {
   const RegisterView({Key? key}) : super(key: key);
@@ -48,6 +48,13 @@ class RegisterView extends GetView<AuthController> {
               textAlign: TextAlign.center,
             ),
             AppTextInput(
+              initialValue: 'John',
+              autofocus: true,
+              focusNode: registerController.focusNode[0],
+              onFieldSubmitted: (value) {
+                registerController.focusNode[0].unfocus();
+                registerController.focusNode[1].requestFocus();
+              },
               onChanged: (value) {
                 registerController.firstName.text = value;
               },
@@ -60,6 +67,12 @@ class RegisterView extends GetView<AuthController> {
               },
             ),
             AppTextInput(
+              initialValue: 'Doe',
+              focusNode: registerController.focusNode[1],
+              onFieldSubmitted: (value) {
+                registerController.focusNode[1].unfocus();
+                registerController.focusNode[2].requestFocus();
+              },
               onChanged: (value) {
                 registerController.lastName.text = value;
               },
@@ -72,6 +85,12 @@ class RegisterView extends GetView<AuthController> {
               },
             ),
             AppTextInput(
+              initialValue: 'johnDoe@gmail.com',
+              focusNode: registerController.focusNode[2],
+              onFieldSubmitted: (value) {
+                registerController.focusNode[2].unfocus();
+                registerController.focusNode[3].requestFocus();
+              },
               onChanged: (value) {
                 registerController.email.text = value;
               },
@@ -85,6 +104,12 @@ class RegisterView extends GetView<AuthController> {
             ),
             Obx(
               () => AppTextInput(
+                initialValue: 'Barakadut123!',
+                focusNode: registerController.focusNode[3],
+                onFieldSubmitted: (value) {
+                  registerController.focusNode[3].unfocus();
+                  registerController.focusNode[4].requestFocus();
+                },
                 onChanged: (value) {
                   registerController.password.text = value;
                 },
@@ -108,6 +133,12 @@ class RegisterView extends GetView<AuthController> {
             ),
             Obx(
               () => AppTextInput(
+                initialValue: 'Barakadut123!',
+                onFieldSubmitted: (value) {
+                  registerController.focusNode[4].unfocus();
+                  registerController.focusNode[5].requestFocus();
+                },
+                focusNode: registerController.focusNode[4],
                 onChanged: (value) {
                   registerController.confirmPassword.text = value;
                 },
@@ -131,6 +162,7 @@ class RegisterView extends GetView<AuthController> {
               ),
             ),
             AppButton(
+              focusNode: registerController.focusNode[5],
               height: Get.height * 0.065,
               child: Text(
                 'Register',
@@ -141,6 +173,8 @@ class RegisterView extends GetView<AuthController> {
                 ),
               ),
               onPressed: () {
+                registerController.focusNode[5].unfocus();
+
                 registerController.registering(formKey);
               },
             ),
@@ -154,6 +188,7 @@ class RegisterView extends GetView<AuthController> {
               textAlign: TextAlign.center,
             ),
             AppButton(
+              focusNode: registerController.focusNode[5],
               prefix: Image.asset('assets/images/google-logo.png'),
               height: Get.height * 0.065,
               child: Text(
@@ -164,9 +199,7 @@ class RegisterView extends GetView<AuthController> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              onPressed: () {
-                controller.googleSignIn();
-              },
+              onPressed: () {},
               type: 'outline',
             ),
             Row(

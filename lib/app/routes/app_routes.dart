@@ -7,7 +7,7 @@ abstract class Routes {
   static const DASHBOARD = _Paths.DASHBOARD;
   static const MENU = _Paths.MENU;
   static const ASSESSMENT = _Paths.ASSESSMENT;
-  static const PROJECT_TEST = _Paths.ASSESSMENT + _Paths.PROJECT_TEST;
+  static const PROJECT_TEST = _Paths.ASSESSMENT;
 }
 
 abstract class _Paths {
@@ -16,5 +16,4 @@ abstract class _Paths {
   static const DASHBOARD = '/dashboard';
   static const MENU = '/menu';
   static const ASSESSMENT = '/assessment';
-  static const PROJECT_TEST = '/project-test';
 }

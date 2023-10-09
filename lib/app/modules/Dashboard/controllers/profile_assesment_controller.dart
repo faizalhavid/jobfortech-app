@@ -24,7 +24,7 @@ class ProfileAssesmentController extends GetxController {
   }
 
   void startCountdown(int durationInMinutes) async {
-    int durationInSeconds = durationInMinutes * 60; // Konversi ke detik
+    int durationInSeconds = durationInMinutes * 60;
     countdownValue.value = durationInSeconds;
 
     Timer.periodic(Duration(seconds: 1), (timer) {
@@ -32,11 +32,8 @@ class ProfileAssesmentController extends GetxController {
         timer.cancel();
       } else {
         countdownValue.value--;
-        // Hitung menit dan detik yang tersisa
-        remainingMinutes.value =
-            countdownValue.value ~/ 60; // Bagi dengan pembulatan ke bawah
-        remainingSeconds.value =
-            countdownValue.value % 60; // Modulus untuk mendapatkan sisa detik
+        remainingMinutes.value = countdownValue.value ~/ 60;
+        remainingSeconds.value = countdownValue.value % 60;
       }
     });
   }

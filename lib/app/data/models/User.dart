@@ -1,8 +1,7 @@
 class User {
   int? id;
-  String? title;
-  String? profile;
-  String? company;
+  Profile? profile;
+  List<dynamic>? company;
   String? lastLogin;
   String? firstName;
   String? lastName;
@@ -17,7 +16,6 @@ class User {
 
   User({
     this.id,
-    this.title,
     this.profile,
     this.company,
     this.lastLogin,
@@ -36,9 +34,10 @@ class User {
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
       id: json['id'] as int?,
-      title: json['title'] as String?,
-      profile: json['profile'] as String?,
-      company: json['company'] as String?,
+      profile: json['profile'] != null
+          ? Profile.fromJson(json['profile'] as Map<String, dynamic>)
+          : null,
+      company: json['company'] as List<dynamic>?,
       lastLogin: json['last_login'] as String?,
       firstName: json['first_name'] as String?,
       lastName: json['last_name'] as String?,
@@ -56,8 +55,7 @@ class User {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'title': title,
-      'profile': profile,
+      'profile': profile?.toJson(),
       'company': company,
       'last_login': lastLogin,
       'first_name': firstName,
@@ -70,6 +68,74 @@ class User {
       'phone_number': phoneNumber,
       'name': name,
       'groups': groups,
+    };
+  }
+}
+
+class Profile {
+  List<dynamic>? skills;
+  List<dynamic>? expertise;
+  List<dynamic>? industries;
+  List<dynamic>? projectHistories;
+  String? firstName;
+  String? lastName;
+  dynamic? photoProfile;
+  String? location;
+  String? description;
+  dynamic? socialMedia;
+  String? phoneNumber;
+  dynamic? resume;
+  String? position;
+
+  Profile({
+    this.skills,
+    this.expertise,
+    this.industries,
+    this.projectHistories,
+    this.firstName,
+    this.lastName,
+    this.photoProfile,
+    this.location,
+    this.description,
+    this.socialMedia,
+    this.phoneNumber,
+    this.resume,
+    this.position,
+  });
+
+  factory Profile.fromJson(Map<String, dynamic> json) {
+    return Profile(
+      skills: json['skills'] as List<dynamic>?,
+      expertise: json['expertise'] as List<dynamic>?,
+      industries: json['industries'] as List<dynamic>?,
+      projectHistories: json['project_histories'] as List<dynamic>?,
+      firstName: json['first_name'] as String?,
+      lastName: json['last_name'] as String?,
+      photoProfile: json['photo_profile'],
+      location: json['location'] as String?,
+      description: json['description'] as String?,
+      socialMedia: json['social_media'],
+      phoneNumber: json['phone_number'] as String?,
+      resume: json['resume'],
+      position: json['position'] as String?,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'skills': skills,
+      'expertise': expertise,
+      'industries': industries,
+      'project_histories': projectHistories,
+      'first_name': firstName,
+      'last_name': lastName,
+      'photo_profile': photoProfile,
+      'location': location,
+      'description': description,
+      'social_media': socialMedia,
+      'phone_number': phoneNumber,
+      'resume': resume,
+      'position': position,
     };
   }
 }

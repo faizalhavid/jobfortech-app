@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:jobfortech/app/data/repository/UserRepo.dart';
 import 'package:jobfortech/app/modules/Auth/controllers/auth_controller.dart';
+import 'package:jobfortech/app/modules/Auth/views/email_verify_view.dart';
+import 'package:jobfortech/app/modules/Auth/views/login_view.dart';
+import 'package:jobfortech/components/AppDialog/index.dart';
+import 'package:jobfortech/components/AppStack/index.dart';
+import 'package:jobfortech/components/AppToast/index.dart';
+import 'package:jobfortech/constant/icons.dart';
+import 'package:jobfortech/constant/theme.dart';
 
 import '../../../data/models/User.dart';
 
@@ -12,110 +20,97 @@ class RegisterController extends GetxController {
   var password = TextEditingController();
   var confirmPassword = TextEditingController();
   final authController = Get.put(AuthController());
+  List<FocusNode> focusNode = [];
+  Rx<User> user = User().obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    for (var i = 0; i < 6; i++) {
+      focusNode.add(FocusNode());
+    }
+  }
 
   @override
   void onClose() {
+    for (var i = 0; i < 6; i++) {
+      focusNode[i].dispose();
+    }
     firstName.dispose();
     lastName.dispose();
     email.dispose();
     password.dispose();
     confirmPassword.dispose();
+    super.onClose();
   }
-
-  // Future<User?> registerWithEmailAndPassword({
-  //   required String email,
-  //   required String password,
-  // }) async {
-  //   FirebaseAuth auth = FirebaseAuth.instance;
-
-  //   try {
-  //     UserCredential userCredential = await auth.createUserWithEmailAndPassword(
-  //       email: email,
-  //       password: password,
-  //     );
-  //     final sendEmailVerify =
-  //         await userCredential.user!.sendEmailVerification();
-  //     authController.emailVerifySuccess.value = true;
-
-  //     EasyLoading.showToast(
-  //       'Register Success ! Please Login',
-  //       toastPosition: EasyLoadingToastPosition.bottom,
-  //       duration: Duration(seconds: 2),
-  //     );
-  //     Get.offAll(() => EmailVerifyView());
-  //   } on FirebaseAuthException catch (e) {
-  //     if (e.code == 'email-already-in-use') {
-  //       Get.dialog(
-  //         AlertDialog(
-  //           title: Text('Email already in use'),
-  //           content: Text('Do you want Login?'),
-  //           actions: [
-  //             TextButton(
-  //               onPressed: () {
-  //                 Get.to(() => LoginView());
-  //               },
-  //               child: Text('OK'),
-  //             ),
-  //             TextButton(
-  //               onPressed: () {
-  //                 Get.back();
-  //               },
-  //               child: Text('Cancel'),
-  //             ),
-  //           ],
-  //         ),
-  //       );
-  //     }
-  //   } catch (e) {
-  //     Get.dialog(
-  //       AlertDialog(
-  //         title: Text('Error'),
-  //         content: Text('Something went wrong , please try again'),
-  //         actions: [
-  //           TextButton(
-  //             onPressed: () {
-  //               Get.back();
-  //             },
-  //             child: Text('OK'),
-  //           ),
-  //           TextButton(
-  //             onPressed: () {
-  //               Get.back();
-  //             },
-  //             child: Text('Cancel'),
-  //           ),
-  //         ],
-  //       ),
-  //     );
-  //     print('An error occurred while registering: $e');
-  //   }
-  //   return null;
-  // }
 
   void registering(GlobalKey<FormState> formKey) async {
     final UserRepository userRepo = UserRepository();
-    final User userModel = User(
-      firstName: firstName.text,
-      lastName: lastName.text,
-      email: email.text,
-    );
     var connection = await authController.checkConnection();
-
     if (connection) {
       try {
         if (formKey.currentState!.validate()) {
-          final user = await userRepo.register(
+          EasyLoading.show(
+              status: 'loading',
+              maskType: EasyLoadingMaskType.custom,
+              dismissOnTap: true);
+          final response = await userRepo.register(
             email: email.text,
             password: password.text,
             password2: confirmPassword.text,
             firstName: firstName.text,
             lastName: lastName.text,
           );
+          user.value = response;
+          print('user data : ${user.value.firstName} ${user.value.lastName} ');
 
-          print('success register');
+          AppToast(message: 'Register success');
+
+          await Future.delayed(Duration(seconds: 1));
+          EasyLoading.dismiss();
+          Get.to(() => EmailVerifyView(), arguments: user.value);
+        } else {
+          EasyLoading.showToast('Please fill all fields with valid data',
+              toastPosition: EasyLoadingToastPosition.bottom);
         }
       } catch (e) {
-        print(e);
+        if (e.toString().contains('email')) {
+          EasyLoading.dismiss();
+          AppDialog(
+            onConfirm: () {},
+            content: AppStack(
+                mAlignment: MainAxisAlignment.center,
+                cAlignment: CrossAxisAlignment.center,
+                spacing: Get.height * 0.05,
+                children: [
+                  AppIcon(svgPath: 'assets/svgs/success-verify.svg', size: 100),
+                  Text(
+                    'Your email has been verified. You can now log in with your new account.',
+                    style: AppBasicStyle(
+                      fontColor: AppColor.grey,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ]),
+            onCancel: () => Get.back(),
+            title: "Email already exists",
+            textConfirm: 'Login',
+            textCancel: 'Cancel',
+          );
+        } else {
+          print(e);
+          EasyLoading.dismiss();
+          Get.snackbar(
+            'Error',
+            'Something went wrong, Please try again later !',
+            duration: Duration(seconds: 5),
+            snackPosition: SnackPosition.TOP,
+            backgroundColor: Colors.red,
+            colorText: Colors.white,
+          );
+        }
       }
     }
   }

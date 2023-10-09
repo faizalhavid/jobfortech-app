@@ -3,13 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import 'package:get/get.dart';
+import 'package:jobfortech/app/service/dependency_injection.dart';
+import 'package:jobfortech/app/service/secure_storage_service.dart';
 import 'package:jobfortech/constant/theme.dart';
 import 'app/routes/app_pages.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-
+  // await Get.putAsync(() => SecureStorageService().init());
   configLoading();
   runApp(
     GetMaterialApp(
@@ -19,10 +21,11 @@ void main() async {
       debugShowCheckedModeBanner: false,
       builder: EasyLoading.init(),
       title: "JobforTech",
-      initialRoute: AppPages.INITIAL,
+      initialRoute: await AppPages.INITIAL,
       getPages: AppPages.routes,
     ),
   );
+  DependencyInjection.init();
 }
 
 void configLoading() {
@@ -34,8 +37,8 @@ void configLoading() {
     ..indicatorColor = AppColor.lightBlue
     ..radius = 10.0
     ..progressColor = AppColor.lightBlue
-    ..backgroundColor = AppColor.blue
-    ..indicatorColor = AppColor.lightBlue
+    ..backgroundColor = AppColor.lightGrey.withOpacity(0.2)
+    ..indicatorColor = AppColor.white
     ..textColor = AppColor.white
     ..textStyle = const TextStyle(fontSize: 16.0, color: AppColor.white)
     ..maskColor = AppColor.white.withOpacity(0.5)

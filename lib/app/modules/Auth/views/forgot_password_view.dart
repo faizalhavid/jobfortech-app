@@ -9,7 +9,7 @@ import 'package:jobfortech/components/AppSafeArea/index.dart';
 import 'package:jobfortech/components/AppTextInput/index.dart';
 import 'package:jobfortech/constant/icons.dart';
 import 'package:jobfortech/constant/theme.dart';
-import 'package:jobfortech/utils/validation.dart';
+import 'package:jobfortech/app/utils/validation.dart';
 
 class ForgotPasswordView extends GetView {
   const ForgotPasswordView({Key? key}) : super(key: key);

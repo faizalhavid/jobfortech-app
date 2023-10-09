@@ -9,6 +9,7 @@ import 'package:jobfortech/constant/theme.dart';
 
 class NavigationView extends GetView {
   const NavigationView({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(NavigationController());

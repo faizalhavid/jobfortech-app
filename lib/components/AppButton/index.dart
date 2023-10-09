@@ -5,6 +5,7 @@ ElevatedButton AppButton({
   required Widget child,
   required Function() onPressed,
   Color backgroundColor = AppColor.darkBlue,
+  Color? overlayColor = AppColor.lightBlue,
   double width = double.infinity,
   double height = 48,
   double borderRadius = 99,
@@ -13,9 +14,11 @@ ElevatedButton AppButton({
   Widget? suffix,
   double spacing = 8,
   Color outlineColor = AppColor.whitebone,
+  FocusNode? focusNode,
 }) {
   return ElevatedButton(
     onPressed: onPressed,
+    focusNode: focusNode,
     style: AppButtonStyle(
       type: type,
       backgroundColor: backgroundColor,
@@ -23,6 +26,7 @@ ElevatedButton AppButton({
       height: height,
       borderRadius: borderRadius,
       outlineColor: outlineColor,
+      overlayColor: overlayColor,
     ),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -48,6 +52,7 @@ ButtonStyle AppButtonStyle({
   required double height,
   required double borderRadius,
   Color outlineColor = AppColor.whitebone,
+  Color? overlayColor = AppColor.lightBlue,
 }) {
   ButtonStyle buttonStyle;
 
@@ -56,7 +61,7 @@ ButtonStyle AppButtonStyle({
       buttonStyle = ButtonStyle(
         elevation: MaterialStateProperty.all<double>(0.1),
         backgroundColor: MaterialStateProperty.all<Color>(backgroundColor),
-        overlayColor: MaterialStateProperty.all<Color>(AppColor.lightBlue),
+        overlayColor: MaterialStateProperty.all<Color>(overlayColor!),
         minimumSize: MaterialStateProperty.all<Size>(Size(width, height)),
         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
           RoundedRectangleBorder(

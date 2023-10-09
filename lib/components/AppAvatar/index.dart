@@ -5,15 +5,12 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:jobfortech/app/modules/Dashboard/controllers/dashboard_controller.dart';
 import 'package:jobfortech/constant/theme.dart';
 
-CircleAvatar AppAvatar({
-  double? radius,
-  Color outlineColor = AppColor.white,
-  Color backgroundColor = AppColor.blue,
-  ImageProvider? image,
-}) {
-  final user = Get.put(DashboardController());
-
-  final userPhoto = user.user.value?.photoURL;
+CircleAvatar AppAvatar(
+    {double? radius,
+    Color outlineColor = AppColor.white,
+    Color backgroundColor = AppColor.blue,
+    ImageProvider? image,
+    String? path}) {
   return CircleAvatar(
     radius: (radius ?? 20) + 2,
     backgroundColor: outlineColor,
@@ -27,9 +24,9 @@ CircleAvatar AppAvatar({
           borderRadius: BorderRadius.circular(60.0),
           color: Colors.transparent,
           image: DecorationImage(
-            image: userPhoto != null
-                ? NetworkImage(userPhoto) as ImageProvider<Object>
-                : AssetImage('assets/images/default-avatar.png')
+            image: path != null
+                ? NetworkImage(path)
+                : const AssetImage('assets/images/default-avatar.png')
                     as ImageProvider<Object>,
             fit: BoxFit.cover,
           ),

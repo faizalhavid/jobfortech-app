@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -21,19 +23,27 @@ class ProfileController extends GetxController {
   var address = TextEditingController();
   var country = TextEditingController();
   var password = TextEditingController();
-  var confirmPassword = TextEditingController();
+  var social_name = TextEditingController();
+  var social_url = TextEditingController();
+  final picker = ImagePicker();
 
   @override
   void onInit() {
     super.onInit();
-    getUser();
+    // getUser();
   }
 
-  Future<void> pickImageFromGallery() async {
-    final XFile? image = await ImagePicker().pickImage(
-      source: ImageSource.gallery,
-    );
-    selectedImage.value = image;
+  @override
+  void onClose() {
+    social_name.dispose();
+    social_url.dispose();
+  }
+
+  Future getImage() async {
+    final pickFile = await picker.pickImage(source: ImageSource.gallery);
+    if (pickFile != null) {
+      selectedImage.value = pickFile;
+    }
   }
 
   void editProfileHandling(GlobalKey<FormState> formKey) async {
@@ -77,31 +87,5 @@ class ProfileController extends GetxController {
         }
       }
     });
-  }
-
-  Future<void> getUser() async {
-    final userRef =
-        FirebaseDatabase.instance.ref().child('user/${this.user!.uid}');
-    final snapshot = await userRef.get();
-
-    print('user :${snapshot.value} ${this.user!.uid}');
-
-    if (snapshot != null) {
-      if (snapshot.value is Map) {
-        Map<dynamic, dynamic> values = snapshot.value as Map<dynamic, dynamic>;
-        name.text = values['name'].toString();
-        email.text = values['email'].toString();
-        bio.text = values['bio'].toString();
-        phoneNumber.text = values['phoneNumber'].toString();
-        jobRoles.text = values['techRoles'].toString();
-        birthDate.text = values['birthDate'].toString();
-        address.text = values['address'].toString();
-        country.text = values['country'].toString();
-      } else {
-        print('Invalid user data format.');
-      }
-    } else {
-      print('The user does not exist in the database.');
-    }
   }
 }

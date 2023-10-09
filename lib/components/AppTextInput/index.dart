@@ -12,7 +12,7 @@ TextFormField AppTextInput({
   TextInputType keyboardType = TextInputType.text,
   bool readOnly = false,
   Function(String)? onChanged,
-  TextInputAction? textInputAction,
+  TextInputAction? textInputAction = TextInputAction.next,
   FocusNode? focusNode,
   String? Function(String?)? validator,
   Function(String)? onFieldSubmitted,
@@ -20,8 +20,13 @@ TextFormField AppTextInput({
   Function()? onTap,
   int? maxLines = 1,
   TextEditingController? controller,
+  bool autofocus = false,
+  String? initialValue,
 }) {
   return TextFormField(
+    // for debuging purpose
+    initialValue: initialValue,
+    onFieldSubmitted: onFieldSubmitted,
     controller: controller,
     inputFormatters: inputFormatters,
     readOnly: readOnly,
@@ -39,26 +44,29 @@ TextFormField AppTextInput({
     focusNode: focusNode,
     onTap: onTap,
     validator: validator,
+    autofocus: autofocus,
   );
 }
 
 InputDecoration AppTextInputDecoration({
   Widget? suffix,
   required String hintText,
-  required String labelText,
+  String? labelText,
   Widget? prefix,
 }) {
   return InputDecoration(
-    label: Text(
-      labelText,
-      style: AppBasicStyle(
-        height: 1,
-        fontColor: AppColor.black,
-        fontSize: 18,
-        fontWeight: FontWeight.bold,
-        textAlign: TextAlign.start,
-      ),
-    ),
+    label: labelText != null
+        ? Text(
+            labelText,
+            style: AppBasicStyle(
+              height: 1,
+              fontColor: AppColor.black,
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              textAlign: TextAlign.start,
+            ),
+          )
+        : null,
     floatingLabelBehavior: FloatingLabelBehavior.always,
     suffixIcon: suffix,
     suffixStyle: AppBasicStyle(fontSize: 12),

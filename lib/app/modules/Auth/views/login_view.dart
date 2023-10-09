@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:jobfortech/app/modules/Auth/controllers/auth_controller.dart';
 import 'package:jobfortech/app/modules/Auth/controllers/login_controller.dart';
 import 'package:jobfortech/app/modules/Auth/views/forgot_password_view.dart';
 import 'package:jobfortech/app/modules/Auth/views/register_view.dart';
-import 'package:jobfortech/app/modules/Dashboard/views/navigation.dart';
 import 'package:jobfortech/components/AppButton/index.dart';
 import 'package:jobfortech/components/AppSafeArea/index.dart';
 import 'package:jobfortech/components/AppStack/index.dart';
 import 'package:jobfortech/constant/icons.dart';
 import 'package:jobfortech/components/AppTextInput/index.dart';
 import 'package:jobfortech/constant/theme.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:jobfortech/utils/validation.dart';
+import 'package:jobfortech/app/utils/validation.dart';
 
 class LoginView extends GetView<AuthController> {
   const LoginView({Key? key}) : super(key: key);
@@ -49,6 +48,7 @@ class LoginView extends GetView<AuthController> {
               ),
               textAlign: TextAlign.center,
             ),
+
             AppTextInput(
               controller: loginController.email,
               labelText: 'Email',
@@ -137,9 +137,7 @@ class LoginView extends GetView<AuthController> {
                       fontColor: AppColor.darkBlue,
                       fontWeight: FontWeight.bold),
                 ),
-                onPressed: () {
-                  controller.googleSignIn();
-                },
+                onPressed: () {},
                 type: 'outline',
               ),
               Row(

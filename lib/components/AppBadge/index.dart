@@ -34,8 +34,9 @@ InkWell AppBadgeButton({
   Function()? onPressed,
 }) {
   return InkWell(
+    borderRadius: BorderRadius.all(Radius.circular(radius)),
+    radius: radius,
     splashColor: AppColor.grey,
-    highlightColor: AppColor.blue,
     onTap: onPressed,
     child: AppBadge(
       padding: padding,

@@ -1,5 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
+
 import '../modules/Auth/bindings/auth_binding.dart';
 import '../modules/Auth/views/login_view.dart';
 import '../modules/Dashboard/bindings/dashboard_binding.dart';
@@ -11,8 +12,8 @@ part 'app_routes.dart';
 
 class AppPages {
   AppPages._();
-  static FirebaseAuth _auth = FirebaseAuth.instance;
-  static String get INITIAL => initialRouteMiddleware();
+
+  static Future<String> get INITIAL => initialRouteMiddleware();
 
   static List<GetPage> get routes => [
         GetPage(
@@ -32,12 +33,15 @@ class AppPages {
         ),
       ];
 
-  static String initialRouteMiddleware() {
-    User? user = _auth.currentUser;
-    if (user != null && user.emailVerified) {
-      return Routes.DASHBOARD;
+  static Future<String> initialRouteMiddleware() async {
+    final secureStorage = FlutterSecureStorage();
+
+    final token = await secureStorage.read(key: 'token');
+    print('token : ${token}');
+    if (token == null || token == '') {
+      return _Paths.AUTH;
     } else {
-      return Routes.AUTH;
+      return _Paths.DASHBOARD;
     }
   }
 }

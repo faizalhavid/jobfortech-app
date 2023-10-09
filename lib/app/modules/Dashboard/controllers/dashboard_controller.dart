@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jobfortech/app/modules/Auth/user_model.dart';
 import 'package:jobfortech/app/modules/Auth/views/login_view.dart';
-import 'package:jobfortech/constant/theme.dart';
 
 class DashboardController extends GetxController {
   RxBool isNotify = false.obs;
@@ -17,7 +16,6 @@ class DashboardController extends GetxController {
   Timer? timer;
   @override
   void onInit() {
-    fetchUserData();
     super.onInit();
   }
 
@@ -56,25 +54,5 @@ class DashboardController extends GetxController {
 
   void toggleArrowDirection() {
     isArrowUp.value = !isArrowUp.value;
-  }
-
-  Future<void> fetchUserData() async {
-    try {
-      User? userData = FirebaseAuth.instance.currentUser;
-      if (userData != null) {
-        user.value = userData;
-
-        UserModel userModel = UserModel(
-          uid: userData.uid,
-          name: userData.displayName,
-          email: userData.email,
-        );
-      }
-    } catch (e) {
-      Get.snackbar('Unathorized', 'Please login first');
-      Future.delayed(Duration(seconds: 2), () {
-        Get.offAll(() => LoginView());
-      });
-    }
   }
 }

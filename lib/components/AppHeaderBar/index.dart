@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jobfortech/app/modules/Auth/controllers/navigation_controller.dart';
 import 'package:jobfortech/app/modules/Dashboard/controllers/dashboard_controller.dart';
 import 'package:jobfortech/components/AppBadge/index.dart';
 import 'package:jobfortech/components/AppCard/index.dart';
@@ -28,6 +29,7 @@ PreferredSize AppHeaderbar({
   ShapeBorder? shape,
   Color? shadowColor,
   double height = 80,
+  Widget? expandContent,
   Key? key,
 }) {
   return PreferredSize(
@@ -42,7 +44,16 @@ PreferredSize AppHeaderbar({
         ],
       ),
       centerTitle: true,
-      bottom: expandAppbar ? AppHeaderBottom(type: type) : null,
+      bottom: expandAppbar
+          ? PreferredSize(
+              preferredSize: Size.fromHeight(type == 'default' ? 18 : 100),
+              child: Container(
+                  color: AppColor.blue,
+                  height: type == 'default' ? 0 : 135,
+                  alignment: Alignment.center,
+                  child: expandContent),
+            )
+          : null,
       elevation: 0,
       backgroundColor: backgroundColor,
       iconTheme: iconTheme,
@@ -56,23 +67,11 @@ PreferredSize AppHeaderbar({
   );
 }
 
-PreferredSize AppHeaderBottom({required String type}) {
-  return PreferredSize(
-    preferredSize: Size.fromHeight(type == 'default' ? 18 : 100),
-    child: Container(
-      color: AppColor.blue,
-      height: type == 'default' ? 0 : 135,
-      alignment: Alignment.center,
-      child: AppHeaderContent(type: type),
-    ),
-  );
-}
-
 Container AppHeaderContent({
   required String type,
 }) {
   Container typeContent;
-  final user = Get.find<DashboardController>().user.value;
+  final user = Get.find<NavigationController>().user.value;
   switch (type) {
     case 'dashboard':
       typeContent = Container(
@@ -96,7 +95,7 @@ Container AppHeaderContent({
                     Row(
                       children: [
                         Text(
-                          user?.displayName ?? user?.email ?? 'User Name',
+                          user.firstName! + ' ' + user.lastName!,
                           style: AppBasicStyle(
                             fontColor: AppColor.white,
                             fontWeight: FontWeight.w700,
