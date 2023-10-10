@@ -15,7 +15,8 @@ class ProfileController extends GetxController {
   RxInt badgecount = 1.obs;
 
   final user = FirebaseAuth.instance.currentUser;
-  var name = TextEditingController();
+  var firts_name = TextEditingController();
+  var last_name = TextEditingController();
   var email = TextEditingController();
   var bio = TextEditingController();
   var phoneNumber = TextEditingController();
@@ -23,25 +24,11 @@ class ProfileController extends GetxController {
   var birthDate = TextEditingController();
   var address = TextEditingController();
   var country = TextEditingController();
-  var password = TextEditingController();
   var social_name = TextEditingController();
   var social_url = TextEditingController();
 
   final Rx<List<Map<String, String>>> userSocial =
-      Rx<List<Map<String, String>>>([
-    {
-      'name': 'Facebook',
-      'url': 'https://facebook.com/',
-    },
-    {
-      'name': 'Twitter',
-      'url': 'https://twitter.com/',
-    },
-    {
-      'name': 'Instagram',
-      'url': 'https://instagram.com/',
-    }
-  ]);
+      Rx<List<Map<String, String>>>([]);
 
   final Rx<List<String>> socialList = Rx<List<String>>([
     'Facebook',
@@ -70,8 +57,6 @@ class ProfileController extends GetxController {
     if (index >= 0 && index < userSocial.value.length) {
       social_name.text = userSocial.value[index]['name']!;
       social_url.text = userSocial.value[index]['url']!;
-
-      userSocial.value.removeAt(index);
     }
   }
 
@@ -87,9 +72,12 @@ class ProfileController extends GetxController {
   }
 
   void editSocmed(int index) {
-    social_name.text = userSocial.value[index]['name']!;
-    social_url.text = userSocial.value[index]['url']!;
-    userSocial.value.removeAt(index);
+    userSocial.update((val) {
+      val![index]['name'] = social_name.text;
+      val[index]['url'] = social_url.text;
+    });
+
+    update();
   }
 
   void deleteSocmed(int index) {
@@ -102,45 +90,31 @@ class ProfileController extends GetxController {
   Future<void> pickImage(ImageSource source) async {
     final pickedImage = await ImagePicker().pickImage(source: source);
     if (pickedImage != null) {
-      String uploadedImageUrl = await uploadImageToServer(pickedImage);
-
-      imageUrl.value = uploadedImageUrl;
-    }
-  }
-
-  Future<String> uploadImageToServer(XFile pickedImage) async {
-    try {
-      final upload = await UserRepository().updateUser(body: {
-        'photo_profile': await pickedImage.readAsBytes(),
-      });
-      final file_path = upload.profile?.photoProfile;
-      return file_path;
-    } catch (e) {
-      print('error upload : $e');
-      return 'Error Upload';
+      imageUrl.value = pickedImage.path;
     }
   }
 
   void editProfileHandling(GlobalKey<FormState> formKey) async {
     if (formKey.currentState!.validate()) {
+      EasyLoading.show(status: 'loading...');
       try {
-        if (user != null) {
-          UserModel userModel = UserModel(
-            email: email.text,
-            name: name.text,
-            bio: bio.text,
-            phoneNumber: phoneNumber.text,
-            photoProfile: '',
-            techRoles: jobRoles.text,
-            birthDate: birthDate.text,
-            address: address.text,
-            country: country.text,
-          );
-
-          EasyLoading.showToast('Update Success');
-        }
+        final upload = await UserRepository().updateUser(body: {
+          'firstname': firts_name.text,
+          'lastname': last_name.text,
+          'email': email.text,
+          'descripton': bio.text,
+          'phone_number': phoneNumber.text,
+          'birthDate': birthDate.text,
+          'address': address.text,
+          'country': country.text,
+          'social_media': userSocial.value.toString(),
+        });
+        EasyLoading.dismiss();
+        AppToast(message: 'Profile updated successfully');
       } catch (e) {
-        print(e);
+        EasyLoading.dismiss();
+        AppToast(message: 'Something went wrong');
+        print('error : $e');
       }
     }
   }

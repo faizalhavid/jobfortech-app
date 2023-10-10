@@ -181,10 +181,11 @@ class UserRepository {
     }
   }
 
-  Future<User> updateUser({required Map<String, dynamic> body}) async {
+  Future<User> updateUser({required Map<String, String> body}) async {
     final id = await secureStorage.read(key: 'id');
     final token = await secureStorage.read(key: 'token');
-    final uri = Uri.parse('$baseUrl/users/$id');
+    final uri = Uri.parse('$baseUrl/users/update-profile/$id/');
+    print(body);
     final response = await http.patch(
       uri,
       headers: {
@@ -196,7 +197,7 @@ class UserRepository {
     );
 
     if (response.statusCode == 200) {
-      print(response.body);
+      print('success response ${response.body}');
       return User.fromJson(jsonDecode(response.body));
     } else {
       throw Exception(response.body);

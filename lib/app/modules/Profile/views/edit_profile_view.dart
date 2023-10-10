@@ -1,31 +1,23 @@
-import 'dart:io';
-
-import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
-import 'package:jobfortech/app/data/models/User.dart';
 import 'package:jobfortech/app/data/repository/UserRepo.dart';
-import 'package:jobfortech/app/modules/Auth/controllers/navigation_controller.dart';
 import 'package:jobfortech/app/modules/Profile/controllers/profile_controller.dart';
 import 'package:jobfortech/app/utils/globalController.dart';
+import 'package:jobfortech/app/utils/validation.dart';
 import 'package:jobfortech/components/AppAvatar/index.dart';
 import 'package:jobfortech/components/AppButton/index.dart';
 import 'package:jobfortech/components/AppDialog/index.dart';
 import 'package:jobfortech/components/AppDropDown/index.dart';
 import 'package:jobfortech/components/AppHeaderBar/index.dart';
 import 'package:jobfortech/components/AppSafeArea/index.dart';
-import 'package:jobfortech/components/AppShimmer/index.dart';
 import 'package:jobfortech/components/AppStack/index.dart';
 import 'package:jobfortech/components/AppTextInput/index.dart';
 import 'package:jobfortech/components/AppToast/index.dart';
 import 'package:jobfortech/constant/icons.dart';
 import 'package:jobfortech/constant/theme.dart';
 import 'package:jobfortech/app/utils/functions.dart';
-import 'package:jobfortech/app/utils/validation.dart';
-import 'package:shimmer/shimmer.dart';
 
 class EditProfileView extends GetView<ProfileController> {
   final controller = Get.put(ProfileController());
@@ -60,13 +52,39 @@ class EditProfileView extends GetView<ProfileController> {
         child: GetX<UserController>(
           builder: (userController) {
             final user = userController.user.value;
+            final profile = user.profile;
             final biodata = user.profile?.description == '' ||
                     user.profile?.description == null
                 ? 'No biodata'
                 : user.profile?.description ?? '';
-            final List<String> skills = user.profile!.skills!
-                .map((e) => e['label'].toString())
-                .toList();
+
+            controller.firts_name.text = user.firstName!;
+            controller.last_name.text = user.lastName!;
+            controller.email.text = user.email!;
+            controller.bio.text = profile?.description ?? 'No biodata';
+            controller.phoneNumber.text = user.phoneNumber!;
+
+            final socialList =
+                (profile?.socialMedia as List<dynamic>?)?.map((e) {
+                      return {
+                        'name': e['name'].toString(),
+                        'url': e['url'].toString(),
+                      };
+                    })?.toList() ??
+                    [];
+
+            controller.userSocial.value = socialList;
+
+            final skills =
+                profile?.skills?.map((e) => e['label'].toString()).toList() ??
+                    [];
+            // ... continue with the rest of the code
+
+            // controller.jobRoles.text = user.profile!.jobRole!;
+            // controller.birthDate.text = user.profile!.birthDate!;
+            // controller.address.text = user.profile!.address!;
+            // controller.country.text = user.profile!.country!;
+
             return AppSafeArea(
               safearea: resSafeArea,
               spacing: 20,
@@ -81,9 +99,8 @@ class EditProfileView extends GetView<ProfileController> {
                       outlineColor: AppColor.white,
                       path: user.profile?.photoProfile ?? null,
                     ),
-                    AppStack(
-                      spacing: 5,
-                      cAlignment: CrossAxisAlignment.end,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         AppButton(
                           backgroundColor: AppColor.blue,
@@ -102,12 +119,21 @@ class EditProfileView extends GetView<ProfileController> {
                                 await controller.pickImage(ImageSource.gallery);
                           },
                         ),
-                        Text(
-                          biodata,
-                          style: AppBasicStyle(
-                            fontSize: 12,
-                            fontColor: AppColor.grey,
-                            fontWeight: FontWeight.normal,
+                        SizedBox(
+                          width: Get.width * 0.5,
+                          child: AppTextInput(
+                            maxLines: 2,
+                            controller: controller.bio,
+                            onChanged: (value) {
+                              controller.bio.text = value;
+                            },
+                            hintText: biodata,
+                            errorText: 'Invalid bio',
+                            hintTextDirection: TextDirection.rtl,
+                            keyboardType: TextInputType.multiline,
+                            validator: (value) {
+                              return validateEmpty(value!, 'Bio is required');
+                            },
                           ),
                         ),
                       ],
@@ -115,41 +141,54 @@ class EditProfileView extends GetView<ProfileController> {
                   ],
                 ),
                 AppTextInput(
-                  controller: controller.name,
-                  onChanged: (value) {
-                    controller.name.text = value;
+                  controller: controller.firts_name,
+                  labelText: 'First Name',
+                  hintText: '${user.firstName}',
+                  errorText: 'Invalid first name',
+                  keyboardType: TextInputType.name,
+                  validator: (value) {
+                    return validateEmpty(value!, 'First name is required');
                   },
-                  labelText: 'Full Name',
-                  hintText: '${user.firstName} ${user.lastName}',
-                  errorText: 'Invalid address',
-                  keyboardType: TextInputType.streetAddress,
-                ),
-                AppDropDown(
-                  label: 'Job Role',
-                  items: skills.isEmpty ? ['No data'] : skills,
-                  controller: controller.jobRoles,
-                  errorText: 'Invalid job role',
                 ),
                 AppTextInput(
-                  controller: controller.birthDate,
-                  onTap: () {
-                    showDate(context, controller.birthDate);
+                  controller: controller.last_name,
+                  labelText: 'First Name',
+                  hintText: ' ${user.lastName}',
+                  errorText: 'Invalid last name',
+                  keyboardType: TextInputType.name,
+                  validator: (value) {
+                    return validateEmpty(value!, 'last name is required');
                   },
-                  readOnly: true,
-                  labelText: 'Birth Date',
-                  hintText: 'Enter birth date',
-                  errorText: 'Invalid birth date',
-                  suffix: IconButton(
-                    onPressed: () {
-                      showDate(context, controller.birthDate);
-                    },
-                    icon: const Icon(
-                      Icons.calendar_today,
-                      color: AppColor.blue,
-                    ),
-                  ),
-                  keyboardType: TextInputType.datetime,
                 ),
+                // AppDropDown(
+                //   label: 'Job Role',
+                //   items: skills.isEmpty ? ['No data'] : skills,
+                //   controller: controller.jobRoles,
+                //   errorText: 'Invalid job role',
+                // ),
+                // AppTextInput(
+                //   controller: controller.birthDate,
+                //   onTap: () {
+                //     showDate(context, controller.birthDate);
+                //   },
+                //   readOnly: true,
+                //   labelText: 'Birth Date',
+                //   hintText: 'Enter birth date',
+                //   errorText: 'Invalid birth date',
+                //   suffix: IconButton(
+                //     onPressed: () {
+                //       showDate(context, controller.birthDate);
+                //     },
+                //     icon: const Icon(
+                //       Icons.calendar_today,
+                //       color: AppColor.blue,
+                //     ),
+                //   ),
+                //   keyboardType: TextInputType.datetime,
+                //   validator: (value) {
+                //     return validateEmpty(value!, 'Birth date is required');
+                //   },
+                // ),
                 Text(
                   'Contact',
                   style: AppTitleHeader,
@@ -185,6 +224,9 @@ class EditProfileView extends GetView<ProfileController> {
                   hintText: '${user.email!.isEmpty ? 'No email' : user.email}',
                   errorText: 'Invalid email address',
                   keyboardType: TextInputType.emailAddress,
+                  validator: (value) {
+                    return validateEmpty(value!, 'Email is required');
+                  },
                 ),
                 Text(
                   'Link Account',

@@ -4,7 +4,7 @@ import 'package:jobfortech/constant/theme.dart';
 
 TextFormField AppTextInput({
   String hintText = 'TextInput hint',
-  String labelText = 'TextInput label',
+  String? labelText,
   String errorText = 'TextInput error',
   bool obscureText = false,
   Widget? suffix,
@@ -22,6 +22,7 @@ TextFormField AppTextInput({
   TextEditingController? controller,
   bool autofocus = false,
   String? initialValue,
+  TextDirection? hintTextDirection = TextDirection.ltr,
 }) {
   return TextFormField(
     // for debuging purpose
@@ -37,6 +38,7 @@ TextFormField AppTextInput({
       prefix: prefix,
       hintText: hintText,
       labelText: labelText,
+      hintTextDirection: hintTextDirection,
     ),
     obscureText: obscureText,
     keyboardType: keyboardType,
@@ -48,12 +50,12 @@ TextFormField AppTextInput({
   );
 }
 
-InputDecoration AppTextInputDecoration({
-  Widget? suffix,
-  required String hintText,
-  String? labelText,
-  Widget? prefix,
-}) {
+InputDecoration AppTextInputDecoration(
+    {Widget? suffix,
+    required String hintText,
+    String? labelText,
+    Widget? prefix,
+    TextDirection? hintTextDirection}) {
   return InputDecoration(
     label: labelText != null
         ? Text(
@@ -68,6 +70,7 @@ InputDecoration AppTextInputDecoration({
           )
         : null,
     floatingLabelBehavior: FloatingLabelBehavior.always,
+    hintTextDirection: hintTextDirection,
     suffixIcon: suffix,
     suffixStyle: AppBasicStyle(fontSize: 12),
     prefixIcon: prefix,

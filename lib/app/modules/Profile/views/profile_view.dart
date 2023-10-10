@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:jobfortech/app/data/repository/UserRepo.dart';
+import 'package:get/get.dart';
 import 'package:jobfortech/app/modules/Auth/controllers/auth_controller.dart';
 import 'package:jobfortech/app/modules/Profile/controllers/profile_controller.dart';
 import 'package:jobfortech/app/modules/Profile/views/edit_profile_view.dart';

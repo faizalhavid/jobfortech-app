@@ -52,7 +52,7 @@ class NavigationController extends GetxController
 
   void updateStatus({required bool status}) async {
     final response = await userRepo.updateUser(body: {
-      'status': status,
+      'status': status.toString(),
     });
   }
 }
