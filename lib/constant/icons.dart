@@ -74,8 +74,8 @@ CircleAvatar AppSkillsIcon({required String skill}) {
     backgroundColor: AppColor.white,
     child: SvgPicture.asset(
       svgPath,
-      width: 35,
-      height: 35,
+      width: 20,
+      height: 20,
     ),
   );
 }

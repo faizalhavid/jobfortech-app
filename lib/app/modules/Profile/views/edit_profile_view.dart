@@ -1,12 +1,17 @@
+import 'dart:ffi';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:jobfortech/app/data/repository/UserRepo.dart';
 import 'package:jobfortech/app/modules/Profile/controllers/profile_controller.dart';
+import 'package:jobfortech/app/modules/Profile/views/expertise_search_view.dart';
 import 'package:jobfortech/app/utils/globalController.dart';
 import 'package:jobfortech/app/utils/validation.dart';
 import 'package:jobfortech/components/AppAvatar/index.dart';
+import 'package:jobfortech/components/AppBadge/index.dart';
 import 'package:jobfortech/components/AppButton/index.dart';
 import 'package:jobfortech/components/AppDialog/index.dart';
 import 'package:jobfortech/components/AppDropDown/index.dart';
@@ -17,7 +22,7 @@ import 'package:jobfortech/components/AppTextInput/index.dart';
 import 'package:jobfortech/components/AppToast/index.dart';
 import 'package:jobfortech/constant/icons.dart';
 import 'package:jobfortech/constant/theme.dart';
-import 'package:jobfortech/app/utils/functions.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class EditProfileView extends GetView<ProfileController> {
   final controller = Get.put(ProfileController());
@@ -63,6 +68,7 @@ class EditProfileView extends GetView<ProfileController> {
             controller.email.text = user.email!;
             controller.bio.text = profile?.description ?? 'No biodata';
             controller.phoneNumber.text = user.phoneNumber!;
+            controller.cv_file.value = File(profile?.resume ?? '');
 
             final socialList =
                 (profile?.socialMedia as List<dynamic>?)?.map((e) {
@@ -78,6 +84,7 @@ class EditProfileView extends GetView<ProfileController> {
             final skills =
                 profile?.skills?.map((e) => e['label'].toString()).toList() ??
                     [];
+
             // ... continue with the rest of the code
 
             // controller.jobRoles.text = user.profile!.jobRole!;
@@ -89,56 +96,164 @@ class EditProfileView extends GetView<ProfileController> {
               safearea: resSafeArea,
               spacing: 20,
               children: [
+                Text(
+                  'Account',
+                  style: AppTitleHeader,
+                ),
                 Row(
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    AppAvatar(
-                      backgroundColor: AppColor.smoke,
-                      radius: 40,
-                      outlineColor: AppColor.white,
-                      path: user.profile?.photoProfile ?? null,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
+                    Stack(
                       children: [
-                        AppButton(
-                          backgroundColor: AppColor.blue,
-                          height: 35,
-                          width: 80,
-                          child: Text(
-                            'Upload Photo',
-                            style: AppBasicStyle(
-                                fontSize: 12,
-                                fontColor: AppColor.white,
-                                fontWeight: FontWeight.w500),
-                          ),
-                          spacing: 0,
-                          onPressed: () async {
-                            final pickedImage =
-                                await controller.pickImage(ImageSource.gallery);
-                          },
+                        Obx(
+                          () => controller.image.value!.path.isEmpty
+                              ? AppAvatar(
+                                  backgroundColor: AppColor.smoke,
+                                  radius: 40,
+                                  outlineColor: AppColor.blue,
+                                  path: user.profile?.photoProfile ?? null,
+                                )
+                              : AppAvatar(
+                                  backgroundColor: AppColor.smoke,
+                                  radius: 40,
+                                  outlineColor: AppColor.blue,
+                                  image: FileImage(controller.image.value!),
+                                ),
                         ),
-                        SizedBox(
-                          width: Get.width * 0.5,
-                          child: AppTextInput(
-                            maxLines: 2,
-                            controller: controller.bio,
-                            onChanged: (value) {
-                              controller.bio.text = value;
+                        Positioned(
+                          right: -15,
+                          bottom: 0,
+                          child: IconButton(
+                            onPressed: () {
+                              controller.pickImage(ImageSource.gallery);
                             },
-                            hintText: biodata,
-                            errorText: 'Invalid bio',
-                            hintTextDirection: TextDirection.rtl,
-                            keyboardType: TextInputType.multiline,
-                            validator: (value) {
-                              return validateEmpty(value!, 'Bio is required');
-                            },
+                            icon: AppIcon(
+                                svgPath: 'assets/svgs/upload-image.svg',
+                                size: 20),
+                            splashRadius: 25,
                           ),
                         ),
                       ],
-                    )
+                    ),
+                    Container(
+                        width: Get.width * 0.55,
+                        child: Obx(() {
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Expertise',
+                                    style: AppBasicStyle(
+                                      fontColor: AppColor.black,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  controller.tags.isNotEmpty
+                                      ? IconButton(
+                                          splashRadius: 20,
+                                          onPressed: () {},
+                                          icon: Icon(
+                                            Icons.mode_edit_outline_outlined,
+                                            color: AppColor.blue,
+                                          ))
+                                      : SizedBox()
+                                ],
+                              ),
+                              SizedBox(
+                                height: Get.height * 0.02,
+                              ),
+                              controller.tags.isNotEmpty
+                                  ? Column(
+                                      children: [
+                                        Wrap(
+                                          alignment: WrapAlignment.start,
+                                          runAlignment: WrapAlignment.start,
+                                          crossAxisAlignment:
+                                              WrapCrossAlignment.center,
+                                          children: [
+                                            for (var tag
+                                                in controller.tags.take(3))
+                                              Container(
+                                                margin: EdgeInsets.only(
+                                                    right: 5, bottom: 5),
+                                                child: Chip(
+                                                  backgroundColor: AppColor
+                                                      .lightBlue
+                                                      .withOpacity(0.6),
+                                                  label: Text(
+                                                    tag,
+                                                    style: AppBasicStyle(
+                                                      fontSize: 12,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      fontColor: AppColor.blue,
+                                                    ),
+                                                  ),
+                                                  deleteIconColor:
+                                                      AppColor.blue,
+                                                  onDeleted: () {
+                                                    controller.tags.remove(tag);
+                                                  },
+                                                ),
+                                              ),
+                                            controller.tags.length >= 3
+                                                ? Chip(
+                                                    backgroundColor:
+                                                        AppColor.smoke,
+                                                    label: Text(
+                                                      '${controller.tags.length - 3} + more',
+                                                      style: AppBasicStyle(
+                                                        fontSize: 12,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        fontColor:
+                                                            AppColor.blue,
+                                                      ),
+                                                    ),
+                                                  )
+                                                : SizedBox()
+                                          ],
+                                        ),
+                                      ],
+                                    )
+                                  : AppButton(
+                                      height: 40,
+                                      width: Get.width * 0.3,
+                                      backgroundColor: AppColor.blue,
+                                      child: Text(
+                                        'Add Expertise',
+                                        style: AppBasicStyle(
+                                          fontColor: AppColor.white,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                      onPressed: () {
+                                        Get.to(() => ExpertiseSearchView());
+                                      },
+                                    ),
+                            ],
+                          );
+                        }))
                   ],
+                ),
+                AppTextInput(
+                  maxLines: 2,
+                  controller: controller.bio,
+                  hintText: biodata,
+                  labelText: 'Bio',
+                  errorText: 'Invalid bio',
+                  keyboardType: TextInputType.multiline,
+                  validator: (value) {
+                    return validateEmpty(value!, 'Bio is required');
+                  },
                 ),
                 AppTextInput(
                   controller: controller.firts_name,
@@ -208,6 +323,7 @@ class EditProfileView extends GetView<ProfileController> {
                         '${user.phoneNumber!.isEmpty ? 'No phone number' : user.phoneNumber}',
                   ),
                   languageCode: "id",
+                  initialCountryCode: "ID",
                   onChanged: (phone) {
                     print(phone.completeNumber);
                   },
@@ -360,34 +476,49 @@ class EditProfileView extends GetView<ProfileController> {
                   'CV',
                   style: AppTitleHeader,
                 ),
-                InkWell(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Container(
-                    width: Get.width,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: AppColor.blue),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      mainAxisSize: MainAxisSize.max,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                            width: Get.width * 0.6,
-                            child: const Text(
-                              'filee.pdf',
-                              overflow: TextOverflow.ellipsis,
-                            )),
-                        IconButton(
-                            onPressed: () {},
-                            splashRadius: 15,
-                            icon: const Icon(
-                              Icons.close,
-                              color: AppColor.blue,
-                              size: 14,
-                            ))
-                      ],
+                Obx(
+                  () => InkWell(
+                    onTap: () {
+                      controller.cv_file.value != ''
+                          ? controller.pickFile()
+                          : SfPdfViewer.network(
+                              controller.cv_file.value.path,
+                              key: GlobalKey(),
+                            ).toString();
+                    },
+                    borderRadius: BorderRadius.circular(10),
+                    splashColor: AppColor.blue.withOpacity(0.5),
+                    child: Container(
+                      width: Get.width,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(color: AppColor.blue),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        mainAxisSize: MainAxisSize.max,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                              width: Get.width * 0.6,
+                              child: Text(
+                                controller.cv_file.value.path != ''
+                                    ? controller.cv_file.value.path
+                                        .split('/')
+                                        .last
+                                    : 'Upload Cv',
+                                overflow: TextOverflow.ellipsis,
+                              )),
+                          IconButton(
+                              onPressed: () {},
+                              splashRadius: 15,
+                              icon: const Icon(
+                                Icons.close,
+                                color: AppColor.blue,
+                                size: 14,
+                              ))
+                        ],
+                      ),
                     ),
                   ),
                 ),

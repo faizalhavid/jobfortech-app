@@ -7,6 +7,8 @@ import '../modules/Dashboard/bindings/dashboard_binding.dart';
 import '../modules/Dashboard/views/navigation.dart';
 import '../modules/Profile/bindings/menu_binding.dart';
 import '../modules/Profile/views/menu_view.dart';
+import '../modules/Work/bindings/work_binding.dart';
+import '../modules/Work/views/work_view.dart';
 
 part 'app_routes.dart';
 
@@ -30,6 +32,11 @@ class AppPages {
           name: _Paths.MENU,
           page: () => const MenuView(),
           binding: MenuBinding(),
+        ),
+        GetPage(
+          name: _Paths.WORK,
+          page: () => const WorkView(),
+          binding: WorkBinding(),
         ),
       ];
 

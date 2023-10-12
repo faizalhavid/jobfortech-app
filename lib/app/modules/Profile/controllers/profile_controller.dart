@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -24,8 +25,24 @@ class ProfileController extends GetxController {
   var birthDate = TextEditingController();
   var address = TextEditingController();
   var country = TextEditingController();
+  var expertise = TextEditingController();
   var social_name = TextEditingController();
   var social_url = TextEditingController();
+
+  final RxList<String> tags = RxList<String>([]);
+  final RxList<String> tagOptions = RxList<String>([
+    'News',
+    'Entertainment',
+    'Politics',
+    'Automotive',
+    'Sports',
+    'Education',
+    'Fashion',
+    'Travel',
+    'Food',
+    'Tech',
+    'Science',
+  ]);
 
   final Rx<List<Map<String, String>>> userSocial =
       Rx<List<Map<String, String>>>([]);
@@ -85,14 +102,29 @@ class ProfileController extends GetxController {
     userSocial.update((val) {});
   }
 
-  Rx<String?> imageUrl = Rx<String?>(null);
+  Rx<File> image = Rx<File>(File(''));
+  Rx<File> cv_file = Rx<File>(File(''));
 
   Future<void> pickImage(ImageSource source) async {
     final pickedImage = await ImagePicker().pickImage(source: source);
     if (pickedImage != null) {
-      imageUrl.value = pickedImage.path;
+      image.value = File(pickedImage.path);
     }
   }
+
+  Future<void> pickFile() async {
+    final pickedFile = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+    );
+    if (pickedFile != null) {
+      PlatformFile file = pickedFile.files.first;
+      cv_file.value = File(file.path!);
+      print('cvvv : ${cv_file.value} {${cv_file.value.path..split('/').last}');
+    }
+  }
+
+  Future<void> readFile(PlatformFile file) async {}
 
   void editProfileHandling(GlobalKey<FormState> formKey) async {
     if (formKey.currentState!.validate()) {

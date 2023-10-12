@@ -12,6 +12,7 @@ class DashboardController extends GetxController {
   RxBool isArrowUp = true.obs;
   RxString statusTask = 'Pending'.obs;
   Rx<Duration> duration = Duration(seconds: 0).obs;
+  RxInt _currentIndex = RxInt(0);
 
   Timer? timer;
   @override

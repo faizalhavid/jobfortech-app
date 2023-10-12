@@ -17,31 +17,6 @@ class WorkDeskView extends GetView {
   Widget build(BuildContext context) {
     final notifyState = Get.put(DashboardController());
     return Scaffold(
-      appBar: AppHeaderbar(
-        expandAppbar: true,
-        type: 'work-desk',
-        leading: InkWell(
-          child: AppAvatar(),
-          onTap: () {
-            Get.to(() => ProfileView());
-          },
-        ),
-        title: AppIcon(
-          svgPath: 'assets/svgs/jobfortech-logo.svg',
-          size: 24,
-          editColor: true,
-          color: AppColor.white,
-        ),
-        actions: Obx(
-          () => AppIconButton(
-            svgPath: 'assets/svgs/notifications-bell.svg',
-            onPressed: () {
-              notifyState.isNotify.value = !notifyState.isNotify.value;
-            },
-            isbadge: notifyState.isNotify.value,
-          ),
-        ),
-      ),
       body: AppSafeArea(
         safearea: {'horizontal': 16, 'vertical': 20},
         children: [

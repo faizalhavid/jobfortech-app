@@ -19,7 +19,7 @@ Container AppStack({
       mainAxisSize: mainAxisSize,
       children: children!
           .map((e) => Padding(
-                padding: EdgeInsets.only(bottom: spacing),
+                padding: EdgeInsets.only(top: spacing),
                 child: e,
               ))
           .toList(),

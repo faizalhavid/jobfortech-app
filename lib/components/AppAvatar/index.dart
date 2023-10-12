@@ -24,10 +24,11 @@ CircleAvatar AppAvatar(
           borderRadius: BorderRadius.circular(60.0),
           color: Colors.transparent,
           image: DecorationImage(
-            image: path != null
-                ? NetworkImage(path)
-                : const AssetImage('assets/images/default-avatar.png')
-                    as ImageProvider<Object>,
+            image: image ??
+                (path != null
+                    ? NetworkImage(path)
+                    : const AssetImage('assets/images/default-avatar.png')
+                        as ImageProvider<Object>),
             fit: BoxFit.cover,
           ),
         ),

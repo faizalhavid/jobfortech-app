@@ -8,6 +8,7 @@ abstract class Routes {
   static const MENU = _Paths.MENU;
   static const ASSESSMENT = _Paths.ASSESSMENT;
   static const PROJECT_TEST = _Paths.ASSESSMENT;
+  static const WORK = _Paths.WORK;
 }
 
 abstract class _Paths {
@@ -16,4 +17,5 @@ abstract class _Paths {
   static const DASHBOARD = '/dashboard';
   static const MENU = '/menu';
   static const ASSESSMENT = '/assessment';
+  static const WORK = '/work';
 }
