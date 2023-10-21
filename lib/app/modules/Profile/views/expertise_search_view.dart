@@ -34,7 +34,7 @@ class ExpertiseSearchView extends GetView {
           TypeAheadField(
             hideOnEmpty: true,
             suggestionsCallback: (String pattern) async {
-              return controller.tagOptions.where((element) =>
+              return controller.expertiseOptions.where((element) =>
                   element.toLowerCase().contains(pattern.toLowerCase()));
             },
             itemBuilder: (context, String suggestion) {
@@ -44,9 +44,9 @@ class ExpertiseSearchView extends GetView {
             },
             onSuggestionSelected: (String suggestion) {
               controller.expertise.clear();
-              controller.tagOptions.remove(suggestion);
+              controller.expertiseOptions.remove(suggestion);
 
-              controller.tags.add(suggestion);
+              controller.expertiseTag.add(suggestion);
             },
             textFieldConfiguration: textField(controller),
           ),
@@ -71,13 +71,13 @@ class ExpertiseSearchView extends GetView {
           Obx(() {
             return Container(
               width: Get.width,
-              child: controller.tags.length > 0
+              child: controller.expertiseTag.length > 0
                   ? Wrap(
                       alignment: WrapAlignment.start,
                       runAlignment: WrapAlignment.start,
                       crossAxisAlignment: WrapCrossAlignment.center,
                       children: [
-                        for (var tag in controller.tags)
+                        for (var tag in controller.expertiseTag)
                           Container(
                             margin: EdgeInsets.only(right: 10, bottom: 10),
                             child: Chip(
@@ -93,7 +93,7 @@ class ExpertiseSearchView extends GetView {
                               ),
                               deleteIconColor: AppColor.blue,
                               onDeleted: () {
-                                controller.tags.remove(tag);
+                                controller.expertiseTag.remove(tag);
                               },
                             ),
                           ),
@@ -110,7 +110,7 @@ class ExpertiseSearchView extends GetView {
   TextFieldConfiguration textField(ProfileController controller) {
     return TextFieldConfiguration(
       onEditingComplete: () {
-        controller.tags.add(controller.expertise.text);
+        controller.expertiseTag.add(controller.expertise.text);
         controller.expertise.clear();
       },
       controller: controller.expertise,

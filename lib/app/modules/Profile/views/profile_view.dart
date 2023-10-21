@@ -148,7 +148,8 @@ class ProfileView extends GetView<ProfileController> {
                 size: 26),
             text: 'Log Out',
             onTap: () {
-              final logoutCOntroller = Get.put(AuthController());
+              final authController = Get.put(AuthController());
+              authController.logout();
             },
           ),
         ],

@@ -6,13 +6,16 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:jobfortech/app/data/repository/UserRepo.dart';
-import 'package:jobfortech/app/modules/Auth/user_model.dart';
+import 'package:jobfortech/components/AppDialog/index.dart';
+import 'package:jobfortech/components/AppStack/index.dart';
 import 'package:jobfortech/components/AppToast/index.dart';
+import 'package:jobfortech/constant/theme.dart';
+import 'dart:async';
 
 class ProfileController extends GetxController {
-  RxList<String> jobRole = RxList<String>([]);
   RxInt badgecount = 1.obs;
 
   final user = FirebaseAuth.instance.currentUser;
@@ -26,24 +29,29 @@ class ProfileController extends GetxController {
   var address = TextEditingController();
   var country = TextEditingController();
   var expertise = TextEditingController();
+
   var social_name = TextEditingController();
   var social_url = TextEditingController();
-
-  final RxList<String> tags = RxList<String>([]);
-  final RxList<String> tagOptions = RxList<String>([
-    'News',
-    'Entertainment',
-    'Politics',
-    'Automotive',
-    'Sports',
-    'Education',
-    'Fashion',
-    'Travel',
-    'Food',
-    'Tech',
-    'Science',
+  Rx<File> image = Rx<File>(File(''));
+  Rx<File> cv_file = Rx<File>(File(''));
+  final RxList<String> positionsList = RxList<String>([
+    'Frontend Developer',
+    'Backend Developer',
+    'Fullstack Developer',
+    'Mobile Developer',
+    'UI/UX Designer',
+    'Data Scientist',
+    'Data Analyst',
+    'Product Manager',
+    'Project Manager',
+    'Business Analyst',
+    'DevOps Engineer',
+    'QA Engineer',
+    'Software Engineer',
+    'Other',
   ]);
-
+  final RxList<String> expertiseTag = RxList<String>([]);
+  final RxList<String> expertiseOptions = RxList<String>([]);
   final Rx<List<Map<String, String>>> userSocial =
       Rx<List<Map<String, String>>>([]);
 
@@ -58,10 +66,12 @@ class ProfileController extends GetxController {
     'Medium',
   ]);
 
+  final userRepo = UserRepository();
+
   @override
   void onInit() {
     super.onInit();
-    // getUser();
+    fetchingExpertise();
   }
 
   @override
@@ -69,6 +79,8 @@ class ProfileController extends GetxController {
     social_name.dispose();
     social_url.dispose();
   }
+
+  // socmed
 
   void getSocmedIndex(int index) {
     if (index >= 0 && index < userSocial.value.length) {
@@ -102,13 +114,51 @@ class ProfileController extends GetxController {
     userSocial.update((val) {});
   }
 
-  Rx<File> image = Rx<File>(File(''));
-  Rx<File> cv_file = Rx<File>(File(''));
-
   Future<void> pickImage(ImageSource source) async {
     final pickedImage = await ImagePicker().pickImage(source: source);
     if (pickedImage != null) {
-      image.value = File(pickedImage.path);
+      final imageCropper = ImageCropper();
+      final croppedImage = await imageCropper.cropImage(
+        sourcePath: pickedImage.path,
+        aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
+        compressQuality: 100,
+        maxHeight: 512,
+        maxWidth: 512,
+      );
+      if (croppedImage != null) {
+        final croppedFile = File(croppedImage.path);
+        AppDialog(
+          title: 'Upload Image',
+          content: AppStack(
+            cAlignment: CrossAxisAlignment.center,
+            mAlignment: MainAxisAlignment.center,
+            children: [
+              Image.file(
+                croppedFile,
+                fit: BoxFit.cover,
+              ),
+              Text('Are you sure want to upload this image?',
+                  style: AppBasicStyle(fontColor: AppColor.grey)),
+            ],
+          ),
+          onConfirm: () async {
+            image.value = croppedFile;
+            print('imageeee : ${image.value}');
+            final uploadImage =
+                await UserRepository().updateUserPhoto(image: image.value);
+            if (uploadImage) {
+              AppToast(message: 'Image uploaded successfully');
+              Get.back();
+            } else {
+              AppToast(message: 'Something went error !');
+              Get.back();
+            }
+          },
+          onCancel: () {
+            Get.back();
+          },
+        );
+      }
     }
   }
 
@@ -120,27 +170,56 @@ class ProfileController extends GetxController {
     if (pickedFile != null) {
       PlatformFile file = pickedFile.files.first;
       cv_file.value = File(file.path!);
-      print('cvvv : ${cv_file.value} {${cv_file.value.path..split('/').last}');
+      AppDialog(
+          title: 'Are you sure want to upload this file?',
+          content: AppStack(
+            cAlignment: CrossAxisAlignment.center,
+            mAlignment: MainAxisAlignment.center,
+            children: [
+              Text(file.name, style: AppBasicStyle(fontColor: AppColor.grey)),
+            ],
+          ),
+          onConfirm: () async {
+            final uploadFile =
+                await UserRepository().uploadPDF(pdfFile: cv_file.value);
+            if (uploadFile) {
+              AppToast(message: 'File uploaded successfully');
+              Get.back();
+            } else {
+              AppToast(message: 'Something went error !');
+              Get.back();
+            }
+          },
+          onCancel: () {
+            Get.back();
+          });
     }
   }
 
   Future<void> readFile(PlatformFile file) async {}
 
+// Execute
   void editProfileHandling(GlobalKey<FormState> formKey) async {
     if (formKey.currentState!.validate()) {
       EasyLoading.show(status: 'loading...');
       try {
-        final upload = await UserRepository().updateUser(body: {
-          'firstname': firts_name.text,
-          'lastname': last_name.text,
-          'email': email.text,
-          'descripton': bio.text,
-          'phone_number': phoneNumber.text,
-          'birthDate': birthDate.text,
-          'address': address.text,
-          'country': country.text,
-          'social_media': userSocial.value.toString(),
-        });
+        final upload = await userRepo.updateUser(
+          body: {
+            'first_name': firts_name.text,
+            'last_name': last_name.text,
+            'email': email.text,
+            'description': bio.text,
+            'phone_number': phoneNumber.text,
+            'position': jobRoles.text,
+            'location': address.text,
+            'expertise': expertiseTag,
+            'social_media': userSocial.value
+                .map((social) => social['url']!.startsWith('http')
+                    ? social['url']
+                    : 'https://${social['url']}')
+                .toList(),
+          },
+        );
         EasyLoading.dismiss();
         AppToast(message: 'Profile updated successfully');
       } catch (e) {
@@ -151,22 +230,8 @@ class ProfileController extends GetxController {
     }
   }
 
-  Future<void> getJobRole() async {
-    final jobroles = await FirebaseDatabase.instance
-        .ref()
-        .child('jobRoles')
-        .get()
-        .then((DataSnapshot? snapshot) {
-      if (snapshot != null) {
-        if (snapshot.value is List) {
-          List<dynamic> values = snapshot.value as List<dynamic>;
-          jobRole.addAll(values
-              .where((value) => value != null)
-              .map((value) => value['label'].toString()));
-        } else {
-          print('Invalid job roles data format.');
-        }
-      }
-    });
+  Future<void> fetchingExpertise() async {
+    final expertiseData = await userRepo.getExpertise();
+    expertiseOptions.assignAll(expertiseData);
   }
 }

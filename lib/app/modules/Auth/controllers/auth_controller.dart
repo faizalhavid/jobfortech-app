@@ -1,27 +1,17 @@
 import 'dart:async';
-
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:jobfortech/app/data/repository/UserRepo.dart';
+import 'package:jobfortech/app/modules/Auth/views/login_view.dart';
 import 'package:jobfortech/constant/theme.dart';
 
 class AuthController extends GetxController {
-  late GoogleSignInAccount? currentUser;
-  final database = FirebaseDatabase.instance;
   RxBool eyeIconPassword = true.obs;
   RxBool eyeIconConfirmPassword = true.obs;
   final secureStorage = FlutterSecureStorage();
-  final GoogleSignIn _googleSignIn = GoogleSignIn(
-    scopes: <String>[
-      'email',
-      'https://www.googleapis.com/auth/contacts.readonly',
-    ],
-  );
 
   RxBool emailVerified = false.obs;
   RxBool emailVerifySuccess = false.obs;
@@ -90,6 +80,31 @@ class AuthController extends GetxController {
       print(e);
       resendEmail.value = false;
       startCountdown(1);
+    }
+  }
+
+  Future<void> logout() async {
+    final id = await secureStorage.read(key: 'id');
+    final token = await secureStorage.read(key: 'token');
+    try {
+      var connection = await checkConnection();
+      UserRepository userRepo = UserRepository();
+      if (connection) {
+        EasyLoading.show();
+        secureStorage.delete(key: 'token');
+        secureStorage.delete(key: 'id');
+        EasyLoading.dismiss();
+        Future.delayed(Duration(seconds: 2), () {
+          Get.offAll(() => LoginView());
+        });
+        EasyLoading.showToast('Logout success',
+            toastPosition: EasyLoadingToastPosition.bottom);
+      }
+    } on Exception catch (e) {
+      EasyLoading.dismiss();
+      EasyLoading.showToast(e.toString(),
+          toastPosition: EasyLoadingToastPosition.bottom);
+      print(e);
     }
   }
 }

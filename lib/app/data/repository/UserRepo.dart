@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
@@ -10,7 +11,7 @@ class UserRepository {
   // final baseUrl = 'https://api.techconsulta.com';
   final GetConnect connect = Get.find<GetConnect>();
 
-  final baseUrl = 'https://api.techconsulta.com';
+  final baseUrl = 'http://192.168.100.44:8000';
 
   final secureStorage = FlutterSecureStorage();
   Future<User> register({
@@ -31,7 +32,7 @@ class UserRepository {
             'password2': password2,
             'first_name': firstName,
             'last_name': lastName,
-            'is_developer': 'true',
+            'is_developer': 'True',
           },
         ),
         headers: <String, String>{
@@ -82,16 +83,17 @@ class UserRepository {
     required String email,
     required String password,
   }) async {
+    final uri = Uri.parse('$baseUrl/auth/login');
     final response = await http.post(
-      Uri.parse('$baseUrl/auth/login'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        'X-Client-Type': 'Jobfortech-app',
-      },
+      uri,
       body: jsonEncode(<dynamic, dynamic>{
         'email': email,
         'password': password,
       }),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'X-Client-Type': 'Jobfortech-app',
+      },
     );
     if (response.statusCode == 200) {
       final token = jsonDecode(response.body)['token'];
@@ -104,46 +106,6 @@ class UserRepository {
     } else {
       final message = jsonDecode(response.body)['non_field_errors'][0];
       throw (message);
-    }
-  }
-
-  // Future<User> logout({required token}) async {
-  //   final response = await http.post(
-  //     Uri.parse('$baseUrl/auth/logout'),
-  //     headers: <String, String>{
-  //       'Content-Type': 'application/json; charset=UTF-8',
-  //       'bearer': '$token',
-  //     },
-  //   );
-  //   if (response.statusCode == 200) {
-  //     return User.fromJson(jsonDecode(response.body));
-  //   } else {
-  //     throw Exception(response.body);
-  //   }
-  // }
-
-  Future<User> getUser() async {
-    final token = await secureStorage.read(key: 'token');
-    final id = await secureStorage.read(key: 'id');
-    final response = await http.get(
-      Uri.parse('$baseUrl/users/$id'),
-      headers: {
-        'Accept': 'application/json',
-        'Authorization': 'Token ${token}',
-      },
-    ).timeout(Duration(minutes: 1), onTimeout: () {
-      throw Exception('Something went wrong, Please try again later !');
-    });
-
-    if (response.statusCode == 200) {
-      print('response ${response.body}');
-      Map<String, dynamic> jsonResponse = json.decode(response.body);
-      User user = User.fromJson(jsonResponse);
-      Get.find<UserController>().setUser(user);
-
-      return user;
-    } else {
-      throw Exception(response.body);
     }
   }
 
@@ -181,7 +143,7 @@ class UserRepository {
     }
   }
 
-  Future<User> updateUser({required Map<String, String> body}) async {
+  Future<User> updateUser({required Map<String, dynamic> body}) async {
     final id = await secureStorage.read(key: 'id');
     final token = await secureStorage.read(key: 'token');
     final uri = Uri.parse('$baseUrl/users/update-profile/$id/');
@@ -199,6 +161,123 @@ class UserRepository {
     if (response.statusCode == 200) {
       print('success response ${response.body}');
       return User.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception(response.body);
+    }
+  }
+
+  Future<bool> updateUserPhoto({required File image}) async {
+    final token = await secureStorage.read(key: 'token');
+    final id = await secureStorage.read(key: 'id');
+
+    final request = http.MultipartRequest(
+        'PUT', Uri.parse('$baseUrl/users/update-photo-profile/$id/'));
+    Map<String, String> headers = {
+      'Content-type': 'multipart/form-data',
+      'Authorization': 'Token ${token}'
+    };
+    try {
+      request.headers.addAll(headers);
+      request.files.add(
+        http.MultipartFile(
+          'photo_profile',
+          image.readAsBytes().asStream(),
+          image.lengthSync(),
+          filename: image.path.split('/').last,
+        ),
+      );
+      final res = await request.send();
+      http.Response response = await http.Response.fromStream(res);
+
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        print('fail upload image');
+        return false;
+      }
+    } catch (error) {
+      print('Error uploading image: $error');
+      return false;
+    }
+  }
+
+  Future<bool> uploadPDF({required File pdfFile}) async {
+    final token = await secureStorage.read(key: 'token');
+    final id = await secureStorage.read(key: 'id');
+
+    final request = http.MultipartRequest(
+        'PUT', Uri.parse('$baseUrl/users/update-resume/$id/'));
+    request.headers['Authorization'] = 'Token $token';
+
+    request.files.add(
+      http.MultipartFile(
+        'resume',
+        pdfFile.readAsBytes().asStream(),
+        pdfFile.lengthSync(),
+        filename: pdfFile.path.split('/').last,
+      ),
+    );
+
+    try {
+      final streamedResponse = await request.send();
+      final response = await http.Response.fromStream(streamedResponse);
+
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        print('Gagal mengunggah file PDF');
+        return false;
+      }
+    } catch (error) {
+      print('Kesalahan mengunggah file PDF: $error');
+      return false;
+    }
+  }
+
+  Future<List<String>> getExpertise() async {
+    final uri = Uri.parse('$baseUrl/users/expertise/');
+    final token = await secureStorage.read(key: 'token');
+    final response = await http.get(
+      uri,
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': 'Token $token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final jsonResponse = jsonDecode(response.body);
+      final results = jsonResponse['results'] as List;
+      final expertiseList =
+          results.map((item) => item['name'].toString()).toList();
+      print('Expertise list: $expertiseList');
+      return expertiseList;
+    } else {
+      print('Error: ${response.statusCode}, ${response.body}');
+      throw Exception('Failed to load expertise');
+    }
+  }
+
+  Future<User> getUser() async {
+    final token = await secureStorage.read(key: 'token');
+    final id = await secureStorage.read(key: 'id');
+    final response = await http.get(
+      Uri.parse('$baseUrl/users/$id'),
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': 'Token ${token}',
+      },
+    ).timeout(Duration(minutes: 1), onTimeout: () {
+      throw Exception('Something went wrong, Please try again later !');
+    });
+
+    if (response.statusCode == 200) {
+      print('response ${response.body}');
+      Map<String, dynamic> jsonResponse = json.decode(response.body);
+      User user = User.fromJson(jsonResponse);
+      Get.find<UserController>().setUser(user);
+
+      return user;
     } else {
       throw Exception(response.body);
     }

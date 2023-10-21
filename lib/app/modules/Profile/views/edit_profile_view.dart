@@ -8,6 +8,7 @@ import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:jobfortech/app/data/repository/UserRepo.dart';
 import 'package:jobfortech/app/modules/Profile/controllers/profile_controller.dart';
 import 'package:jobfortech/app/modules/Profile/views/expertise_search_view.dart';
+import 'package:jobfortech/app/utils/functions.dart';
 import 'package:jobfortech/app/utils/globalController.dart';
 import 'package:jobfortech/app/utils/validation.dart';
 import 'package:jobfortech/components/AppAvatar/index.dart';
@@ -69,28 +70,22 @@ class EditProfileView extends GetView<ProfileController> {
             controller.bio.text = profile?.description ?? 'No biodata';
             controller.phoneNumber.text = user.phoneNumber!;
             controller.cv_file.value = File(profile?.resume ?? '');
-
+            controller.address.text = user.profile?.location ?? '';
+            controller.jobRoles.text = user.profile?.position ?? '';
+            controller.expertiseTag.value =
+                (user.profile?.expertise ?? []).map<String>((dynamic item) {
+              return item.toString();
+            }).toList();
             final socialList =
                 (profile?.socialMedia as List<dynamic>?)?.map((e) {
                       return {
-                        'name': e['name'].toString(),
-                        'url': e['url'].toString(),
+                        'name': socialMediaName(e.toString()),
+                        'url': e.toString(),
                       };
                     })?.toList() ??
                     [];
 
             controller.userSocial.value = socialList;
-
-            final skills =
-                profile?.skills?.map((e) => e['label'].toString()).toList() ??
-                    [];
-
-            // ... continue with the rest of the code
-
-            // controller.jobRoles.text = user.profile!.jobRole!;
-            // controller.birthDate.text = user.profile!.birthDate!;
-            // controller.address.text = user.profile!.address!;
-            // controller.country.text = user.profile!.country!;
 
             return AppSafeArea(
               safearea: resSafeArea,
@@ -155,7 +150,7 @@ class EditProfileView extends GetView<ProfileController> {
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                  controller.tags.isNotEmpty
+                                  controller.expertiseTag.isNotEmpty
                                       ? IconButton(
                                           splashRadius: 20,
                                           onPressed: () {},
@@ -169,7 +164,7 @@ class EditProfileView extends GetView<ProfileController> {
                               SizedBox(
                                 height: Get.height * 0.02,
                               ),
-                              controller.tags.isNotEmpty
+                              controller.expertiseTag.isNotEmpty
                                   ? Column(
                                       children: [
                                         Wrap(
@@ -178,8 +173,9 @@ class EditProfileView extends GetView<ProfileController> {
                                           crossAxisAlignment:
                                               WrapCrossAlignment.center,
                                           children: [
-                                            for (var tag
-                                                in controller.tags.take(3))
+                                            for (var tag in controller
+                                                .expertiseTag
+                                                .take(3))
                                               Container(
                                                 margin: EdgeInsets.only(
                                                     right: 5, bottom: 5),
@@ -199,16 +195,17 @@ class EditProfileView extends GetView<ProfileController> {
                                                   deleteIconColor:
                                                       AppColor.blue,
                                                   onDeleted: () {
-                                                    controller.tags.remove(tag);
+                                                    controller.expertiseTag
+                                                        .remove(tag);
                                                   },
                                                 ),
                                               ),
-                                            controller.tags.length >= 3
+                                            controller.expertiseTag.length >= 3
                                                 ? Chip(
                                                     backgroundColor:
                                                         AppColor.smoke,
                                                     label: Text(
-                                                      '${controller.tags.length - 3} + more',
+                                                      '${controller.expertiseTag.length - 3} + more',
                                                       style: AppBasicStyle(
                                                         fontSize: 12,
                                                         fontWeight:
@@ -245,7 +242,7 @@ class EditProfileView extends GetView<ProfileController> {
                   ],
                 ),
                 AppTextInput(
-                  maxLines: 2,
+                  maxLines: 3,
                   controller: controller.bio,
                   hintText: biodata,
                   labelText: 'Bio',
@@ -275,12 +272,12 @@ class EditProfileView extends GetView<ProfileController> {
                     return validateEmpty(value!, 'last name is required');
                   },
                 ),
-                // AppDropDown(
-                //   label: 'Job Role',
-                //   items: skills.isEmpty ? ['No data'] : skills,
-                //   controller: controller.jobRoles,
-                //   errorText: 'Invalid job role',
-                // ),
+                AppDropDown(
+                  label: 'Your Tech, Role',
+                  items: controller.positionsList,
+                  controller: controller.jobRoles,
+                  errorText: 'Invalid job role',
+                ),
                 // AppTextInput(
                 //   controller: controller.birthDate,
                 //   onTap: () {
@@ -341,7 +338,18 @@ class EditProfileView extends GetView<ProfileController> {
                   errorText: 'Invalid email address',
                   keyboardType: TextInputType.emailAddress,
                   validator: (value) {
-                    return validateEmpty(value!, 'Email is required');
+                    return validateEmail(value!);
+                  },
+                ),
+                AppTextInput(
+                  controller: controller.address,
+                  labelText: 'Address',
+                  hintText:
+                      '${user.profile!.location!.isEmpty ? 'No email' : user.email}',
+                  errorText: 'Invalid email address',
+                  keyboardType: TextInputType.emailAddress,
+                  validator: (value) {
+                    return validateEmpty(value!, 'Address is required');
                   },
                 ),
                 Text(
@@ -508,9 +516,16 @@ class EditProfileView extends GetView<ProfileController> {
                                         .last
                                     : 'Upload Cv',
                                 overflow: TextOverflow.ellipsis,
+                                style: AppBasicStyle(
+                                  fontSize: 12,
+                                  fontColor: AppColor.blue,
+                                  fontWeight: FontWeight.w500,
+                                ),
                               )),
                           IconButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                controller.cv_file.value = File('');
+                              },
                               splashRadius: 15,
                               icon: const Icon(
                                 Icons.close,
