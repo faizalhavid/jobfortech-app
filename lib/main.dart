@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import 'package:get/get.dart';
-import 'package:jobfortech/app/service/dependency_injection.dart';
 import 'package:jobfortech/app/service/secure_storage_service.dart';
 import 'package:jobfortech/constant/theme.dart';
 import 'app/routes/app_pages.dart';
@@ -23,9 +22,12 @@ void main() async {
       title: "JobforTech",
       initialRoute: await AppPages.INITIAL,
       getPages: AppPages.routes,
+      initialBinding: BindingsBuilder(() {
+        Get.put(GetConnect());
+      }),
     ),
   );
-  DependencyInjection.init();
+  // DependencyInjection.init();
 }
 
 void configLoading() {

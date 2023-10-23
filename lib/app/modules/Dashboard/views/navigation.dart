@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 import 'package:jobfortech/app/modules/Dashboard/controllers/dashboard_controller.dart';
 import 'package:jobfortech/app/modules/Dashboard/views/dashboard_view.dart';
@@ -25,24 +24,25 @@ class NavigationView extends GetView {
   Widget build(BuildContext context) {
     RxInt currentIndex = RxInt(0);
 
-    final navcontroller = Get.put(DashboardController());
-    return Scaffold(
-      appBar: PreferredSize(
-        preferredSize:
-            currentIndex == 0 ? Size.fromHeight(210) : Size.fromHeight(100),
-        child: Obx(() => appHeader(currentInt: currentIndex.value)),
-      ),
-      body: Obx(
-        () {
-          return IndexedStack(
-            index: currentIndex.value,
-            children: [Dashboard(), WorkDeskView(), MessagesView()],
-          );
-        },
-      ),
-      bottomNavigationBar: Obx(
-        () => BottomNavigationBar(
-          showUnselectedLabels: true,
+    final navController = Get.put(NavigationController());
+    final screens = [
+      Dashboard(),
+      WorkDeskView(),
+      MessagesView(),
+    ];
+
+    return Obx(
+      () => Scaffold(
+        appBar: currentIndex.value == 2
+            ? PreferredSize(
+                preferredSize: Size.fromHeight(0),
+                child: Container(),
+              )
+            : appHeader(
+                currentInt: currentIndex.value, navController: navController),
+        body: Obx(() => screens[currentIndex.value]),
+        bottomNavigationBar: BottomNavigationBar(
+          showUnselectedLabels: false,
           currentIndex: currentIndex.value,
           onTap: (int index) {
             currentIndex.value = index;
@@ -82,143 +82,149 @@ class NavigationView extends GetView {
   }
 }
 
-Widget appHeader({required int currentInt}) {
+PreferredSize appHeader(
+    {required int currentInt, required NavigationController navController}) {
   Widget header = Container();
-  Size size = Get.size;
-  switch (currentInt) {
-    case 0:
-      size = Size.fromHeight(210);
-      header = FutureBuilder<User>(
-        future: Get.find<UserRepository>().getUser(),
-        builder: (context, snapshot) {
-          final navController = Get.put(NavigationController());
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return headerLoading();
-          }
-          if (snapshot.hasData &&
-              snapshot.connectionState == ConnectionState.done) {
-            final user = snapshot.data!;
-            return headerHasData(user, navController, snapshot);
-          } else {
-            return headerError();
-          }
-        },
-      );
-      break;
-    case 1:
-      size = Size.fromHeight(100);
-      header = Container(
-        child: Column(
-          children: [
-            SizedBox(
-              height: 8,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 30.0, right: 30.0),
-              child: Row(
-                children: [
-                  Text(
-                    'New Assignment',
-                    style: AppBasicStyle(
-                        fontSize: 14,
-                        fontColor: AppColor.white,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  Spacer(),
-                  RichText(
-                    text: TextSpan(
-                      style: AppBasicStyle(
-                          fontColor: AppColor.white,
-                          fontSize: 10), // gaya default
-                      children: <TextSpan>[
-                        TextSpan(text: 'Confirm in '),
-                        TextSpan(
-                          text: '5',
-                          style: TextStyle(color: AppColor.yellow),
-                        ),
-                        TextSpan(text: ':'),
-                        TextSpan(
-                          text: '43',
-                          style: TextStyle(color: Colors.yellow),
-                        ),
-                        TextSpan(text: ':'),
-                        TextSpan(
-                          text: '21',
-                          style: TextStyle(color: Colors.yellow),
-                        ),
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 8,
-            ),
-            AppCard(
-                color: AppColor.white.withOpacity(0.8),
-                height: 85,
-                width: Get.width * 0.9,
-                radius: 15,
-                children: [
-                  Row(
-                    children: [
-                      Image.asset('assets/images/company.png'),
-                      SizedBox(
-                        width: 8,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'E-Commerce Project',
-                            style: AppBasicStyle(fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            'Company Name',
-                            style: AppBasicStyle(
-                                fontColor: AppColor.grey,
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500),
-                          ),
-                          SizedBox(
-                            height: 8,
-                          ),
-                          Text(
-                            'Back End . 3 Months',
-                            style: AppBasicStyle(
-                                fontSize: 10, fontWeight: FontWeight.w500),
-                          )
-                        ],
-                      ),
-                      Spacer(),
-                      AppIconButton(
-                          svgPath: 'assets/svgs/arrow-right.svg',
-                          onPressed: () {})
-                    ],
-                  )
-                ]),
-          ],
-        ),
-      );
-      break;
-    default:
-      break;
-  }
+  header = FutureBuilder<User>(
+    future: UserRepository().getUser(),
+    builder: (context, snapshot) {
+      if (snapshot.hasData) {
+        final user = snapshot.data!;
+        return profileheaderHasData(user, navController, snapshot, currentInt);
+      } else if (snapshot.connectionState == ConnectionState.waiting) {
+        return profileheaderLoading(currentInt);
+      } else {
+        return profileheaderError(currentInt);
+      }
+    },
+  );
   return PreferredSize(
-    preferredSize: size,
+    preferredSize: Size.fromHeight(210),
     child: header,
   );
 }
 
-PreferredSize headerError() {
+Container dashboardContentError() {
+  return Container(
+    padding: EdgeInsets.symmetric(
+      horizontal: Get.width * 0.06,
+      vertical: 15,
+    ),
+    height: Get.height * 0.2,
+    child: Column(
+      children: [
+        Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Hello,',
+                  style: AppBasicStyle(fontColor: AppColor.white),
+                ),
+                Row(children: [
+                  ConstrainedBox(
+                    constraints: BoxConstraints(
+                      maxWidth: Get.width * 0.5,
+                    ),
+                    child: Text(
+                      'No Username',
+                      style: AppBasicStyle(
+                        fontSize: 16,
+                        fontColor: AppColor.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: Get.width * 0.02),
+                ]),
+              ],
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Available',
+                  style: AppBasicStyle(fontColor: AppColor.white),
+                ),
+                Switch(
+                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  value: false,
+                  onChanged: (bool value) {},
+                  hoverColor: AppColor.white,
+                  focusColor: AppColor.white,
+                  inactiveThumbColor: AppColor.grey,
+                  inactiveTrackColor: AppColor.grey,
+                  thumbColor: MaterialStateProperty.all<Color>(AppColor.white),
+                  trackColor:
+                      MaterialStateProperty.all<Color>(AppColor.whitebone),
+                ),
+              ],
+            ),
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Image.asset('assets/images/fe-icon.png', fit: BoxFit.cover),
+            const SizedBox(width: 15),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "No data position",
+                  style: AppBasicStyle(
+                      fontColor: AppColor.white, fontWeight: FontWeight.w600),
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    AppBadge(
+                      padding: 0,
+                      height: 19,
+                      width: 90,
+                      child: Text(
+                        'Rockstar',
+                        style: AppBasicStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      backgroundColor: AppColor.white,
+                    ),
+                    const SizedBox(width: 8),
+                    const Icon(Icons.star, color: AppColor.yellow, size: 16),
+                    Text(
+                      '4.9',
+                      style: AppBasicStyle(
+                        fontSize: 14,
+                        fontColor: AppColor.yellow,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            )
+          ],
+        )
+      ],
+    ),
+  );
+}
+
+PreferredSize profileheaderError(int currentInt) {
   return AppHeaderbar(
     height: 210,
     type: 'dashboard',
     expandAppbar: true,
     leading: InkWell(
       onTap: () {
-        Get.to(() => ProfileView());
+        // Get.to(() => ProfileView());
       },
       customBorder: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
@@ -235,124 +241,151 @@ PreferredSize headerError() {
       svgPath: 'assets/svgs/notifications-bell.svg',
       onPressed: () {},
     ),
-    expandContent: Container(
-      padding: EdgeInsets.symmetric(
-        horizontal: Get.width * 0.06,
-        vertical: 15,
-      ),
-      height: Get.height * 0.2,
-      child: Column(
-        children: [
-          Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Hello,',
-                    style: AppBasicStyle(fontColor: AppColor.white),
-                  ),
-                  Row(children: [
-                    ConstrainedBox(
-                      constraints: BoxConstraints(
-                        maxWidth: Get.width * 0.5,
-                      ),
-                      child: Text(
-                        'No Username',
-                        style: AppBasicStyle(
-                          fontSize: 16,
-                          fontColor: AppColor.white,
-                          fontWeight: FontWeight.bold,
-                        ),
+    expandContent: currentInt == 0 ? dashboardContentError() : Container(),
+  );
+}
+
+Container dashboardContent(User user, NavigationController navController,
+    AsyncSnapshot<User> snapshot) {
+  return Container(
+    padding: EdgeInsets.symmetric(
+      horizontal: Get.width * 0.06,
+      vertical: 15,
+    ),
+    height: Get.height * 0.2,
+    child: Column(
+      children: [
+        Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Hello,',
+                  style: AppBasicStyle(fontColor: AppColor.white),
+                ),
+                Row(children: [
+                  ConstrainedBox(
+                    constraints: BoxConstraints(
+                      maxWidth: Get.width * 0.5,
+                    ),
+                    child: Text(
+                      snapshot.data!.firstName! +
+                          ' ' +
+                          snapshot.data!.lastName!,
+                      style: AppBasicStyle(
+                        fontSize: 16,
+                        fontColor: AppColor.white,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(width: Get.width * 0.02),
-                  ]),
-                ],
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Available',
-                    style: AppBasicStyle(fontColor: AppColor.white),
                   ),
-                  Switch(
+                  SizedBox(width: Get.width * 0.02),
+                ]),
+              ],
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Available',
+                  style: AppBasicStyle(fontColor: AppColor.white),
+                ),
+                Obx(
+                  () => Switch(
                     materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    value: false,
-                    onChanged: (bool value) {},
+                    value: navController.isAvailable.value,
+                    onChanged: (bool value) {
+                      navController.isAvailable.value = value;
+                      navController.updateStatus(status: value);
+                      AppToast(message: 'Status Updated');
+                    },
                     hoverColor: AppColor.white,
                     focusColor: AppColor.white,
                     inactiveThumbColor: AppColor.grey,
                     inactiveTrackColor: AppColor.grey,
                     thumbColor:
                         MaterialStateProperty.all<Color>(AppColor.white),
-                    trackColor:
-                        MaterialStateProperty.all<Color>(AppColor.whitebone),
+                    trackColor: MaterialStateProperty.all<Color>(
+                        navController.isAvailable.value
+                            ? AppColor.tosca
+                            : AppColor.whitebone),
                   ),
-                ],
-              ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Image.asset('assets/images/fe-icon.png', fit: BoxFit.cover),
-              const SizedBox(width: 15),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "No data position",
-                    style: AppBasicStyle(
-                        fontColor: AppColor.white, fontWeight: FontWeight.w600),
-                  ),
-                  const SizedBox(height: 8),
-                  Row(
-                    children: [
-                      AppBadge(
-                        padding: 0,
-                        height: 19,
-                        width: 90,
-                        child: Text(
-                          'Rockstar',
-                          style: AppBasicStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        backgroundColor: AppColor.white,
-                      ),
-                      const SizedBox(width: 8),
-                      const Icon(Icons.star, color: AppColor.yellow, size: 16),
-                      Text(
-                        '4.9',
+                ),
+              ],
+            ),
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Image.asset('assets/images/fe-icon.png', fit: BoxFit.cover),
+            const SizedBox(width: 15),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  user.profile!.position == ''
+                      ? "Haven't set position"
+                      : user.profile!.position!,
+                  style: AppBasicStyle(
+                      fontColor: AppColor.white, fontWeight: FontWeight.w600),
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    AppBadge(
+                      padding: 0,
+                      height: 19,
+                      width: 90,
+                      child: Text(
+                        'Rockstar',
                         style: AppBasicStyle(
                           fontSize: 14,
-                          fontColor: AppColor.yellow,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
-                    ],
-                  ),
-                ],
-              )
-            ],
-          )
-        ],
-      ),
+                      backgroundColor: AppColor.white,
+                    ),
+                    const SizedBox(width: 8),
+                    const Icon(Icons.star, color: AppColor.yellow, size: 16),
+                    Text(
+                      '4.9',
+                      style: AppBasicStyle(
+                        fontSize: 14,
+                        fontColor: AppColor.yellow,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            )
+          ],
+        )
+      ],
     ),
   );
 }
 
-PreferredSize headerHasData(User user, NavigationController navController,
-    AsyncSnapshot<User> snapshot) {
+PreferredSize profileheaderHasData(
+    User user,
+    NavigationController navController,
+    AsyncSnapshot<User> snapshot,
+    int currentInt) {
+  Widget expandContent;
+  if (currentInt == 0) {
+    expandContent = dashboardContent(user, navController, snapshot);
+  } else {
+    expandContent = Container();
+  }
+
   return AppHeaderbar(
-    height: 210,
+    height: 500,
     type: 'dashboard',
     expandAppbar: true,
     leading: InkWell(
@@ -384,133 +417,44 @@ PreferredSize headerHasData(User user, NavigationController navController,
         isbadge: navController.isNotify.value,
       ),
     ),
-    expandContent: Container(
-      padding: EdgeInsets.symmetric(
-        horizontal: Get.width * 0.06,
-        vertical: 15,
-      ),
-      height: Get.height * 0.2,
-      child: Column(
-        children: [
-          Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Hello,',
-                    style: AppBasicStyle(fontColor: AppColor.white),
-                  ),
-                  Row(children: [
-                    ConstrainedBox(
-                      constraints: BoxConstraints(
-                        maxWidth: Get.width * 0.5,
-                      ),
-                      child: Text(
-                        snapshot.data!.firstName! +
-                            ' ' +
-                            snapshot.data!.lastName!,
-                        style: AppBasicStyle(
-                          fontSize: 16,
-                          fontColor: AppColor.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: Get.width * 0.02),
-                  ]),
-                ],
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Available',
-                    style: AppBasicStyle(fontColor: AppColor.white),
-                  ),
-                  Obx(
-                    () => Switch(
-                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      value: navController.isAvailable.value,
-                      onChanged: (bool value) {
-                        navController.isAvailable.value = value;
-                        navController.updateStatus(status: value);
-                        AppToast(message: 'Status Updated');
-                      },
-                      hoverColor: AppColor.white,
-                      focusColor: AppColor.white,
-                      inactiveThumbColor: AppColor.grey,
-                      inactiveTrackColor: AppColor.grey,
-                      thumbColor:
-                          MaterialStateProperty.all<Color>(AppColor.white),
-                      trackColor: MaterialStateProperty.all<Color>(
-                          navController.isAvailable.value
-                              ? AppColor.tosca
-                              : AppColor.whitebone),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Image.asset('assets/images/fe-icon.png', fit: BoxFit.cover),
-              const SizedBox(width: 15),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    user.profile!.position == ''
-                        ? "Haven't set position"
-                        : user.profile!.position!,
-                    style: AppBasicStyle(
-                        fontColor: AppColor.white, fontWeight: FontWeight.w600),
-                  ),
-                  const SizedBox(height: 8),
-                  Row(
-                    children: [
-                      AppBadge(
-                        padding: 0,
-                        height: 19,
-                        width: 90,
-                        child: Text(
-                          'Rockstar',
-                          style: AppBasicStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        backgroundColor: AppColor.white,
-                      ),
-                      const SizedBox(width: 8),
-                      const Icon(Icons.star, color: AppColor.yellow, size: 16),
-                      Text(
-                        '4.9',
-                        style: AppBasicStyle(
-                          fontSize: 14,
-                          fontColor: AppColor.yellow,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              )
-            ],
-          )
-        ],
-      ),
-    ),
+    expandContent: expandContent,
   );
 }
 
-PreferredSize headerLoading() {
+PreferredSize profileheaderLoading(int currentInt) {
+  return AppHeaderbar(
+    height: 210,
+    type: 'dashboard',
+    expandAppbar: true,
+    leading: InkWell(
+      onTap: () {
+        // Get.to(() => ProfileView());
+      },
+      customBorder: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: AppShimmer(
+        baseColor: AppColor.white.withOpacity(0.4),
+        highlightColor: AppColor.white.withOpacity(0.33),
+        isBlur: true,
+        child: AppAvatar(),
+      ),
+    ),
+    title: AppIcon(
+      svgPath: 'assets/svgs/jobfortech-logo.svg',
+      size: 24,
+      editColor: true,
+      color: AppColor.white,
+    ),
+    actions: AppIconButton(
+      svgPath: 'assets/svgs/notifications-bell.svg',
+      onPressed: () {},
+    ),
+    expandContent: currentInt == 0 ? dashboardContentLoading() : Container(),
+  );
+}
+
+PreferredSize dashboardContentLoading() {
   return AppHeaderbar(
       height: 210,
       type: 'dashboard',

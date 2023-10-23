@@ -10,9 +10,7 @@ import 'package:jobfortech/app/utils/globalController.dart';
 class UserRepository {
   // final baseUrl = 'https://api.techconsulta.com';
   final GetConnect connect = Get.find<GetConnect>();
-
   final baseUrl = 'http://192.168.100.44:8000';
-
   final secureStorage = FlutterSecureStorage();
   Future<User> register({
     required String email,
@@ -267,7 +265,7 @@ class UserRepository {
         'Accept': 'application/json',
         'Authorization': 'Token ${token}',
       },
-    ).timeout(Duration(minutes: 1), onTimeout: () {
+    ).timeout(Duration(seconds: 30), onTimeout: () {
       throw Exception('Something went wrong, Please try again later !');
     });
 
@@ -275,7 +273,7 @@ class UserRepository {
       print('response ${response.body}');
       Map<String, dynamic> jsonResponse = json.decode(response.body);
       User user = User.fromJson(jsonResponse);
-      Get.find<UserController>().setUser(user);
+      // Get.find<UserController>().setUser(user);
 
       return user;
     } else {

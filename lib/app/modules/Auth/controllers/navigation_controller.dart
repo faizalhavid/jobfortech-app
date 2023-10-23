@@ -19,6 +19,7 @@ class NavigationController extends GetxController
   RxString statusTask = 'Pending'.obs;
   Rx<Duration> duration = Duration(seconds: 0).obs;
   RxBool isAvailable = false.obs;
+   RxBool loading = RxBool(false);
 
   @override
   void onInit() {
@@ -27,7 +28,6 @@ class NavigationController extends GetxController
     tabController.addListener(() {
       currentIndex.value = tabController.index;
     });
-    fetchUser();
   }
 
   @override
@@ -43,12 +43,6 @@ class NavigationController extends GetxController
     Color colorDisable = AppColor.lightBlue,
   }) =>
       currentIndex == index ? colorActive : colorDisable;
-
-  Future<User> fetchUser() async {
-    final response = await userRepo.getUser();
-    user.value = response;
-    return response;
-  }
 
   void updateStatus({required bool status}) async {
     final response = await userRepo.updateUser(body: {

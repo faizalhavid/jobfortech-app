@@ -12,7 +12,6 @@ PreferredSize AppHeaderbar({
   bool centerTitle = true,
   bool automaticallyImplyLeading = false,
   Widget? actions,
-  PreferredSizeWidget? bottom,
   double? elevation,
   Color? backgroundColor,
   Brightness? brightness,
@@ -48,11 +47,11 @@ PreferredSize AppHeaderbar({
           ? PreferredSize(
               preferredSize: Size.fromHeight(type == 'default' ? 18 : 100),
               child: Container(
-                  color: AppColor.blue,
-                  height: type == 'default' ? 0 : 135,
-                  alignment: Alignment.center,
-                  child: expandContent),
-            )
+                color: AppColor.blue,
+                height: type == 'default' ? 0 : 135,
+                alignment: Alignment.center,
+                child: expandContent,
+              ))
           : null,
       elevation: 0,
       backgroundColor: backgroundColor,
