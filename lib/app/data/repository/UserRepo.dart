@@ -10,7 +10,7 @@ import 'package:jobfortech/app/utils/globalController.dart';
 class UserRepository {
   // final baseUrl = 'https://api.techconsulta.com';
   final GetConnect connect = Get.find<GetConnect>();
-  final baseUrl = 'http://192.168.100.44:8000';
+  final baseUrl = 'http://192.168.137.1:8000';
   final secureStorage = FlutterSecureStorage();
   Future<User> register({
     required String email,

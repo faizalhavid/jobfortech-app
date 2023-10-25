@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:jobfortech/app/modules/Dashboard/controllers/dashboard_controller.dart';
-import 'package:jobfortech/app/modules/Dashboard/views/find_works_view.dart';
+import 'package:jobfortech/app/modules/Work/views/work_list_view.dart';
 import 'package:jobfortech/app/modules/Dashboard/views/my_task_view.dart';
 import 'package:jobfortech/app/modules/Dashboard/views/my_work_view.dart';
 import 'package:jobfortech/app/modules/Profile/views/profile_view.dart';
@@ -15,37 +15,12 @@ import 'package:jobfortech/constant/icons.dart';
 import 'package:jobfortech/constant/theme.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
-class WorkDesk2View extends GetView {
-  const WorkDesk2View({Key? key}) : super(key: key);
+class MyWorkDesk extends GetView {
+  const MyWorkDesk({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final notifyState = Get.put(DashboardController());
     return Scaffold(
-      appBar: AppHeaderbar(
-        expandAppbar: true,
-        type: 'default',
-        leading: InkWell(
-          child: AppAvatar(),
-          onTap: () {
-            Get.to(() => ProfileView());
-          },
-        ),
-        title: AppIcon(
-          svgPath: 'assets/svgs/jobfortech-logo.svg',
-          size: 24,
-          editColor: true,
-          color: AppColor.white,
-        ),
-        actions: Obx(
-          () => AppIconButton(
-            svgPath: 'assets/svgs/notifications-bell.svg',
-            onPressed: () {
-              notifyState.isNotify.value = !notifyState.isNotify.value;
-            },
-            isbadge: notifyState.isNotify.value,
-          ),
-        ),
-      ),
       body: AppSafeArea(
         safearea: {'horizontal': 16, 'vertical': 20},
         children: [
@@ -67,7 +42,7 @@ class WorkDesk2View extends GetView {
                 svgPath: 'assets/svgs/zoom-in.svg',
                 size: 20,
                 onPressed: () {
-                  Get.to(() => FindWorksView());
+                  // Get.to(() => FindWorksView());
                 },
               ),
             ],

@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:jobfortech/app/modules/Dashboard/controllers/dashboard_controller.dart';
 import 'package:jobfortech/app/modules/Dashboard/views/dashboard_view.dart';
 import 'package:jobfortech/app/modules/Dashboard/views/messages_view.dart';
-import 'package:jobfortech/app/modules/Dashboard/views/work_desk_view.dart';
+import 'package:jobfortech/app/modules/Work/views/work_desk_view.dart';
 import 'package:jobfortech/components/AppBadge/index.dart';
 import 'package:jobfortech/components/AppCard/index.dart';
 import 'package:jobfortech/components/AppNav/index.dart';
@@ -22,7 +22,7 @@ class NavigationView extends GetView {
   const NavigationView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    RxInt currentIndex = RxInt(0);
+    RxInt currentIndex = RxInt(1);
 
     final navController = Get.put(NavigationController());
     final screens = [

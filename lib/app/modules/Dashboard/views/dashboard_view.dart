@@ -231,7 +231,7 @@ Text TextHeader({required String text}) {
   );
 }
 
-Container buildAvailabelProject({
+Widget buildAvailabelProject({
   int totalProject = 0,
   String iconPath = 'assets/svgs/desktop.svg',
 }) {
