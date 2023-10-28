@@ -1,19 +1,20 @@
 import 'dart:convert';
 
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:jobfortech/app/data/models/Projects.dart';
+import 'package:jobfortech/app/data/models/Work.dart';
 import 'package:http/http.dart' as http;
 
-class ProjectRepository {
-  final baseUrl = 'http://192.168.137.1:8000';
+class WorkRepository {
+  final baseUrl = dotenv.env['BASE_URL'];
   final secureStorage = FlutterSecureStorage();
 
-  Future<List<Project>> getprojectlist() async {
+  Future<List<Work>> getWorkList() async {
     final token = await secureStorage.read(key: 'token');
 
     try {
       final response = await http.get(
-        Uri.parse('$baseUrl/project'),
+        Uri.parse('$baseUrl/job'),
         headers: {
           'Accept': 'application/json',
           'Authorization': 'Token ${token}',
@@ -26,13 +27,8 @@ class ProjectRepository {
       );
 
       if (response.statusCode == 200) {
-        final projectList = jsonDecode(response.body)['results'];
-
-        final List<Project> projects = (projectList as List<dynamic>)
-            .map((project) => Project.fromJson(project as Map<String, dynamic>))
-            .toList();
-
-        return projects;
+        final List<dynamic> jobList = jsonDecode(response.body)['results'];
+        return jobList.map((json) => Work.fromJson(json)).toList();
       } else {
         throw Exception('Something went wrong, Please try again later !');
       }

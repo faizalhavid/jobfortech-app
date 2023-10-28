@@ -143,9 +143,8 @@ class ProfileController extends GetxController {
           ),
           onConfirm: () async {
             image.value = croppedFile;
-            print('imageeee : ${image.value}');
             final uploadImage =
-                await UserRepository().updateUserPhoto(image: image.value);
+                await UserRepository().updateUserPhoto(image: image.value); //upload server
             if (uploadImage) {
               AppToast(message: 'Image uploaded successfully');
               Get.back();

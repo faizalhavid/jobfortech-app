@@ -22,7 +22,7 @@ Ink AppCard({
         borderRadius: BorderRadius.circular(radius),
         boxShadow: boxShadow),
     child: InkWell(
-      onTap: () {},
+      onTap: onTap,
       borderRadius: BorderRadius.circular(radius),
       // splashColor: AppColor.blue.withOpacity(0.2),
       child: horizontal

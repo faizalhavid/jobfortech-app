@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:jobfortech/app/data/models/User.dart';
@@ -8,9 +9,8 @@ import 'package:http/http.dart' as http;
 import 'package:jobfortech/app/utils/globalController.dart';
 
 class UserRepository {
-  // final baseUrl = 'https://api.techconsulta.com';
   final GetConnect connect = Get.find<GetConnect>();
-  final baseUrl = 'http://192.168.137.1:8000';
+  final baseUrl = dotenv.env['BASE_URL'];
   final secureStorage = FlutterSecureStorage();
   Future<User> register({
     required String email,
