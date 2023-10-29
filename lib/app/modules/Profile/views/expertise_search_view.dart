@@ -45,7 +45,6 @@ class ExpertiseSearchView extends GetView {
             onSuggestionSelected: (String suggestion) {
               controller.expertise.clear();
               controller.expertiseOptions.remove(suggestion);
-
               controller.expertiseTag.add(suggestion);
             },
             textFieldConfiguration: textField(controller),

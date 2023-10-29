@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:jobfortech/app/data/models/Work.dart';
+import 'package:jobfortech/app/modules/Work/controllers/work_controller.dart';
+import 'package:jobfortech/app/modules/Work/views/work_detail_view.dart';
 import 'package:jobfortech/components/AppHeaderBar/index.dart';
-import 'package:jobfortech/components/AppTextInput/index.dart';
+import 'package:jobfortech/components/WorkCard/index.dart';
+import 'package:jobfortech/constant/icons.dart';
 import 'package:jobfortech/constant/theme.dart';
 
 class SearchWokView extends GetView {
@@ -11,31 +14,74 @@ class SearchWokView extends GetView {
   const SearchWokView(this.work, {Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(WorkController());
     return Scaffold(
       appBar: AppHeaderbar(
         title: TextFormField(
+          controller: controller.searchController,
+          onFieldSubmitted: (value) {
+            controller.fetchWorkList(query: value);
+          },
+          textInputAction: TextInputAction.search,
           cursorColor: AppColor.white,
-          decoration: InputDecoration(
-            hintText: 'Search',
-            hintStyle: AppBasicStyle(
-              fontColor: AppColor.white,
-              fontSize: 18,
-              fontWeight: FontWeight.w500,
-            ),
-            prefix: Icon(
-              Icons.search,
-              color: AppColor.white,
-            ),
-            filled: true,
-            fillColor: AppColor.white.withOpacity(0.1),
+          style: AppBasicStyle(
+            fontColor: AppColor.white,
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
           ),
+          decoration: searchFieldDecoration(),
         ),
         automaticallyImplyLeading: true,
       ),
-      body: const Center(
-        child: Text(
-          'SearchWokView is working',
-          style: TextStyle(fontSize: 20),
+      body: Obx(
+        () => ListView.builder(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 20,
+              vertical: 20,
+            ),
+            itemCount: controller.works.value.length,
+            itemBuilder: (context, index) {
+              final work = controller.works.value[index];
+              return WorkCard(
+                work: work,
+                controller: controller,
+                onTap: () {
+                  Get.to(() => WorkDetailView(work: work));
+                },
+              );
+            }),
+      ),
+    );
+  }
+
+  InputDecoration searchFieldDecoration() {
+    return InputDecoration(
+      contentPadding: const EdgeInsets.symmetric(
+        horizontal: 20,
+        vertical: 15,
+      ),
+      hintText: 'Search for jobs',
+      hintStyle: AppBasicStyle(
+        fontColor: AppColor.whitebone,
+        fontSize: 16,
+        fontWeight: FontWeight.w500,
+      ),
+      enabledBorder: const UnderlineInputBorder(
+        borderSide: BorderSide(color: AppColor.whitebone, width: 0.5),
+      ),
+      focusedBorder: const UnderlineInputBorder(
+        borderSide: BorderSide(color: AppColor.white, width: 1),
+      ),
+      prefixIcon: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 15,
+          vertical: 15,
+        ),
+        child: AppIcon(
+          svgPath: 'assets/svgs/search.svg',
+          size: 20,
+          editColor: true,
+          color: AppColor.white,
         ),
       ),
     );

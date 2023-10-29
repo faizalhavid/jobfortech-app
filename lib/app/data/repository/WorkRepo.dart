@@ -9,12 +9,12 @@ class WorkRepository {
   final baseUrl = dotenv.env['BASE_URL'];
   final secureStorage = FlutterSecureStorage();
 
-  Future<List<Work>> getWorkList() async {
+  Future<List<Work>> getWorkList({String? query}) async {
     final token = await secureStorage.read(key: 'token');
 
     try {
       final response = await http.get(
-        Uri.parse('$baseUrl/job'),
+        Uri.parse('${baseUrl}/job?search=${query ?? ''}'),
         headers: {
           'Accept': 'application/json',
           'Authorization': 'Token ${token}',
