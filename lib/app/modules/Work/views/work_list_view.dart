@@ -4,11 +4,15 @@ import 'package:get/get.dart';
 import 'package:jobfortech/app/data/models/Work.dart';
 import 'package:jobfortech/app/data/repository/WorkRepo.dart';
 import 'package:jobfortech/app/modules/Work/controllers/work_controller.dart';
+import 'package:jobfortech/app/modules/Work/views/search_wok_view.dart';
 import 'package:jobfortech/app/modules/Work/views/work_detail_view.dart';
+import 'package:jobfortech/components/AppAvatar/index.dart';
+import 'package:jobfortech/components/AppButton/index.dart';
 
 import 'package:jobfortech/components/AppCard/index.dart';
 import 'package:jobfortech/components/AppHeaderBar/index.dart';
 import 'package:jobfortech/components/AppSafeArea/index.dart';
+import 'package:jobfortech/components/WorkCard/index.dart';
 import 'package:jobfortech/constant/icons.dart';
 import 'package:jobfortech/constant/theme.dart';
 
@@ -20,12 +24,19 @@ class WorkListView extends GetView {
     return Scaffold(
       appBar: AppHeaderbar(
         title: Text(
-          'Find Job',
+          'Available Works',
           style: AppBasicStyle(
             fontColor: AppColor.white,
             fontSize: 18,
             fontWeight: FontWeight.w500,
           ),
+        ),
+        actions: IconButton(
+          onPressed: () {
+            Get.to(() => SearchWokView(controller.works.value));
+          },
+          icon: Icon(Icons.search),
+          splashRadius: 20,
         ),
         automaticallyImplyLeading: true,
       ),
@@ -35,28 +46,24 @@ class WorkListView extends GetView {
           spacing: 25,
           scrollDirection: Axis.vertical,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Available Works',
-                  style: AppTitleHeader,
-                ),
-                AppIconButton(
-                    svgPath: 'assets/svgs/refresh.svg', onPressed: () {})
-              ],
-            ),
+            // Column(
+            //   children: [
+            //     Text(
+            //       'Available Works',
+            //       style: AppTitleHeader,
+            //     ),
+            //     Row(
+            //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //       children: [
+            //         AppIconButton(
+            //             svgPath: 'assets/svgs/refresh.svg', onPressed: () {})
+            //       ],
+            //     ),
+            //   ],
+            // ),
             ...controller.works.value.map((work) => WorkCard(
-                  technology: work.technology!,
-                  name: work.project!.name as String,
-                  company: work.company!.name as String,
-                  position: work.position!,
-                  address: work.company!.address!,
-                  status: work.status!,
-                  details: work.description!,
-                  minSalary: work.minSalary,
-                  maxSalary: work.maxSalary,
-                  time: 0,
+                  controller: controller,
+                  work: work,
                   onTap: () {
                     Get.to(() => WorkDetailView(work: work));
                     print('tap');
@@ -65,99 +72,6 @@ class WorkListView extends GetView {
           ],
         ),
       ),
-    );
-  }
-
-  Ink WorkCard({
-    required String name,
-    required String company,
-    required String address,
-    required String position,
-    required String status,
-    required String details,
-    required int time,
-    required List technology,
-    int? minSalary,
-    int? maxSalary,
-    void Function()? onTap,
-  }) {
-    String salary = '';
-    if (minSalary != null && maxSalary != null) {
-      if (minSalary >= 1000000 && maxSalary >= 1000000) {
-        salary =
-            'Rp${(minSalary / 1000000).toStringAsFixed(1).replaceAll('.0', '')} - Rp${(maxSalary / 1000000).toStringAsFixed(1).replaceAll('.0', '')} jt';
-      } else if (minSalary >= 100000 && maxSalary >= 100000) {
-        salary =
-            'Rp${(minSalary / 100000 * 100).toStringAsFixed(0)} - Rp${(maxSalary / 100000 * 100).toStringAsFixed(0)}';
-      } else {
-        salary = 'Rp$minSalary - Rp$maxSalary';
-      }
-    }
-
-    return AppCard(
-      height: 190,
-      width: 230,
-      radius: 15,
-      color: AppColor.white,
-      onTap: onTap,
-      boxShadow: [
-        BoxShadow(
-          color: AppColor.blue.withOpacity(0.2),
-          spreadRadius: 0.5,
-          blurRadius: 5,
-          offset: Offset(0, 5),
-        ),
-      ],
-      children: [
-        Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Container(
-              width: 170,
-              child: Text(
-                position,
-                style: AppBasicStyle(
-                  fontColor: AppColor.black,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                ),
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-            Text(
-              salary,
-              style: AppBasicStyle(
-                  fontColor: AppColor.blue,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600),
-            ),
-          ],
-        ),
-        Text(
-          name,
-          style: AppBasicStyle(
-            fontColor: AppColor.black,
-            fontSize: 14,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        Row(
-            children: technology
-                .map((e) => Chip(label: Text(e.toString())))
-                .toList()),
-        Text(
-          company,
-          style: AppBasicStyle(
-              fontColor: AppColor.grey,
-              fontSize: 12,
-              fontWeight: FontWeight.w500),
-        ),
-        Text(
-          address,
-          style: AppBasicStyle(fontColor: AppColor.grey, fontSize: 12),
-        ),
-      ],
     );
   }
 }

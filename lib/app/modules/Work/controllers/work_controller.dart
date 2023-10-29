@@ -4,6 +4,7 @@ import 'package:jobfortech/app/data/repository/WorkRepo.dart';
 
 class WorkController extends GetxController {
   Rx<List<Work>> works = Rx<List<Work>>([]);
+  RxBool isSaved = RxBool(false);
 
   @override
   void onInit() {

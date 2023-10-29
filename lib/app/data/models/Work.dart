@@ -1,3 +1,5 @@
+import 'package:jobfortech/app/data/models/User.dart';
+
 class Work {
   int id;
   Project? project;
@@ -50,7 +52,7 @@ class Work {
               .toList()
           : null,
       experience: json['experience'] as String?,
-      jobType: json['jobType'] as String?,
+      jobType: json['job_type'] as String?,
       location: json['location'] as String?,
       minSalary: json['min_salary'] as int?,
       maxSalary: json['max_salary'] as int?,
@@ -122,7 +124,8 @@ class Company {
   String? address;
   String? email;
   String? website;
-  int user;
+  String? photo_profile;
+  User? user_profile;
 
   Company({
     required this.id,
@@ -130,7 +133,8 @@ class Company {
     this.address,
     this.email,
     this.website,
-    required this.user,
+    this.photo_profile,
+    required this.user_profile,
   });
 
   factory Company.fromJson(Map<String, dynamic> json) {
@@ -140,7 +144,11 @@ class Company {
       address: json['address'] as String?,
       email: json['email'] as String?,
       website: json['website'] as String?,
-      user: json['user'] as int,
+      photo_profile: json['photo_profile'] as String?,
+      user_profile: json['user_profile'] != null &&
+              json['user_profile'] is Map<String, dynamic>
+          ? User.fromJson(json['user_profile'] as Map<String, dynamic>)
+          : null,
     );
   }
 }
