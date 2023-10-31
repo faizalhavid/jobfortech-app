@@ -17,6 +17,7 @@ class Work {
   String? status;
   DateTime? publishDate;
   DateTime? closedOn;
+  bool? saveStatus;
   int? user;
 
   Work({
@@ -35,6 +36,7 @@ class Work {
     this.status,
     this.publishDate,
     this.closedOn,
+    this.saveStatus,
     this.user,
     this.company,
   });
@@ -60,12 +62,13 @@ class Work {
       description: json['description'] as String?,
       additional: json['additional'] as String?,
       status: json['status'] as String?,
-      publishDate: json['publishDate'] != null
-          ? DateTime.parse(json['publishDate'] as String)
+      publishDate: json['publish_date'] != null
+          ? DateTime.parse(json['publish_date'] as String)
           : DateTime.now(),
       closedOn: json['closedOn'] != null
-          ? DateTime.parse(json['closedOn'] as String)
+          ? DateTime.parse(json['closed_on'] as String)
           : DateTime.now(),
+      saveStatus: json['save_status'] as bool?,
       user: json['user'] as int?,
       company: json['company'] != null
           ? Company.fromJson(json['company'] as Map<String, dynamic>)

@@ -55,7 +55,6 @@ class WorkListView extends GetView {
             //   ],
             // ),
             ...controller.works.value.map((work) => WorkCard(
-                  controller: controller,
                   work: work,
                   onTap: () {
                     Get.to(() => WorkDetailView(work: work));

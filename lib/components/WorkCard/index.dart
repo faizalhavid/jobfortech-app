@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jobfortech/app/data/models/Work.dart';
-import 'package:jobfortech/app/modules/Work/controllers/work_controller.dart';
+import 'package:jobfortech/app/data/repository/WorkRepo.dart';
 import 'package:jobfortech/components/AppAvatar/index.dart';
 import 'package:jobfortech/components/AppButton/index.dart';
 import 'package:jobfortech/components/AppCard/index.dart';
+import 'package:jobfortech/components/AppToast/index.dart';
 import 'package:jobfortech/constant/theme.dart';
 
 Ink WorkCard({
   required Work work,
   void Function()? onTap,
-  required WorkController controller,
 }) {
   String salary = '';
   if (work.minSalary != null && work.maxSalary != null) {
@@ -24,7 +24,7 @@ Ink WorkCard({
       salary = 'Rp$work.minSalary - Rp$work.maxSalary';
     }
   }
-
+  RxBool isBookmark = RxBool(work.saveStatus!);
   return AppCard(
     width: 230,
     radius: 15,
@@ -100,16 +100,20 @@ Ink WorkCard({
           ),
           Obx(
             () => IconButton(
-              onPressed: () {
-                controller.isSaved.value = !controller.isSaved.value;
+              onPressed: () async {
+                isBookmark.value = !isBookmark.value;
+                final response = await WorkRepository()
+                    .updateSaveStatus(status: isBookmark.value, id: work.id!);
               },
-              icon: Icon(controller.isSaved.value
-                  ? Icons.bookmark_added_rounded
-                  : Icons.bookmark_border_rounded),
+              icon: Icon(
+                isBookmark.value
+                    ? Icons.bookmark_added_rounded
+                    : Icons.bookmark_border_rounded,
+              ),
               splashRadius: 20,
               color: AppColor.blue,
             ),
-          )
+          ),
         ],
       ),
       Column(

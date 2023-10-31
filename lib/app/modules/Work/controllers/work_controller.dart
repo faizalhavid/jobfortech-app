@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jobfortech/app/data/models/Work.dart';
 import 'package:jobfortech/app/data/repository/WorkRepo.dart';
+import 'package:jobfortech/components/AppToast/index.dart';
 
 class WorkController extends GetxController {
   Rx<List<Work>> works = Rx<List<Work>>([]);
-  RxBool isSaved = RxBool(false);
+  Rx<List<Work>> query_works = Rx<List<Work>>([]);
+  RxBool isBookmark = RxBool(false);
   final searchController = TextEditingController();
 
   @override
@@ -14,15 +16,43 @@ class WorkController extends GetxController {
     super.onInit();
   }
 
+  @override
+  void onClose() {
+    searchController.dispose();
+    super.onClose();
+  }
+
+  void setWorkSaveStatus({required bool bookmark, required int id}) async {
+    final response =
+        await WorkRepository().updateSaveStatus(status: bookmark, id: id);
+    if (response) {
+      AppToast(message: 'This work saved !');
+      fetchWorkList();
+    }
+  }
+
   void fetchWorkList({String? query}) async {
     try {
       final workData = await WorkRepository().getWorkList(query: query);
       if (workData != null) {
         works.value = workData;
-        for (var work in works.value) {
-          print(work.company!.name);
+        print('workData: ${works.value.length}');
+        if (query != null) {
+          query_works.value = workData;
         }
       }
+    } catch (e) {
+      print(e);
+      // Get.snackbar('Error', e.toString());
+    }
+  }
+
+  void applicationWork({required Map<String, dynamic> body}) async {
+    try {
+      final response = await WorkRepository().aplicationWork(body: body);
+      // if (response) {
+      //   Get.snackbar('Success', 'Work applied successfully');
+      // }
     } catch (e) {
       print(e);
       // Get.snackbar('Error', e.toString());

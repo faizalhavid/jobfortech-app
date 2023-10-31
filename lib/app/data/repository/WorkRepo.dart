@@ -36,4 +36,66 @@ class WorkRepository {
       throw Exception(e.toString());
     }
   }
+
+  Future<bool> aplicationWork({required Map<String, dynamic> body}) async {
+    final token = await secureStorage.read(key: 'token');
+
+    try {
+      final response = await http
+          .patch(
+        Uri.parse('${baseUrl}/job/application/create'),
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': 'Token ${token}',
+        },
+        body: jsonEncode(body),
+      )
+          .timeout(
+        Duration(minutes: 1),
+        onTimeout: () {
+          throw Exception('Something went wrong, Please try again later !');
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final List<dynamic> jobList = jsonDecode(response.body)['results'];
+        return true;
+      } else {
+        throw Exception('Something went wrong, Please try again later !');
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  Future<bool> updateSaveStatus({required bool status, required int id}) async {
+    final token = await secureStorage.read(key: 'token');
+
+    try {
+      final response = await http
+          .patch(
+        Uri.parse('${baseUrl}/job/update-saved/${id}'),
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': 'Token ${token}',
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({'save_status': status}),
+      )
+          .timeout(
+        Duration(minutes: 1),
+        onTimeout: () {
+          throw Exception('Something went wrong, Please try again later !');
+        },
+      );
+      print(response.body);
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        throw Exception('Something went wrong, Please try again later !');
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
 }

@@ -19,7 +19,7 @@ class SearchWokView extends GetView {
       appBar: AppHeaderbar(
         title: TextFormField(
           controller: controller.searchController,
-          onFieldSubmitted: (value) {
+          onChanged: (value) {
             controller.fetchWorkList(query: value);
           },
           textInputAction: TextInputAction.search,
@@ -34,22 +34,38 @@ class SearchWokView extends GetView {
         automaticallyImplyLeading: true,
       ),
       body: Obx(
-        () => ListView.builder(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 20,
-              vertical: 20,
-            ),
-            itemCount: controller.works.value.length,
-            itemBuilder: (context, index) {
-              final work = controller.works.value[index];
-              return WorkCard(
-                work: work,
-                controller: controller,
-                onTap: () {
-                  Get.to(() => WorkDetailView(work: work));
-                },
-              );
-            }),
+        () {
+          if (controller.query_works.value.isEmpty) {
+            return Center(
+              child: Text(
+                'No Work found',
+                style: AppBasicStyle(
+                  fontColor: AppColor.grey,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            );
+          } else {
+            return ListView.separated(
+              separatorBuilder: (context, index) => const SizedBox(height: 15),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 20,
+                vertical: 20,
+              ),
+              itemCount: controller.query_works.value.length,
+              itemBuilder: (context, index) {
+                final work = controller.query_works.value[index];
+                return WorkCard(
+                  work: work,
+                  onTap: () {
+                    Get.to(() => WorkDetailView(work: work));
+                  },
+                );
+              },
+            );
+          }
+        },
       ),
     );
   }
