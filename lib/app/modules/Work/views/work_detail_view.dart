@@ -5,6 +5,7 @@ import 'package:get/utils.dart';
 import 'package:jobfortech/app/data/models/User.dart';
 import 'package:jobfortech/app/data/models/Work.dart';
 import 'package:jobfortech/app/modules/Work/controllers/work_controller.dart';
+import 'package:jobfortech/app/modules/Work/views/detail_company_view.dart';
 import 'package:jobfortech/app/modules/Work/views/detail_participants_view.dart';
 import 'package:jobfortech/components/AppAvatar/index.dart';
 import 'package:jobfortech/components/AppButton/index.dart';
@@ -62,12 +63,12 @@ class WorkDetailView extends GetView {
           ),
           ListTile(
             contentPadding: EdgeInsets.zero,
-            onTap: () {},
-            leading: Image.asset(
-              'assets/images/company-2.png',
-              fit: BoxFit.cover,
-              width: 50,
-              height: 50,
+            onTap: () {
+              Get.to(() => DetailCompanyView(company: work.company!));
+            },
+            leading: AppAvatar(
+              path: work.company!.photo_profile,
+              radius: 25,
             ),
             title: Text(
               work.company!.name!,
@@ -77,10 +78,19 @@ class WorkDetailView extends GetView {
               ),
               overflow: TextOverflow.ellipsis,
             ),
-            trailing: AppIconButton(
-              svgPath: 'assets/svgs/drop-down-up-outline.svg',
-              onPressed: () {},
+            subtitle: Text(
+              'By : ${work.company!.user_profile!.firstName!}',
+              style: AppBasicStyle(
+                fontColor: AppColor.grey,
+                fontSize: 12,
+                fontWeight: FontWeight.w400,
+              ),
+              overflow: TextOverflow.ellipsis,
             ),
+            trailing: IconButton(
+                splashRadius: 20,
+                onPressed: () {},
+                icon: Icon(Icons.info_outline_rounded)),
           ),
           Text(
             work.project!.details!,
@@ -176,6 +186,7 @@ class WorkDetailView extends GetView {
               ),
             ],
           ),
+          const SizedBox(height: 15),
           Text(
             'Team Profile :',
             style: AppBasicStyle(
@@ -196,7 +207,7 @@ class WorkDetailView extends GetView {
                     return Center(child: Text('Something went wrong'));
                   } else {
                     return Container(
-                      height: 300,
+                      height: 150,
                       child: ListView.builder(
                         itemCount: snapshot.data!.length,
                         itemBuilder: (context, index) {

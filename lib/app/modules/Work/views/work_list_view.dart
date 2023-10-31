@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:jobfortech/app/modules/Work/controllers/work_controller.dart';
-import 'package:jobfortech/app/modules/Work/views/search_wok_view.dart';
+import 'package:jobfortech/app/modules/Work/views/work_search_view.dart';
 import 'package:jobfortech/app/modules/Work/views/work_detail_view.dart';
 import 'package:jobfortech/components/AppHeaderBar/index.dart';
 import 'package:jobfortech/components/AppSafeArea/index.dart';
