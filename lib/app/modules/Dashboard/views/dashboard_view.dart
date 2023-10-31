@@ -6,6 +6,7 @@ import 'package:jobfortech/components/AppBadge/index.dart';
 import 'package:jobfortech/components/AppButton/index.dart';
 import 'package:jobfortech/components/AppCard/index.dart';
 import 'package:jobfortech/components/AppStack/index.dart';
+import 'package:jobfortech/components/TableReportWork/index.dart';
 import 'package:jobfortech/constant/icons.dart';
 import 'package:jobfortech/constant/theme.dart';
 import '../controllers/dashboard_controller.dart';
@@ -490,78 +491,5 @@ SizedBox buildTopIndustri({required List<String> items}) {
       },
       scrollDirection: Axis.horizontal,
     ),
-  );
-}
-
-Table buildReportJob(
-    {required String project,
-    required String outsource,
-    required List skills}) {
-  return Table(
-    defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-    columnWidths: const {
-      0: FlexColumnWidth(1),
-      1: FlexColumnWidth(1),
-      2: FlexColumnWidth(1),
-    },
-    children: [
-      TableRow(children: [
-        Text(
-          'Project',
-          style: AppBasicStyle(
-              fontColor: AppColor.grey,
-              fontWeight: FontWeight.w500,
-              fontSize: 14),
-        ),
-        Text(
-          'Outsource',
-          style: AppBasicStyle(
-              fontColor: AppColor.grey,
-              fontWeight: FontWeight.w500,
-              fontSize: 14),
-        ),
-        Text(
-          'Skills',
-          style: AppBasicStyle(
-              fontColor: AppColor.grey,
-              fontWeight: FontWeight.w500,
-              fontSize: 14),
-        ),
-      ]),
-      TableRow(children: [
-        Container(
-          child: Text(
-            project,
-            style: AppBasicStyle(
-              fontSize: 25,
-              fontWeight: FontWeight.w800,
-            ),
-          ),
-        ),
-        Container(
-          child: Text(
-            outsource,
-            style: AppBasicStyle(
-              fontSize: 25,
-              fontWeight: FontWeight.w800,
-            ),
-          ),
-        ),
-        Container(
-          padding: EdgeInsets.only(top: 8),
-          height: 60,
-          child: Stack(
-            children: skills.map((skill) {
-              double leftPosition = 0.0;
-              leftPosition += skills.indexOf(skill) * 25;
-              return Positioned(
-                child: AppSkillsIcon(skill: skill),
-                left: leftPosition,
-              );
-            }).toList(),
-          ),
-        )
-      ]),
-    ],
   );
 }

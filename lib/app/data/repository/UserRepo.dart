@@ -141,7 +141,7 @@ class UserRepository {
     }
   }
 
-  Future<User> updateUser({required Map<String, dynamic> body}) async {
+  Future<User> updateUser({required Map<String, dynamic> body, int? id}) async {
     final id = await secureStorage.read(key: 'id');
     final token = await secureStorage.read(key: 'token');
     final uri = Uri.parse('$baseUrl/users/update-profile/$id/');
@@ -256,9 +256,9 @@ class UserRepository {
     }
   }
 
-  Future<User> getUser() async {
+  Future<User> getUser({String? id}) async {
     final token = await secureStorage.read(key: 'token');
-    final id = await secureStorage.read(key: 'id');
+    id ??= await secureStorage.read(key: 'id');
     final response = await http.get(
       Uri.parse('$baseUrl/users/$id'),
       headers: {

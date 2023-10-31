@@ -16,12 +16,12 @@ Ink WorkCard({
   if (work.minSalary != null && work.maxSalary != null) {
     if (work.minSalary! >= 1000000 && work.maxSalary! >= 1000000) {
       salary =
-          'Rp${(work.minSalary! / 1000000).toStringAsFixed(1).replaceAll('.0', '')} - Rp${(work.maxSalary! / 1000000).toStringAsFixed(1).replaceAll('.0', '')} jt';
+          'IDR ${(work.minSalary! / 1000000).toStringAsFixed(1).replaceAll('.0', '')} - ${(work.maxSalary! / 1000000).toStringAsFixed(1).replaceAll('.0', '')} jt';
     } else if (work.minSalary! >= 100000 && work.maxSalary! >= 100000) {
       salary =
-          'Rp${(work.minSalary! / 100000 * 100).toStringAsFixed(0)} - Rp${(work.maxSalary! / 100000 * 100).toStringAsFixed(0)}';
+          'IDR ${(work.minSalary! / 100000 * 100).toStringAsFixed(0)} - ${(work.maxSalary! / 100000 * 100).toStringAsFixed(0)}';
     } else {
-      salary = 'Rp$work.minSalary - Rp$work.maxSalary';
+      salary = 'IDR $work.minSalary - $work.maxSalary';
     }
   }
   RxBool isBookmark = RxBool(work.saveStatus!);

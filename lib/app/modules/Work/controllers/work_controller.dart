@@ -1,18 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jobfortech/app/data/models/User.dart';
 import 'package:jobfortech/app/data/models/Work.dart';
+import 'package:jobfortech/app/data/repository/UserRepo.dart';
 import 'package:jobfortech/app/data/repository/WorkRepo.dart';
 import 'package:jobfortech/components/AppToast/index.dart';
 
 class WorkController extends GetxController {
   Rx<List<Work>> works = Rx<List<Work>>([]);
   Rx<List<Work>> query_works = Rx<List<Work>>([]);
+
   RxBool isBookmark = RxBool(false);
   final searchController = TextEditingController();
 
   @override
   void onInit() {
     fetchWorkList();
+
     super.onInit();
   }
 
@@ -43,8 +47,20 @@ class WorkController extends GetxController {
       }
     } catch (e) {
       print(e);
-      // Get.snackbar('Error', e.toString());
+      // Get.snackbar('Error', e.toString(s));
     }
+  }
+
+  Future<List<User>> fetchParticipants(List<int> userIds) async {
+    List<User> participants = [];
+    for (int id in userIds) {
+      final user = await UserRepository().getUser(
+        id: id.toString(),
+      );
+      participants.add(user);
+    }
+
+    return participants;
   }
 
   void applicationWork({required Map<String, dynamic> body}) async {
