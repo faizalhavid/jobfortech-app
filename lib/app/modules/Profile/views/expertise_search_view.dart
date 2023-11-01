@@ -3,7 +3,6 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 
 import 'package:get/get.dart';
 import 'package:jobfortech/app/modules/Profile/controllers/profile_controller.dart';
-import 'package:jobfortech/components/AppBadge/index.dart';
 import 'package:jobfortech/components/AppButton/index.dart';
 import 'package:jobfortech/components/AppHeaderBar/index.dart';
 import 'package:jobfortech/components/AppSafeArea/index.dart';
@@ -27,6 +26,21 @@ class ExpertiseSearchView extends GetView {
               fontSize: 16,
               fontColor: AppColor.white),
         ),
+      ),
+      bottomSheet: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+        color: AppColor.transparent,
+        child: AppButton(
+            child: Text(
+              'Next',
+              style: AppBasicStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 16,
+                  fontColor: AppColor.white),
+            ),
+            onPressed: () {
+              Get.back();
+            }),
       ),
       body: AppSafeArea(
         safearea: resSafeArea,
@@ -70,7 +84,7 @@ class ExpertiseSearchView extends GetView {
           Obx(() {
             return Container(
               width: Get.width,
-              child: controller.expertiseTag.length > 0
+              child: controller.expertiseTag.isNotEmpty
                   ? Wrap(
                       alignment: WrapAlignment.start,
                       runAlignment: WrapAlignment.start,
@@ -114,7 +128,7 @@ class ExpertiseSearchView extends GetView {
       },
       controller: controller.expertise,
       decoration: InputDecoration(
-        contentPadding: EdgeInsets.symmetric(
+        contentPadding: const EdgeInsets.symmetric(
           horizontal: 20,
           vertical: 15,
         ),
@@ -131,7 +145,7 @@ class ExpertiseSearchView extends GetView {
         filled: true,
         fillColor: AppColor.lightBlue.withOpacity(0.6),
         suffixIcon: Padding(
-          padding: EdgeInsets.symmetric(
+          padding: const EdgeInsets.symmetric(
             horizontal: 12,
             vertical: 8,
           ),

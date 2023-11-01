@@ -272,10 +272,7 @@ class UserRepository {
     if (response.statusCode == 200) {
       print('response ${response.body}');
       Map<String, dynamic> jsonResponse = json.decode(response.body);
-      User user = User.fromJson(jsonResponse);
-      // Get.find<UserController>().setUser(user);
-
-      return user;
+     return User.fromJson(jsonResponse);
     } else {
       throw Exception(response.body);
     }

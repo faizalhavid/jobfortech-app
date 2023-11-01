@@ -1,14 +1,14 @@
 import 'dart:io';
-
 import 'package:file_picker/file_picker.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:jobfortech/app/data/models/User.dart';
 import 'package:jobfortech/app/data/repository/UserRepo.dart';
+import 'package:jobfortech/app/utils/functions.dart';
 import 'package:jobfortech/components/AppDialog/index.dart';
 import 'package:jobfortech/components/AppStack/index.dart';
 import 'package:jobfortech/components/AppToast/index.dart';
@@ -17,9 +17,9 @@ import 'dart:async';
 
 class ProfileController extends GetxController {
   RxInt badgecount = 1.obs;
+  Rx<List<User>> works = Rx<List<User>>([]);
 
-  final user = FirebaseAuth.instance.currentUser;
-  var firts_name = TextEditingController();
+  var first_name = TextEditingController();
   var last_name = TextEditingController();
   var email = TextEditingController();
   var bio = TextEditingController();
@@ -29,11 +29,13 @@ class ProfileController extends GetxController {
   var address = TextEditingController();
   var country = TextEditingController();
   var expertise = TextEditingController();
-
+  var photoProfile = Rx<String>('');
   var social_name = TextEditingController();
   var social_url = TextEditingController();
+  var cv_path = Rx<String>('');
   Rx<File> image = Rx<File>(File(''));
   Rx<File> cv_file = Rx<File>(File(''));
+
   final RxList<String> positionsList = RxList<String>([
     'Frontend Developer',
     'Backend Developer',
@@ -71,6 +73,7 @@ class ProfileController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    fetchUser();
     fetchingExpertise();
   }
 
@@ -143,8 +146,8 @@ class ProfileController extends GetxController {
           ),
           onConfirm: () async {
             image.value = croppedFile;
-            final uploadImage =
-                await UserRepository().updateUserPhoto(image: image.value); //upload server
+            final uploadImage = await UserRepository()
+                .updateUserPhoto(image: image.value); //upload server
             if (uploadImage) {
               AppToast(message: 'Image uploaded successfully');
               Get.back();
@@ -195,8 +198,6 @@ class ProfileController extends GetxController {
     }
   }
 
-  Future<void> readFile(PlatformFile file) async {}
-
 // Execute
   void editProfileHandling(GlobalKey<FormState> formKey) async {
     if (formKey.currentState!.validate()) {
@@ -204,7 +205,7 @@ class ProfileController extends GetxController {
       try {
         final upload = await userRepo.updateUser(
           body: {
-            'first_name': firts_name.text,
+            'first_name': first_name.text,
             'last_name': last_name.text,
             'email': email.text,
             'description': bio.text,
@@ -226,6 +227,36 @@ class ProfileController extends GetxController {
         AppToast(message: 'Something went wrong');
         print('error : $e');
       }
+    }
+  }
+
+  Future<void> fetchUser() async {
+    try {
+      final User userData = await UserRepository().getUser();
+
+      first_name.text = userData.firstName!;
+      last_name.text = userData.lastName!;
+      email.text = userData.email!;
+      bio.text = userData.profile!.description!;
+      phoneNumber.text = userData.phoneNumber!;
+      jobRoles.text = userData.profile!.position!;
+      address.text = userData.profile!.location!;
+      expertiseTag.assignAll(userData.profile!.expertise!.cast<String>());
+      userSocial.value =
+          (userData.profile?.socialMedia as List<dynamic>?)?.map((e) {
+                return {
+                  'name': socialMediaName(e.toString()),
+                  'url': e.toString(),
+                };
+              }).toList() ??
+              [];
+      expertiseTag.assignAll(userData.profile!.expertise!.cast<String>());
+      photoProfile.value = userData.profile!.photoProfile!;
+      cv_path.value = userData.profile!.resume!;
+      print('cv : ${userData.profile!.resume.split('/').last}');
+      update();
+    } catch (e) {
+      print('error fetch user $e');
     }
   }
 
