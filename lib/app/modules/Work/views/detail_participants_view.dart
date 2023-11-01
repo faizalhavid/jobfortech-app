@@ -5,7 +5,6 @@ import 'package:jobfortech/app/data/models/User.dart';
 import 'package:jobfortech/app/utils/functions.dart';
 import 'package:jobfortech/components/AppAvatar/index.dart';
 import 'package:jobfortech/components/AppHeaderBar/index.dart';
-import 'package:jobfortech/components/AppSafeArea/index.dart';
 import 'package:jobfortech/components/AppStack/index.dart';
 import 'package:jobfortech/components/TableReportWork/index.dart';
 import 'package:jobfortech/constant/icons.dart';

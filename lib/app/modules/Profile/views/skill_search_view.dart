@@ -10,8 +10,8 @@ import 'package:jobfortech/components/AppStack/index.dart';
 import 'package:jobfortech/constant/icons.dart';
 import 'package:jobfortech/constant/theme.dart';
 
-class ExpertiseSearchView extends GetView {
-  const ExpertiseSearchView({Key? key}) : super(key: key);
+class SkillSearchView extends GetView {
+  const SkillSearchView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<ProfileController>();
@@ -20,7 +20,7 @@ class ExpertiseSearchView extends GetView {
         backgroundColor: AppColor.blue,
         automaticallyImplyLeading: true,
         leading: Text(
-          'Expertise',
+          'Add Skill ',
           style: AppBasicStyle(
               fontWeight: FontWeight.w600,
               fontSize: 16,
@@ -48,7 +48,7 @@ class ExpertiseSearchView extends GetView {
           TypeAheadField(
             hideOnEmpty: true,
             suggestionsCallback: (String pattern) async {
-              return controller.expertiseOptions.where((element) =>
+              return controller.skillOptions.where((element) =>
                   element.toLowerCase().contains(pattern.toLowerCase()));
             },
             itemBuilder: (context, String suggestion) {
@@ -57,9 +57,9 @@ class ExpertiseSearchView extends GetView {
               );
             },
             onSuggestionSelected: (String suggestion) {
-              controller.expertise.clear();
-              controller.expertiseOptions.remove(suggestion);
-              controller.expertiseTag.add(suggestion);
+              controller.skill.clear();
+              controller.skillOptions.remove(suggestion);
+              controller.skillTag.add(suggestion);
             },
             textFieldConfiguration: textField(controller),
           ),
@@ -84,13 +84,13 @@ class ExpertiseSearchView extends GetView {
           Obx(() {
             return Container(
               width: Get.width,
-              child: controller.expertiseTag.isNotEmpty
+              child: controller.skillTag.isNotEmpty
                   ? Wrap(
                       alignment: WrapAlignment.start,
                       runAlignment: WrapAlignment.start,
                       crossAxisAlignment: WrapCrossAlignment.center,
                       children: [
-                        for (var tag in controller.expertiseTag)
+                        for (var tag in controller.skillTag)
                           Container(
                             margin: EdgeInsets.only(right: 10, bottom: 10),
                             child: Chip(
@@ -106,7 +106,7 @@ class ExpertiseSearchView extends GetView {
                               ),
                               deleteIconColor: AppColor.blue,
                               onDeleted: () {
-                                controller.expertiseTag.remove(tag);
+                                controller.skillTag.remove(tag);
                               },
                             ),
                           ),
@@ -123,10 +123,10 @@ class ExpertiseSearchView extends GetView {
   TextFieldConfiguration textField(ProfileController controller) {
     return TextFieldConfiguration(
       onEditingComplete: () {
-        controller.expertiseTag.add(controller.expertise.text);
-        controller.expertise.clear();
+        controller.skillTag.add(controller.skill.text);
+        controller.skill.clear();
       },
-      controller: controller.expertise,
+      controller: controller.skill,
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 20,

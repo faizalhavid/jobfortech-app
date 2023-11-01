@@ -9,6 +9,7 @@ import 'package:jobfortech/components/AppToast/index.dart';
 class WorkController extends GetxController {
   Rx<List<Work>> works = Rx<List<Work>>([]);
   Rx<List<Work>> query_works = Rx<List<Work>>([]);
+  final RxList<String> expertise = RxList<String>([]);
 
   RxBool isBookmark = RxBool(false);
   final searchController = TextEditingController();
@@ -16,7 +17,7 @@ class WorkController extends GetxController {
   @override
   void onInit() {
     fetchWorkList();
-
+    fetchingExpertise();
     super.onInit();
   }
 
@@ -24,6 +25,11 @@ class WorkController extends GetxController {
   void onClose() {
     searchController.dispose();
     super.onClose();
+  }
+
+  Future<void> fetchingExpertise() async {
+    final expertiseData = await UserRepository().getExpertise();
+    expertise.assignAll(expertiseData);
   }
 
   void setWorkSaveStatus({required bool bookmark, required int id}) async {

@@ -129,6 +129,10 @@ class Company {
   String? website;
   String? photo_profile;
   User? user_profile;
+  String? founder;
+  int? employees;
+  List<int>? expertise;
+  String? description;
 
   Company({
     required this.id,
@@ -138,6 +142,10 @@ class Company {
     this.website,
     this.photo_profile,
     required this.user_profile,
+    this.founder,
+    this.employees,
+    this.expertise,
+    this.description,
   });
 
   factory Company.fromJson(Map<String, dynamic> json) {
@@ -152,6 +160,12 @@ class Company {
               json['user_profile'] is Map<String, dynamic>
           ? User.fromJson(json['user_profile'] as Map<String, dynamic>)
           : null,
+      founder: json['founder'] as String?,
+      employees: json['employees'] as int?,
+      expertise: json['expertise'] != null
+          ? (json['expertise'] as List<dynamic>).map((e) => e as int).toList()
+          : null,
+      description: json['description'] as String?,
     );
   }
 }

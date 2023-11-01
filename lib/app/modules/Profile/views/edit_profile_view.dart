@@ -6,7 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:jobfortech/app/data/repository/UserRepo.dart';
 import 'package:jobfortech/app/modules/Profile/controllers/profile_controller.dart';
-import 'package:jobfortech/app/modules/Profile/views/expertise_search_view.dart';
+import 'package:jobfortech/app/modules/Profile/views/skill_search_view.dart';
 import 'package:jobfortech/app/utils/validation.dart';
 import 'package:jobfortech/components/AppAvatar/index.dart';
 import 'package:jobfortech/components/AppButton/index.dart';
@@ -136,17 +136,17 @@ class EditProfileView extends GetView<ProfileController> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  'Expertise',
+                                  'Skills',
                                   style: AppBasicStyle(
                                     fontColor: AppColor.black,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                controller.expertiseTag.isNotEmpty
+                                controller.skillTag.isNotEmpty
                                     ? IconButton(
                                         splashRadius: 20,
                                         onPressed: () {
-                                          Get.to(() => ExpertiseSearchView());
+                                          Get.to(() => SkillSearchView());
                                         },
                                         icon: Icon(
                                           Icons.mode_edit_outline_outlined,
@@ -158,7 +158,7 @@ class EditProfileView extends GetView<ProfileController> {
                             SizedBox(
                               height: Get.height * 0.02,
                             ),
-                            controller.expertiseTag.isNotEmpty
+                            controller.skillTag.isNotEmpty
                                 ? Column(
                                     children: [
                                       Wrap(
@@ -167,9 +167,8 @@ class EditProfileView extends GetView<ProfileController> {
                                         crossAxisAlignment:
                                             WrapCrossAlignment.center,
                                         children: [
-                                          for (var tag in controller
-                                              .expertiseTag
-                                              .take(3))
+                                          for (var tag
+                                              in controller.skillTag.take(3))
                                             Container(
                                               margin: EdgeInsets.only(
                                                   right: 5, bottom: 5),
@@ -187,17 +186,17 @@ class EditProfileView extends GetView<ProfileController> {
                                                 ),
                                                 deleteIconColor: AppColor.blue,
                                                 onDeleted: () {
-                                                  controller.expertiseTag
+                                                  controller.skillTag
                                                       .remove(tag);
                                                 },
                                               ),
                                             ),
-                                          controller.expertiseTag.length >= 3
+                                          controller.skillTag.length >= 3
                                               ? Chip(
                                                   backgroundColor:
                                                       AppColor.smoke,
                                                   label: Text(
-                                                    '${controller.expertiseTag.length - 3} + more',
+                                                    '${controller.skillTag.length - 3} + more',
                                                     style: AppBasicStyle(
                                                       fontSize: 12,
                                                       fontWeight:
@@ -224,7 +223,7 @@ class EditProfileView extends GetView<ProfileController> {
                                       ),
                                     ),
                                     onPressed: () {
-                                      Get.to(() => ExpertiseSearchView());
+                                      Get.to(() => SkillSearchView());
                                     },
                                   ),
                           ],

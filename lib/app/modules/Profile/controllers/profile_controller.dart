@@ -28,7 +28,7 @@ class ProfileController extends GetxController {
   var birthDate = TextEditingController();
   var address = TextEditingController();
   var country = TextEditingController();
-  var expertise = TextEditingController();
+  var skill = TextEditingController();
   var photoProfile = Rx<String>('');
   var social_name = TextEditingController();
   var social_url = TextEditingController();
@@ -52,8 +52,61 @@ class ProfileController extends GetxController {
     'Software Engineer',
     'Other',
   ]);
-  final RxList<String> expertiseTag = RxList<String>([]);
-  final RxList<String> expertiseOptions = RxList<String>([]);
+  final RxList<String> skillTag = RxList<String>([]);
+  final RxList<String> skillOptions = RxList<String>([
+    'python',
+    'java',
+    'javascript',
+    'c++',
+    'c#',
+    'php',
+    'ruby',
+    'go',
+    'swift',
+    'kotlin',
+    'dart',
+    'react',
+    'vue',
+    'angular',
+    'laravel',
+    'django',
+    'spring',
+    'flutter',
+    'react native',
+    'ionic',
+    'android',
+    'ios',
+    'mysql',
+    'mongodb',
+    'postgresql',
+    'sql server',
+    'oracle',
+    'firebase',
+    'aws',
+    'azure',
+    'gcp',
+    'docker',
+    'kubernetes',
+    'jenkins',
+    'git',
+    'github',
+    'gitlab',
+    'bitbucket',
+    'jira',
+    'trello',
+    'figma',
+    'adobe xd',
+    'sketch',
+    'photoshop',
+    'illustrator',
+    'after effect',
+    'premiere pro',
+    'corel draw',
+    'corel photo paint',
+    'corel video studio',
+    'corel motion studio',
+    'corel painter',
+  ]);
   final Rx<List<Map<String, String>>> userSocial =
       Rx<List<Map<String, String>>>([]);
 
@@ -74,7 +127,6 @@ class ProfileController extends GetxController {
   void onInit() {
     super.onInit();
     fetchUser();
-    fetchingExpertise();
   }
 
   @override
@@ -212,7 +264,7 @@ class ProfileController extends GetxController {
             'phone_number': phoneNumber.text,
             'position': jobRoles.text,
             'location': address.text,
-            'expertise': expertiseTag,
+            'skill': skillTag,
             'social_media': userSocial.value
                 .map((social) => social['url']!.startsWith('http')
                     ? social['url']
@@ -241,7 +293,7 @@ class ProfileController extends GetxController {
       phoneNumber.text = userData.phoneNumber!;
       jobRoles.text = userData.profile!.position!;
       address.text = userData.profile!.location!;
-      expertiseTag.assignAll(userData.profile!.expertise!.cast<String>());
+      skillTag.assignAll(userData.profile!.skills!.cast<String>());
       userSocial.value =
           (userData.profile?.socialMedia as List<dynamic>?)?.map((e) {
                 return {
@@ -250,7 +302,6 @@ class ProfileController extends GetxController {
                 };
               }).toList() ??
               [];
-      expertiseTag.assignAll(userData.profile!.expertise!.cast<String>());
       photoProfile.value = userData.profile!.photoProfile!;
       cv_path.value = userData.profile!.resume!;
       print('cv : ${userData.profile!.resume.split('/').last}');
@@ -260,8 +311,8 @@ class ProfileController extends GetxController {
     }
   }
 
-  Future<void> fetchingExpertise() async {
-    final expertiseData = await userRepo.getExpertise();
-    expertiseOptions.assignAll(expertiseData);
-  }
+  // Future<void> fetchingExpertise() async {
+  //   final expertiseData = await userRepo.getExpertise();
+  //   expertiseOptions.assignAll(expertiseData);
+  // }
 }
