@@ -49,18 +49,18 @@ class WorkDetailView extends GetView {
       body: AppSafeArea(
         safearea: {'horizontal': 20, 'vertical': 20},
         children: [
-          Text(
-            work.project!.name!,
-            style: AppTitleHeader,
-          ),
-          Text(
-            work.position!,
-            style: AppBasicStyle(
-              fontColor: AppColor.black,
-              fontSize: 18,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
+          // Text(
+          //   work.project!.name!,
+          //   style: AppTitleHeader,
+          // ),
+          // Text(
+          //   work.position!,
+          //   style: AppBasicStyle(
+          //     fontColor: AppColor.black,
+          //     fontSize: 18,
+          //     fontWeight: FontWeight.w600,
+          //   ),
+          // ),
           ListTile(
             contentPadding: EdgeInsets.zero,
             onTap: () {
@@ -71,42 +71,68 @@ class WorkDetailView extends GetView {
               radius: 25,
             ),
             title: Text(
-              work.company!.name!,
+              work.position!,
               style: AppBasicStyle(
+                fontSize: 16,
                 fontColor: AppColor.black,
                 fontWeight: FontWeight.w600,
               ),
               overflow: TextOverflow.ellipsis,
             ),
-            subtitle: Text(
-              'By : ${work.company!.user_profile!.firstName!}',
-              style: AppBasicStyle(
-                fontColor: AppColor.grey,
-                fontSize: 12,
-                fontWeight: FontWeight.w400,
+            subtitle: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 3),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    work.company!.name!,
+                    style: AppBasicStyle(
+                      fontColor: AppColor.blue,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  Text(
+                    work.company!.address!,
+                    style: AppBasicStyle(
+                      fontColor: AppColor.grey,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
               ),
-              overflow: TextOverflow.ellipsis,
             ),
-            trailing: IconButton(
-                splashRadius: 20,
-                onPressed: () {},
-                icon: Icon(Icons.info_outline_rounded)),
+            trailing: const Icon(
+              Icons.verified,
+              size: 20,
+              color: AppColor.blue,
+            ),
           ),
-          Text(
-            work.project!.details!,
-            style: AppBasicStyle(
-              fontSize: 13,
-              fontColor: AppColor.grey,
-              height: 2,
-            ),
-            maxLines: 8,
+          Column(
+            children: work.description!
+                .map((e) => Text(
+                      e,
+                      style: AppBasicStyle(
+                        fontColor: AppColor.grey,
+                        fontSize: 13,
+                        height: 2,
+                      ),
+                      maxLines: 8,
+                      overflow: TextOverflow.ellipsis,
+                    ))
+                .toList(),
           ),
           Text(
             'Skill Required :',
             style: AppBasicStyle(
-                fontColor: AppColor.black,
-                fontSize: 12,
-                fontWeight: FontWeight.w600),
+              fontColor: AppColor.black,
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+            ),
           ),
           Wrap(
             spacing: 5,

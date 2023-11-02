@@ -143,7 +143,7 @@ Ink WorkCard({
             height: 8,
           ),
           Text(
-            work.description!,
+            work.project!.details!,
             style: AppBasicStyle(
                 fontColor: AppColor.black,
                 fontSize: 12,

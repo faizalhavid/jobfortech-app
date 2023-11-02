@@ -12,7 +12,8 @@ class Work {
   int? minSalary;
   int? maxSalary;
   int? vacancies;
-  String? description;
+  List<dynamic>? description;
+  List<dynamic>? qualification;
   String? additional;
   String? status;
   DateTime? publishDate;
@@ -32,6 +33,7 @@ class Work {
     this.maxSalary,
     this.vacancies,
     this.description,
+    this.qualification,
     this.additional,
     this.status,
     this.publishDate,
@@ -59,7 +61,12 @@ class Work {
       minSalary: json['min_salary'] as int?,
       maxSalary: json['max_salary'] as int?,
       vacancies: json['vacancies'] as int?,
-      description: json['description'] as String?,
+      description: (json['description'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
+      qualification: (json['qualification'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
       additional: json['additional'] as String?,
       status: json['status'] as String?,
       publishDate: json['publish_date'] != null

@@ -8,7 +8,7 @@ import 'package:jobfortech/constant/theme.dart';
 CircleAvatar AppAvatar(
     {double? radius,
     Color outlineColor = AppColor.white,
-    Color backgroundColor = AppColor.blue,
+    Color backgroundColor = AppColor.white,
     ImageProvider? image,
     String? path}) {
   return CircleAvatar(
