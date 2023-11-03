@@ -10,9 +10,9 @@ class WorkController extends GetxController {
   Rx<List<Work>> works = Rx<List<Work>>([]);
   Rx<List<Work>> query_works = Rx<List<Work>>([]);
   final RxList<String> expertise = RxList<String>([]);
-
   RxBool isBookmark = RxBool(false);
   final searchController = TextEditingController();
+  RxBool loading = RxBool(false);
 
   @override
   void onInit() {
@@ -42,15 +42,18 @@ class WorkController extends GetxController {
   }
 
   void fetchWorkList({String? query}) async {
+    loading.value = true;
     try {
       final workData = await WorkRepository().getWorkList(query: query);
-      if (workData != null) {
+      if (workData.isNotEmpty) {
         works.value = workData;
-        print('workData: ${works.value.length}');
         if (query != null) {
           query_works.value = workData;
         }
       }
+      Future.delayed(const Duration(seconds: 3), () {
+        loading.value = false;
+      });
     } catch (e) {
       print(e);
       // Get.snackbar('Error', e.toString(s));
@@ -67,6 +70,30 @@ class WorkController extends GetxController {
     }
 
     return participants;
+  }
+
+  void sortWork({required String filter, String? qeury}) {
+    switch (filter) {
+      case 'All':
+        fetchWorkList();
+        break;
+      case 'Experience':
+        qeury = qeury == null ? '0' : qeury;
+        fetchWorkList(query: qeury);
+        break;
+
+      // case 'Saved':
+      //   filteredWork.addAll(works.value.where((work) => work.isSaved == true));
+      //   break;
+      // case 'Applied':
+      //   filteredWork.addAll(works.value.where((work) => work.isApplied == true));
+      //   break;
+      // case 'Available':
+      //   filteredWork.addAll(works.value.where((work) => work.isAvailable == true));
+      //   break;
+      default:
+        break;
+    }
   }
 
   void applicationWork({required Map<String, dynamic> body}) async {
