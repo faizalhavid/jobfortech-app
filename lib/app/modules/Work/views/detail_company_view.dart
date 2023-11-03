@@ -405,8 +405,14 @@ class DetailCompanyView extends GetView {
                           ],
                         );
                       } else {
-                        return const Center(
-                            child: Text('This company has no job vacancy'));
+                        return Center(
+                            child: Text(
+                          'This company has no job vacancy',
+                          style: AppBasicStyle(
+                              fontColor: AppColor.grey,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500),
+                        ));
                       }
                     }),
               ],

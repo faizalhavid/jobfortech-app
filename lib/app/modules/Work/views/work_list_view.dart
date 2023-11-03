@@ -14,6 +14,7 @@ class WorkListView extends GetView {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(WorkController());
+    RxBool isChipSelected = RxBool(true);
     return Scaffold(
       appBar: AppHeaderbar(
         title: Text(
@@ -39,21 +40,72 @@ class WorkListView extends GetView {
           spacing: 25,
           scrollDirection: Axis.vertical,
           children: [
-            // Column(
-            //   children: [
-            //     Text(
-            //       'Available Works',
-            //       style: AppTitleHeader,
-            //     ),
-            //     Row(
-            //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //       children: [
-            //         AppIconButton(
-            //             svgPath: 'assets/svgs/refresh.svg', onPressed: () {})
-            //       ],
-            //     ),
-            //   ],
-            // ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Available Works',
+                  style: AppTitleHeader,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    ChoiceChip(
+                      backgroundColor: AppColor.lightGrey,
+                      selectedColor: AppColor.blue,
+                      showCheckmark: true,
+                      selectedShadowColor: AppColor.white,
+                      checkmarkColor: AppColor.white,
+                      label: Text(
+                        'All',
+                        style: AppBasicStyle(
+                          fontColor: AppColor.white,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      selected: true,
+                      onSelected: (value) {},
+                    ),
+                    ChoiceChip(
+                      backgroundColor: AppColor.lightGrey,
+                      selectedColor: AppColor.blue,
+                      showCheckmark: true,
+                      selectedShadowColor: AppColor.white,
+                      checkmarkColor: AppColor.white,
+                      label: Text(
+                        'All',
+                        style: AppBasicStyle(
+                          fontColor: AppColor.white,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      selected: true,
+                      onSelected: (value) {},
+                    ),
+                    ChoiceChip(
+                      backgroundColor: AppColor.lightGrey,
+                      selectedColor: AppColor.blue,
+                      showCheckmark: true,
+                      selectedShadowColor: AppColor.white,
+                      checkmarkColor: AppColor.white,
+                      label: Text(
+                        'All',
+                        style: AppBasicStyle(
+                          fontColor: AppColor.white,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      selected: true,
+                      onSelected: (value) {},
+                    ),
+                  ],
+                ),
+              ],
+            ),
             ...controller.works.value.map((work) => WorkCard(
                   work: work,
                   onTap: () {
