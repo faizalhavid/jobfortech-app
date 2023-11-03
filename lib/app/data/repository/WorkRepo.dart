@@ -11,10 +11,36 @@ class WorkRepository {
 
   Future<List<Work>> getWorkList({String? query}) async {
     final token = await secureStorage.read(key: 'token');
-
     try {
       final response = await http.get(
         Uri.parse('${baseUrl}/job?search=${query ?? ''}'),
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': 'Token ${token}',
+        },
+      ).timeout(
+        Duration(minutes: 1),
+        onTimeout: () {
+          throw Exception('Something went wrong, Please try again later !');
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final List<dynamic> jobList = jsonDecode(response.body)['results'];
+        return jobList.map((json) => Work.fromJson(json)).toList();
+      } else {
+        throw Exception('Something went wrong, Please try again later !');
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  Future<List<Work>> getWorkListByCompany({required String companyId}) async {
+    final token = await secureStorage.read(key: 'token');
+    try {
+      final response = await http.get(
+        Uri.parse('${baseUrl}/job/company/${companyId}'),
         headers: {
           'Accept': 'application/json',
           'Authorization': 'Token ${token}',
