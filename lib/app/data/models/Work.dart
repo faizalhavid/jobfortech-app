@@ -140,6 +140,7 @@ class Company {
   int? employees;
   List<int>? expertise;
   String? description;
+  List<Gallery>? gallery;
 
   Company({
     required this.id,
@@ -153,6 +154,7 @@ class Company {
     this.employees,
     this.expertise,
     this.description,
+    this.gallery,
   });
 
   factory Company.fromJson(Map<String, dynamic> json) {
@@ -172,6 +174,34 @@ class Company {
       expertise: json['expertise'] != null
           ? (json['expertise'] as List<dynamic>).map((e) => e as int).toList()
           : null,
+      description: json['description'] as String?,
+      gallery: json['gallery'] != null
+          ? (json['gallery'] as List<dynamic>)
+              .map((e) => Gallery.fromJson(e as Map<String, dynamic>))
+              .toList()
+          : null,
+    );
+  }
+}
+
+class Gallery {
+  int id;
+  String? image;
+  String? title;
+  String? description;
+
+  Gallery({
+    required this.id,
+    this.image,
+    this.title,
+    this.description,
+  });
+
+  factory Gallery.fromJson(Map<String, dynamic> json) {
+    return Gallery(
+      id: json['id'] as int,
+      image: json['image'] as String?,
+      title: json['title'] as String?,
       description: json['description'] as String?,
     );
   }

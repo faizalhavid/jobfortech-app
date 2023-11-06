@@ -197,30 +197,33 @@ class DetailCompanyView extends GetView {
                 fontSize: 14,
                 fontWeight: FontWeight.w600),
           ),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Wrap(
-              children: [
-                GestureDetector(
+          SizedBox(
+            height: Get.height * 0.3,
+            child: ListView.separated(
+              separatorBuilder: (context, index) => const SizedBox(width: 10),
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              itemCount: company.gallery!.length,
+              itemBuilder: (context, index) {
+                return GestureDetector(
                   onTap: () {
                     Get.to(
-                        () => ImagePreview(imageUrl: company.photo_profile!));
+                        () => ImagePreview(gallery: company.gallery![index]));
                   },
                   child: Container(
-                    margin: const EdgeInsets.only(right: 10, bottom: 10),
-                    width: 100,
-                    height: 100,
+                    margin: const EdgeInsets.only(bottom: 10),
+                    width: Get.width * 0.6,
+                    height: Get.height * 0.2,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       image: DecorationImage(
-                        image: NetworkImage(
-                            'https://images.unsplash.com/photo-1682686581498-5e85c7228119?auto=format&fit=crop&q=60&w=500&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHwxfHx8ZW58MHx8fHx8'),
+                        image: NetworkImage(company.gallery![index].image!),
                         fit: BoxFit.cover,
                       ),
                     ),
                   ),
-                ),
-              ],
+                );
+              },
             ),
           ),
           Text(
