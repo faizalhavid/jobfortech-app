@@ -83,11 +83,32 @@ class WorkController extends GetxController {
         fetchWorkList(query: query);
         break;
       case 'Date':
-        query = 'ordering=-publish_date';
+        if (query == 'newest') {
+          query = 'ordering=-publish_date';
+        } else {
+          query = 'ordering=publish_date';
+        }
         fetchWorkList(query: query);
         break;
       case 'Salary':
-        query = 'ordering=min_salary&ordering=-max_salary';
+        query = 'ordering=min_salary';
+        switch (query) {
+          case 'min salary ascending':
+            query = 'ordering=min_salary';
+            break;
+          case 'min salary descending':
+            query = 'ordering=-min_salary';
+            break;
+          case 'max salary ascending':
+            query = 'ordering=max_salary';
+            break;
+          case 'max salary descending':
+            query = 'ordering=-max_salary';
+
+            break;
+          default:
+            break;
+        }
         fetchWorkList(query: query);
         break;
 

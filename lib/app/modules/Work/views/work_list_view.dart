@@ -27,11 +27,21 @@ class WorkListView extends GetView {
       '3-5': false,
       'greater than 5': false,
     });
-    RxBool filterStatus = RxBool(false);
+    Rx<Map<String, dynamic>> salaryList = Rx<Map<String, dynamic>>({
+      'min salary ascending': false,
+      'min salary descending': false,
+      'max salary ascending': false,
+      'max salary descending': false,
+    });
+    Rx<Map<String, dynamic>> dateList = Rx<Map<String, dynamic>>({
+      'newest': false,
+      'oldest': false,
+    });
+
     return Scaffold(
       appBar: AppHeaderbar(
         title: Text(
-          'Available Works',
+          'Explore Works',
           style: AppBasicStyle(
             fontColor: AppColor.white,
             fontSize: 18,
@@ -57,15 +67,84 @@ class WorkListView extends GetView {
               'Available Works',
               style: AppTitleHeader,
             ),
-            headerFilter(
-                filter, filterStatus, controller, experienceList, context),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                ...filter.value.entries
+                    .map(
+                      (data) => ChoiceChip(
+                        selectedColor: AppColor.blue,
+                        disabledColor: AppColor.whitebone,
+                        showCheckmark: true,
+                        selectedShadowColor: AppColor.white,
+                        checkmarkColor: AppColor.white,
+                        label: Text(
+                          data.key,
+                          style: AppBasicStyle(
+                            fontColor:
+                                data.value ? AppColor.white : AppColor.grey,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        selected: data.value,
+                        onSelected: (value) {
+                          filter.update(
+                            (map) {
+                              if (map != null) {
+                                map.forEach((key, value) {
+                                  map[key] = false;
+                                });
+
+                                map[data.key] = value;
+                                if (map.entries.any((entry) =>
+                                    entry.key != 'All' && entry.value)) {
+                                  map['All'] = false;
+                                } else {
+                                  map['All'] = true;
+                                }
+                              }
+                            },
+                          );
+                          if (data.key == 'Experience' && value) {
+                            BottomSheetSection(
+                              'Experience',
+                              experienceList,
+                              context,
+                              controller,
+                            );
+                          } else if (data.key == 'Salary' && value) {
+                            BottomSheetSection(
+                              'Salary',
+                              salaryList,
+                              context,
+                              controller,
+                            );
+                          } else if (data.key == 'Date' && value) {
+                            BottomSheetSection(
+                              'Date',
+                              dateList,
+                              context,
+                              controller,
+                            );
+                          } else {
+                            controller.sortWork(filter: data.key);
+                          }
+                        },
+                      ),
+                    )
+                    .toList(),
+              ],
+            ),
             controller.loading.value ? loadingWidget() : SizedBox(),
             ...controller.works.value
                 .map(
                   (data) => WorkCard(
                     work: data,
                     onTap: () {
-                      Get.to(() => WorkDetailView(work: data));
+                      Get.to(
+                        () => WorkDetailView(work: data),
+                      );
                     },
                   ),
                 )
@@ -76,145 +155,76 @@ class WorkListView extends GetView {
     );
   }
 
-  Widget choiceExperience(
-    Rx<Map<String, dynamic>> experienceList, {
-    required WorkController controller,
-    required BuildContext context,
-  }) {
-    experienceList.update((map) {
-      if (map != null) {
-        map.forEach((key, value) {
-          map[key] = false;
-        });
-      }
-    });
-    return Obx(
-      () => Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Experience',
-            style: AppBasicStyle(
-              fontColor: AppColor.black,
-              fontSize: 18,
-              fontWeight: FontWeight.w500,
-            ),
+  Future<dynamic> BottomSheetSection(
+    String title,
+    Rx<Map<String, dynamic>> listData,
+    BuildContext context,
+    WorkController controller,
+  ) {
+    return Get.bottomSheet(
+      Container(
+        height: Get.height * 0.4,
+        padding: const EdgeInsets.all(25),
+        decoration: BoxDecoration(
+          color: AppColor.white,
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
           ),
-          ...experienceList.value.entries
-              .map(
-                (data) => RadioListTile<String>(
-                  activeColor: AppColor.blue,
-                  title: Text(
-                    '${data.key} yearss',
-                    style: AppBasicStyle(
-                      fontColor: AppColor.black,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  value: data.key,
-                  groupValue: experienceList.value.entries
-                      .firstWhere((entry) => entry.value,
-                          orElse: () => MapEntry("", false))
-                      .key,
-                  onChanged: (value) {
-                    experienceList.update((map) {
-                      if (map != null) {
-                        map.forEach((key, value) {
-                          map[key] = false;
-                        });
-                        map[data.key] = true;
-                      }
-                    });
-                    Navigator.pop(context);
-                    controller.sortWork(filter: 'Experience', query: data.key);
-                  },
-                ),
-              )
-              .toList(),
-        ],
-      ),
-    );
-  }
-
-  Row headerFilter(
-      Rx<Map<String, dynamic>> filter,
-      RxBool filterStatus,
-      WorkController controller,
-      Rx<Map<String, dynamic>> experienceList,
-      BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Container(
-          width: Get.width * 0.76,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          boxShadow: [
+            BoxShadow(
+              color: AppColor.grey.withOpacity(0.3),
+              blurRadius: 10,
+              offset: Offset(0, -2),
+            ),
+          ],
+        ),
+        child: Obx(
+          () => Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ...filter.value.entries
+              Text(
+                title,
+                style: AppBasicStyle(
+                  fontColor: AppColor.black,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              const SizedBox(height: 10),
+              const Divider(
+                color: AppColor.grey,
+                thickness: 1,
+              ),
+              ...listData.value.entries
                   .map(
-                    (data) => ChoiceChip(
-                      selectedColor: AppColor.blue,
-                      disabledColor: AppColor.whitebone,
-                      showCheckmark: true,
-                      selectedShadowColor: AppColor.white,
-                      checkmarkColor: AppColor.white,
-                      label: Text(
-                        data.key,
+                    (data) => RadioListTile<String>(
+                      activeColor: AppColor.blue,
+                      title: Text(
+                        title == 'Experience' ? "${data.key} year's" : data.key,
                         style: AppBasicStyle(
-                          fontColor:
-                              data.value ? AppColor.white : AppColor.grey,
+                          fontColor: AppColor.black,
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
-                      selected: data.value,
-                      onSelected: (value) {
-                        filter.update(
-                          (map) {
-                            if (map != null) {
-                              map.forEach((key, value) {
-                                map[key] = false;
-                              });
-                              map[data.key] = value;
-                            }
-                          },
-                        );
-                        if (data.key == 'Experience' && value) {
-                          Get.bottomSheet(
-                            Container(
-                              height: Get.height * 0.35,
-                              padding: const EdgeInsets.all(20),
-                              child: choiceExperience(experienceList,
-                                  controller: controller, context: context),
-                              decoration: BoxDecoration(
-                                color: AppColor.white,
-                                borderRadius: const BorderRadius.only(
-                                  topLeft: Radius.circular(30),
-                                  topRight: Radius.circular(30),
-                                ),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: AppColor.grey.withOpacity(0.3),
-                                    blurRadius: 10,
-                                    offset: Offset(0, -2),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            barrierColor: AppColor.transparent,
-                            shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(30),
-                                topRight: Radius.circular(30),
-                              ),
-                            ),
-                            isDismissible: true,
-                            enableDrag: true,
-                          );
-                        }
-                        controller.sortWork(filter: data.key);
+                      value: data.key,
+                      groupValue: listData.value.entries
+                          .firstWhere((entry) => entry.value,
+                              orElse: () => MapEntry("", false))
+                          .key,
+                      onChanged: (value) {
+                        listData.update((map) {
+                          if (map != null) {
+                            map.forEach((key, value) {
+                              map[key] = false;
+                            });
+                            map[data.key] = true;
+                          }
+                        });
+                        Navigator.pop(context);
+                        controller.sortWork(filter: title, query: data.key);
                       },
                     ),
                   )
@@ -222,23 +232,16 @@ class WorkListView extends GetView {
             ],
           ),
         ),
-        Container(
-          decoration: BoxDecoration(
-            color: filterStatus.value ? AppColor.blue : AppColor.whitebone,
-            borderRadius: BorderRadius.circular(30),
-          ),
-          child: IconButton(
-            onPressed: () {
-              filterStatus.toggle();
-            },
-            icon: Icon(
-              Icons.filter_list,
-              color: filterStatus.value ? AppColor.white : AppColor.grey,
-            ),
-            splashRadius: 20,
-          ),
-        )
-      ],
+      ),
+      barrierColor: AppColor.transparent,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(30),
+          topRight: Radius.circular(30),
+        ),
+      ),
+      isDismissible: true,
+      enableDrag: false,
     );
   }
 
