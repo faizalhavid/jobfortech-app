@@ -22,10 +22,10 @@ class WorkListView extends GetView {
       'Experience': false,
     });
     Rx<Map<String, dynamic>> experienceList = Rx<Map<String, dynamic>>({
-      '0 - 1': false,
-      '1 - 3': false,
-      '3 - 5': false,
-      '> 5': false,
+      '0-1': false,
+      '1-3': false,
+      '3-5': false,
+      'greater than 5': false,
     });
     RxBool filterStatus = RxBool(false);
     return Scaffold(
@@ -76,8 +76,18 @@ class WorkListView extends GetView {
     );
   }
 
-  Widget choiceExperience(Rx<Map<String, dynamic>> experienceList,
-      {required WorkController controller}) {
+  Widget choiceExperience(
+    Rx<Map<String, dynamic>> experienceList, {
+    required WorkController controller,
+    required BuildContext context,
+  }) {
+    experienceList.update((map) {
+      if (map != null) {
+        map.forEach((key, value) {
+          map[key] = false;
+        });
+      }
+    });
     return Obx(
       () => Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -117,8 +127,8 @@ class WorkListView extends GetView {
                         map[data.key] = true;
                       }
                     });
-                    print(data.key);
-                    controller.sortWork(filter: 'Experience', qeury: data.key);
+                    Navigator.pop(context);
+                    controller.sortWork(filter: 'Experience', query: data.key);
                   },
                 ),
               )
@@ -174,24 +184,25 @@ class WorkListView extends GetView {
                         if (data.key == 'Experience' && value) {
                           Get.bottomSheet(
                             Container(
-                                height: Get.height * 0.35,
-                                padding: const EdgeInsets.all(20),
-                                child: choiceExperience(experienceList,
-                                    controller: controller),
-                                decoration: BoxDecoration(
-                                  color: AppColor.white,
-                                  borderRadius: const BorderRadius.only(
-                                    topLeft: Radius.circular(30),
-                                    topRight: Radius.circular(30),
+                              height: Get.height * 0.35,
+                              padding: const EdgeInsets.all(20),
+                              child: choiceExperience(experienceList,
+                                  controller: controller, context: context),
+                              decoration: BoxDecoration(
+                                color: AppColor.white,
+                                borderRadius: const BorderRadius.only(
+                                  topLeft: Radius.circular(30),
+                                  topRight: Radius.circular(30),
+                                ),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: AppColor.grey.withOpacity(0.3),
+                                    blurRadius: 10,
+                                    offset: Offset(0, -2),
                                   ),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: AppColor.grey.withOpacity(0.3),
-                                      blurRadius: 10,
-                                      offset: Offset(0, -2),
-                                    ),
-                                  ],
-                                )),
+                                ],
+                              ),
+                            ),
                             barrierColor: AppColor.transparent,
                             shape: const RoundedRectangleBorder(
                               borderRadius: BorderRadius.only(

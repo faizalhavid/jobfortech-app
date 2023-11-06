@@ -45,6 +45,7 @@ class WorkController extends GetxController {
     loading.value = true;
     try {
       final workData = await WorkRepository().getWorkList(query: query);
+      works.value = [];
       if (workData.isNotEmpty) {
         works.value = workData;
         if (query != null) {
@@ -72,14 +73,22 @@ class WorkController extends GetxController {
     return participants;
   }
 
-  void sortWork({required String filter, String? qeury}) {
+  void sortWork({required String filter, String? query}) {
     switch (filter) {
       case 'All':
         fetchWorkList();
         break;
       case 'Experience':
-        qeury = qeury == null ? '0' : qeury;
-        fetchWorkList(query: qeury);
+        query = 'job_experience=$query';
+        fetchWorkList(query: query);
+        break;
+      case 'Date':
+        query = 'ordering=-publish_date';
+        fetchWorkList(query: query);
+        break;
+      case 'Salary':
+        query = 'ordering=min_salary&ordering=-max_salary';
+        fetchWorkList(query: query);
         break;
 
       // case 'Saved':

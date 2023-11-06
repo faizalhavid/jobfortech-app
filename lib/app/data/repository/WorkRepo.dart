@@ -13,7 +13,7 @@ class WorkRepository {
     final token = await secureStorage.read(key: 'token');
     try {
       final response = await http.get(
-        Uri.parse('${baseUrl}/job?search=${query ?? ''}'),
+        Uri.parse('${baseUrl}/job?${query ?? ''}'),
         headers: {
           'Accept': 'application/json',
           'Authorization': 'Token ${token}',
