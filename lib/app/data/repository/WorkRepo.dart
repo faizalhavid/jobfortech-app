@@ -94,6 +94,34 @@ class WorkRepository {
     }
   }
 
+  Future<Application> getAplication({required id}) async {
+    final token = await secureStorage.read(key: 'token');
+    try {
+      final response = await http.get(
+        Uri.parse('${baseUrl}/job/application/${id}'),
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': 'Token ${token}',
+          'Content-Type': 'application/json',
+        },
+      ).timeout(
+        Duration(minutes: 1),
+        onTimeout: () {
+          throw Exception('Something went wrong, Please try again later !');
+        },
+      );
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> jobList = jsonDecode(response.body);
+        return Application.fromJson(jobList);
+      } else {
+        throw Exception('Something went wrong, Please try again later !');
+      }
+    } catch (e) {
+      print(e);
+    }
+    throw Exception('Something went wrong, Please try again later !');
+  }
+
   Future<bool> updateSaveStatus({required bool status, required int id}) async {
     final token = await secureStorage.read(key: 'token');
 

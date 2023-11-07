@@ -1,5 +1,22 @@
 import 'package:jobfortech/app/data/models/User.dart';
 
+class Application {
+  int work;
+  String status;
+
+  Application({
+    required this.work,
+    required this.status,
+  });
+
+  factory Application.fromJson(Map<String, dynamic> json) {
+    return Application(
+      work: json['job'] as int,
+      status: json['status'] as String,
+    );
+  }
+}
+
 class Work {
   int id;
   Project? project;

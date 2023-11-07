@@ -6,7 +6,7 @@ import 'package:jobfortech/app/data/models/Work.dart';
 import 'package:jobfortech/app/data/repository/WorkRepo.dart';
 import 'package:jobfortech/app/modules/Work/controllers/work_controller.dart';
 import 'package:jobfortech/app/modules/Work/views/image_preview_view.dart';
-import 'package:jobfortech/app/modules/Work/views/work_detail_view.dart';
+import 'package:jobfortech/app/modules/Work/views/detail_work.dart';
 import 'package:jobfortech/components/AppAvatar/index.dart';
 import 'package:jobfortech/components/AppHeaderBar/index.dart';
 import 'package:jobfortech/components/AppSafeArea/index.dart';

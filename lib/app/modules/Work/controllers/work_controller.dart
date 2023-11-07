@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jobfortech/app/data/models/User.dart';
@@ -17,17 +15,28 @@ class WorkController extends GetxController {
   RxBool loading = RxBool(false);
   RxBool isAgree = RxBool(false);
   RxBool isAgree2 = RxBool(false);
+  Rx<Application> application = Rx<Application>(Application(
+    work: 0,
+    status: '',
+  ));
 
   @override
   void onInit() {
     fetchWorkList();
     fetchingExpertise();
+
     super.onInit();
   }
 
   @override
   void onClose() {
     searchController.dispose();
+    isAgree.value = false;
+    isAgree2.value = false;
+    application.value = Application(
+      work: 0,
+      status: '',
+    );
     super.onClose();
   }
 
@@ -130,12 +139,10 @@ class WorkController extends GetxController {
     }
   }
 
-  void applicationWork({required Map<String, dynamic> body}) async {
+  void fetchAplication({required id}) async {
     try {
-      final response = await WorkRepository().aplicationWork(body: body);
-      // if (response) {
-      //   Get.snackbar('Success', 'Work applied successfully');
-      // }
+      final response = WorkRepository().getAplication(id: id);
+      application.value = await response;
     } catch (e) {
       print(e);
       // Get.snackbar('Error', e.toString());
