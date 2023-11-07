@@ -10,8 +10,7 @@ import 'package:jobfortech/constant/icons.dart';
 import 'package:jobfortech/constant/theme.dart';
 
 class SearchWokView extends GetView {
-  final List<Work> work;
-  const SearchWokView(this.work, {Key? key}) : super(key: key);
+  const SearchWokView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(WorkController());

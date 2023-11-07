@@ -50,7 +50,7 @@ class WorkListView extends GetView {
         ),
         actions: IconButton(
           onPressed: () {
-            Get.to(() => SearchWokView(controller.works.value));
+            Get.to(() => SearchWokView());
           },
           icon: Icon(Icons.search),
           splashRadius: 20,

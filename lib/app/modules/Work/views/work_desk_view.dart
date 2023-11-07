@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jobfortech/app/modules/Work/views/work_list_view.dart';
 import 'package:jobfortech/app/modules/Work/views/my_work_view.dart';
+import 'package:jobfortech/app/modules/Work/views/work_search_view.dart';
 import 'package:jobfortech/components/AppButton/index.dart';
 import 'package:jobfortech/components/AppSafeArea/index.dart';
 import 'package:jobfortech/constant/icons.dart';
@@ -37,7 +38,9 @@ class WorkDeskView extends GetView {
                         fontColor: AppColor.osean,
                         fontWeight: FontWeight.w500),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Get.to(() => SearchWokView());
+                  },
                   suffix: AppIconButton(
                     svgPath: 'assets/svgs/zoom-in.svg',
                     size: 20,

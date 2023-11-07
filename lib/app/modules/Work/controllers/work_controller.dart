@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jobfortech/app/data/models/User.dart';
@@ -13,6 +15,8 @@ class WorkController extends GetxController {
   RxBool isBookmark = RxBool(false);
   final searchController = TextEditingController();
   RxBool loading = RxBool(false);
+  RxBool isAgree = RxBool(false);
+  RxBool isAgree2 = RxBool(false);
 
   @override
   void onInit() {

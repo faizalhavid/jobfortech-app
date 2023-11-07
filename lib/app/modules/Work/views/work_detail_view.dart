@@ -33,34 +33,10 @@ class WorkDetailView extends GetView {
         ),
         automaticallyImplyLeading: true,
       ),
-      bottomSheet: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        child: AppButton(
-          backgroundColor: AppColor.lightOrange,
-          child: Text(
-            'Apply Now',
-            style: AppBasicStyle(
-                fontColor: AppColor.orange, fontWeight: FontWeight.bold),
-          ),
-          suffix: AppIcon(svgPath: 'assets/svgs/time-2.svg', size: 20),
-          onPressed: () {},
-        ),
-      ),
       body: AppSafeArea(
         safearea: {'horizontal': 20, 'vertical': 20},
+        spacing: 10,
         children: [
-          // Text(
-          //   work.project!.name!,
-          //   style: AppTitleHeader,
-          // ),
-          // Text(
-          //   work.position!,
-          //   style: AppBasicStyle(
-          //     fontColor: AppColor.black,
-          //     fontSize: 18,
-          //     fontWeight: FontWeight.w600,
-          //   ),
-          // ),
           ListTile(
             contentPadding: EdgeInsets.zero,
             onTap: () {
@@ -112,17 +88,64 @@ class WorkDetailView extends GetView {
               color: AppColor.blue,
             ),
           ),
+          Text(
+            'Qualification :',
+            style: AppBasicStyle(
+              fontColor: AppColor.black,
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          Column(
+            children: work.qualifications
+                    ?.map((e) => SizedBox(
+                          width: Get.width * 0.8,
+                          child: ListTile(
+                            contentPadding: EdgeInsets.zero,
+                            horizontalTitleGap: 0,
+                            visualDensity: const VisualDensity(
+                                horizontal: -4, vertical: -2),
+                            leading: Text('•'),
+                            title: Text(
+                              e,
+                              style: AppBasicStyle(
+                                fontColor: AppColor.black,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ),
+                        ))
+                    .toList() ??
+                [],
+          ),
+          Text(
+            'Work Description :',
+            style: AppBasicStyle(
+              fontColor: AppColor.black,
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
           Column(
             children: work.description!
-                .map((e) => Text(
-                      e,
-                      style: AppBasicStyle(
-                        fontColor: AppColor.grey,
-                        fontSize: 13,
-                        height: 2,
+                .map((e) => SizedBox(
+                      width: Get.width * 0.8,
+                      child: ListTile(
+                        contentPadding: EdgeInsets.zero,
+                        horizontalTitleGap: 0,
+                        visualDensity:
+                            const VisualDensity(horizontal: -4, vertical: -2),
+                        leading: Text('•'),
+                        title: Text(
+                          e,
+                          style: AppBasicStyle(
+                            fontColor: AppColor.black,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
                       ),
-                      maxLines: 8,
-                      overflow: TextOverflow.ellipsis,
                     ))
                 .toList(),
           ),
@@ -229,72 +252,160 @@ class WorkDetailView extends GetView {
                     (BuildContext context, AsyncSnapshot<List<User>> snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return participantsLoading();
-                  } else if (snapshot.hasError) {
-                    return Center(child: Text('Something went wrong'));
-                  } else {
-                    return Container(
-                      height: 150,
-                      child: ListView.builder(
-                        itemCount: snapshot.data!.length,
-                        itemBuilder: (context, index) {
-                          User user = snapshot.data![index];
-                          return ListTile(
-                            contentPadding: EdgeInsets.zero,
-                            onTap: () {
-                              Get.to(() => DetailParticipantsView(user: user));
-                            },
-                            leading: Stack(
-                              children: [
-                                Stack(
-                                  alignment: Alignment.center,
-                                  children: [
-                                    Image.asset(
-                                      'assets/images/circle.png',
-                                      fit: BoxFit.cover,
-                                      width: 50,
-                                      height: 50,
-                                    ),
-                                    AppAvatar(
-                                      path: user.profile!.photoProfile,
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ),
-                            title: Text(
-                              '${user.profile!.firstName!} ${user.profile!.lastName!}',
-                              style: AppBasicStyle(
-                                fontColor: AppColor.black,
-                                fontWeight: FontWeight.w600,
-                              ),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            subtitle: Text(
-                              user.profile!
-                                  .position!, // replace with actual data fields
+                  } else if (snapshot.hasData) {
+                    return snapshot.data!.length > 0
+                        ? participantHasData(snapshot)
+                        : Center(
+                            child: Text(
+                              'No one in this team',
                               style: AppBasicStyle(
                                 fontColor: AppColor.grey,
                                 fontSize: 12,
                                 fontWeight: FontWeight.w400,
                               ),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            trailing: AppIconButton(
-                              svgPath: 'assets/svgs/drop-down-up-outline.svg',
-                              onPressed: () {},
                             ),
                           );
-                        },
-                      ),
-                    );
+                  } else {
+                    return Center(child: Text('Something went wrong'));
                   }
                 },
               )
             ],
-          )
+          ),
+          Obx(
+            () => Column(
+              children: [
+                SizedBox(
+                  height: 50,
+                  child: CheckboxListTile(
+                    controlAffinity: ListTileControlAffinity
+                        .leading, // Place the checkbox on the left
+                    activeColor: AppColor.blue,
+                    checkColor: AppColor.white,
+                    checkboxShape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    checkboxSemanticLabel: 'Agree to the terms and conditions',
+
+                    contentPadding: EdgeInsets.zero,
+                    title: Text(
+                      'I have read and agree to the terms and conditions',
+                      style: AppBasicStyle(
+                        fontColor: AppColor.black,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    value: controller.isAgree2.value,
+                    onChanged: (value) {
+                      controller.isAgree2.value = value!;
+                    },
+                  ),
+                ),
+                SizedBox(
+                  height: 50,
+                  child: CheckboxListTile(
+                    controlAffinity: ListTileControlAffinity
+                        .leading, // Place the checkbox on the left
+                    activeColor: AppColor.blue,
+                    checkColor: AppColor.white,
+                    checkboxShape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    checkboxSemanticLabel: 'Agree to the terms and conditions',
+
+                    contentPadding: EdgeInsets.zero,
+                    title: Text(
+                      'I have read and agree to the privacy policy',
+                      style: AppBasicStyle(
+                        fontColor: AppColor.black,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    value: controller.isAgree.value,
+                    onChanged: (value) {
+                      controller.isAgree.value = value!;
+                    },
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  child: AppButton(
+                    backgroundColor: AppColor.lightOrange,
+                    child: Text(
+                      'Apply Now',
+                      style: AppBasicStyle(
+                          fontColor: AppColor.orange,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    suffix:
+                        AppIcon(svgPath: 'assets/svgs/time-2.svg', size: 20),
+                    onPressed: () {},
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
+  }
+
+  Container participantHasData(AsyncSnapshot<List<User>> snapshot) {
+    return Container(
+        height: 150,
+        child: ListView.builder(
+          itemCount: snapshot.data!.length,
+          itemBuilder: (context, index) {
+            User user = snapshot.data![index];
+            return ListTile(
+              contentPadding: EdgeInsets.zero,
+              onTap: () {
+                Get.to(() => DetailParticipantsView(user: user));
+              },
+              leading: Stack(
+                children: [
+                  Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Image.asset(
+                        'assets/images/circle.png',
+                        fit: BoxFit.cover,
+                        width: 50,
+                        height: 50,
+                      ),
+                      AppAvatar(
+                        path: user.profile!.photoProfile,
+                      ),
+                    ],
+                  )
+                ],
+              ),
+              title: Text(
+                '${user.profile!.firstName!} ${user.profile!.lastName!}',
+                style: AppBasicStyle(
+                  fontColor: AppColor.black,
+                  fontWeight: FontWeight.w600,
+                ),
+                overflow: TextOverflow.ellipsis,
+              ),
+              subtitle: Text(
+                user.profile!.position!, // replace with actual data fields
+                style: AppBasicStyle(
+                  fontColor: AppColor.grey,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w400,
+                ),
+                overflow: TextOverflow.ellipsis,
+              ),
+              trailing: AppIconButton(
+                svgPath: 'assets/svgs/drop-down-up-outline.svg',
+                onPressed: () {},
+              ),
+            );
+          },
+        ));
   }
 
   Column participantsLoading() {
