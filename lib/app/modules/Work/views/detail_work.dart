@@ -6,6 +6,7 @@ import 'package:get/utils.dart';
 import 'package:jobfortech/app/data/models/User.dart';
 import 'package:jobfortech/app/data/models/Work.dart';
 import 'package:jobfortech/app/data/repository/WorkRepo.dart';
+import 'package:jobfortech/app/modules/Work/controllers/application_controller.dart';
 import 'package:jobfortech/app/modules/Work/controllers/work_controller.dart';
 import 'package:jobfortech/app/modules/Work/views/detail_company_view.dart';
 import 'package:jobfortech/app/modules/Work/views/detail_participants_view.dart';
@@ -25,41 +26,8 @@ class WorkDetailView extends GetView {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(WorkController());
-    Color applyButton = AppColor.blue;
-    Color applyTextColor = AppColor.white;
-    Color overlayButton = AppColor.grey.withOpacity(0.5);
-    String applyTextButton = 'Apply Now';
-    String message = '';
-    String typeButton = 'default';
-    Widget? suffix;
-    RxBool statusApplied = RxBool(false);
-    if (controller.application.value.status.contains('Applied')) {
-      statusApplied.value = true;
-      applyButton = AppColor.lightOrange;
-      applyTextColor = AppColor.orange;
-      overlayButton = AppColor.orange.withOpacity(0.5);
-      applyTextButton = 'Waiting for response';
-      message = 'You have applied for this job !';
-      suffix = AppIcon(
-        svgPath: 'assets/svgs/time-2.svg',
-        size: 20,
-        editColor: true,
-        color: AppColor.orange,
-      );
-    } else if (controller.isAgree.value && controller.isAgree2.value) {
-      applyButton = AppColor.blue;
-      applyTextColor = AppColor.white;
-      overlayButton = AppColor.blue.withOpacity(0.5);
-      applyTextButton = 'Apply Now';
-      message = 'Work has been applied !';
-      typeButton = 'default';
-    } else {
-      applyButton = AppColor.grey;
-      applyTextColor = AppColor.white;
-      applyTextButton = 'Apply Now';
-      message = 'Please agree to the terms and conditions !';
-      typeButton = 'disabled';
-    }
+    final aplController = Get.put(ApplicationController());
+
     return Scaffold(
       appBar: AppHeaderbar(
         title: Text(
@@ -77,67 +45,8 @@ class WorkDetailView extends GetView {
         spacing: 10,
         children: [
           headerCompany(),
-          Text(
-            'Qualification :',
-            style: AppBasicStyle(
-              fontColor: AppColor.black,
-              fontSize: 12,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-          Column(
-            children: work.qualifications
-                    ?.map((e) => SizedBox(
-                          width: Get.width * 0.8,
-                          child: ListTile(
-                            contentPadding: EdgeInsets.zero,
-                            horizontalTitleGap: 0,
-                            visualDensity: const VisualDensity(
-                                horizontal: -4, vertical: -2),
-                            leading: Text('•'),
-                            title: Text(
-                              e,
-                              style: AppBasicStyle(
-                                fontColor: AppColor.black,
-                                fontSize: 12,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                          ),
-                        ))
-                    .toList() ??
-                [],
-          ),
-          Text(
-            'Work Description :',
-            style: AppBasicStyle(
-              fontColor: AppColor.black,
-              fontSize: 12,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-          Column(
-            children: work.description!
-                .map((e) => SizedBox(
-                      width: Get.width * 0.8,
-                      child: ListTile(
-                        contentPadding: EdgeInsets.zero,
-                        horizontalTitleGap: 0,
-                        visualDensity:
-                            const VisualDensity(horizontal: -4, vertical: -2),
-                        leading: Text('•'),
-                        title: Text(
-                          e,
-                          style: AppBasicStyle(
-                            fontColor: AppColor.black,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                      ),
-                    ))
-                .toList(),
-          ),
+          qualification(),
+          workDescription(),
           Text(
             'Skill Required :',
             style: AppBasicStyle(
@@ -146,30 +55,7 @@ class WorkDetailView extends GetView {
               fontWeight: FontWeight.w600,
             ),
           ),
-          Wrap(
-            spacing: 5,
-            runSpacing: 8,
-            children: [
-              for (var tecnology in work.technology!)
-                Container(
-                  height: 34,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Chip(
-                    label: Text(
-                      tecnology,
-                      style: AppBasicStyle(
-                          fontColor: AppColor.black,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600),
-                    ),
-                    backgroundColor: AppColor.transparent,
-                  ),
-                ),
-            ],
-          ),
+          skills(),
           listInfoWork(),
           const SizedBox(height: 15),
           Text(
@@ -179,149 +65,182 @@ class WorkDetailView extends GetView {
                 fontSize: 12,
                 fontWeight: FontWeight.w600),
           ),
-          Wrap(
-            children: [
-              FutureBuilder<List<User>>(
-                future:
-                    controller.fetchParticipants(work.project!.participants!),
-                builder:
-                    (BuildContext context, AsyncSnapshot<List<User>> snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return participantsLoading();
-                  } else if (snapshot.hasData) {
-                    return snapshot.data!.length > 0
-                        ? participantHasData(snapshot)
-                        : Center(
-                            child: Text(
-                              'No one in this team',
-                              style: AppBasicStyle(
-                                fontColor: AppColor.grey,
-                                fontSize: 12,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                          );
-                  } else {
-                    return Center(child: Text('Something went wrong'));
-                  }
-                },
-              )
-            ],
-          ),
+          participant(controller),
           Obx(
             () => Column(
               children: [
                 Visibility(
-                    visible: !statusApplied.value,
-                    child: Column(
+                  visible: !aplController.statusAplied.value,
+                  child: Obx(
+                    () => Column(
                       children: [
                         buildCheckbox(
                           title:
                               'I have read and agree to the terms and conditions',
-                          controller: controller.isAgree2,
+                          controller: aplController.isAgree2,
                         ),
                         buildCheckbox(
                           title: 'I have read and agree to the privacy policy',
-                          controller: controller.isAgree,
+                          controller: aplController.isAgree,
                         ),
                       ],
-                    )),
-
+                    ),
+                  ),
+                ),
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   child: AppButton(
-                    overlayColor: overlayButton,
-                    backgroundColor: applyButton,
-                    type: typeButton,
+                    suffix: aplController.suffix.value,
+                    overlayColor: aplController.overlayButton.value,
+                    backgroundColor: aplController.buttonColor.value,
                     child: Text(
-                      applyTextButton,
+                      aplController.textButton.value,
                       style: AppBasicStyle(
-                        fontColor: applyTextColor,
-                        fontWeight: FontWeight.bold,
+                        fontColor: aplController.textColor.value,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
-                    suffix: suffix,
                     onPressed: () {
-                      // buttonStyle();
                       AppToast(
-                        message: message,
+                        message: aplController.message.value,
                         position: EasyLoadingToastPosition.center,
                       );
                     },
                   ),
-                ),
-
-                // FutureBuilder(
-                //     future: WorkRepository().getAplication(id: work.id),
-                //     builder: (context, snapshot) {
-                //       if (snapshot.connectionState == ConnectionState.waiting) {
-                //         return AppShimmer(
-                //           child: AppButton(
-                //             backgroundColor: applyButton,
-                //             type: 'disabled',
-                //             child: Text(
-                //               'Apply Now',
-                //               style: AppBasicStyle(
-                //                 fontColor: applyTextColor,
-                //                 fontWeight: FontWeight.bold,
-                //               ),
-                //             ),
-                //             suffix: AppIcon(
-                //                 svgPath: 'assets/svgs/time-2.svg', size: 20),
-                //             onPressed: () {},
-                //           ),
-                //         );
-                //       } else {
-                //         buttonStyle();
-                //         return AppButton(
-                //           backgroundColor: applyButton,
-                //           type: 'disabled',
-                //           child: Text(
-                //             snapshot.data!.status,
-                //             style: AppBasicStyle(
-                //               fontColor: applyTextColor,
-                //               fontWeight: FontWeight.bold,
-                //             ),
-                //           ),
-                //           onPressed: () {
-                //             AppToast(message: message);
-                //           },
-                //         );
-                //       }
-                //     }),
-                // Container(
-                //   padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                //   child: AppButton(
-                //     backgroundColor: applyButton,
-                //     type: controller.isAgree.value && controller.isAgree2.value
-                //         ? 'default'
-                //         : 'disabled',
-                //     child: Text(
-                //       'Apply Now',
-                //       style: AppBasicStyle(
-                //         fontColor: applyTextColor,
-                //         fontWeight: FontWeight.bold,
-                //       ),
-                //     ),
-                //     suffix: controller.isAgree.value &&
-                //             controller.isAgree2.value
-                //         ? AppIcon(svgPath: 'assets/svgs/time-2.svg', size: 20)
-                //         : null,
-                //     onPressed: () {
-                //       buttonStyle();
-                //       AppToast(
-                //         message: message,
-                //         position: EasyLoadingToastPosition.center,
-                //       );
-                //     },
-                //   ),
-                // ),
+                )
               ],
             ),
           ),
         ],
       ),
     );
+  }
+
+  Wrap participant(WorkController controller) {
+    return Wrap(
+      children: [
+        FutureBuilder<List<User>>(
+          future: controller.fetchParticipants(work.project!.participants!),
+          builder: (BuildContext context, AsyncSnapshot<List<User>> snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return participantsLoading();
+            } else if (snapshot.hasData) {
+              return snapshot.data!.length > 0
+                  ? participantHasData(snapshot)
+                  : Container(
+                      height: 50,
+                      alignment: Alignment.center,
+                      child: Text(
+                        'No one in this team',
+                        style: AppBasicStyle(
+                          fontColor: AppColor.grey,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    );
+            } else {
+              return Center(child: Text('Something went wrong'));
+            }
+          },
+        )
+      ],
+    );
+  }
+
+  Wrap skills() {
+    return Wrap(
+      spacing: 5,
+      runSpacing: 8,
+      children: [
+        for (var tecnology in work.technology!)
+          Container(
+            height: 34,
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey),
+              borderRadius: BorderRadius.circular(15),
+            ),
+            child: Chip(
+              label: Text(
+                tecnology,
+                style: AppBasicStyle(
+                    fontColor: AppColor.black,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600),
+              ),
+              backgroundColor: AppColor.transparent,
+            ),
+          ),
+      ],
+    );
+  }
+
+  Column workDescription() {
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      Text(
+        'Work Description :',
+        style: AppBasicStyle(
+          fontColor: AppColor.black,
+          fontSize: 12,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+      ...work.description!
+          .map((e) => SizedBox(
+                width: Get.width * 0.8,
+                child: ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  horizontalTitleGap: 0,
+                  visualDensity:
+                      const VisualDensity(horizontal: -4, vertical: -2),
+                  leading: Text('•'),
+                  title: Text(
+                    e,
+                    style: AppBasicStyle(
+                      fontColor: AppColor.black,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ),
+              ))
+          .toList(),
+    ]);
+  }
+
+  Column qualification() {
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      Text(
+        'Qualification :',
+        style: AppBasicStyle(
+          fontColor: AppColor.black,
+          fontSize: 12,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+      ...work.qualifications
+              ?.map((e) => SizedBox(
+                    width: Get.width * 0.8,
+                    child: ListTile(
+                      contentPadding: EdgeInsets.zero,
+                      horizontalTitleGap: 0,
+                      visualDensity:
+                          const VisualDensity(horizontal: -4, vertical: -2),
+                      leading: Text('•'),
+                      title: Text(
+                        e,
+                        style: AppBasicStyle(
+                          fontColor: AppColor.black,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ),
+                  ))
+              .toList() ??
+          [],
+    ]);
   }
 
   Widget buildCheckbox({

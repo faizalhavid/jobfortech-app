@@ -13,12 +13,6 @@ class WorkController extends GetxController {
   RxBool isBookmark = RxBool(false);
   final searchController = TextEditingController();
   RxBool loading = RxBool(false);
-  RxBool isAgree = RxBool(false);
-  RxBool isAgree2 = RxBool(false);
-  Rx<Application> application = Rx<Application>(Application(
-    work: 0,
-    status: '',
-  ));
 
   @override
   void onInit() {
@@ -31,12 +25,6 @@ class WorkController extends GetxController {
   @override
   void onClose() {
     searchController.dispose();
-    isAgree.value = false;
-    isAgree2.value = false;
-    application.value = Application(
-      work: 0,
-      status: '',
-    );
     super.onClose();
   }
 
@@ -136,16 +124,6 @@ class WorkController extends GetxController {
       //   break;
       default:
         break;
-    }
-  }
-
-  void fetchAplication({required id}) async {
-    try {
-      final response = WorkRepository().getAplication(id: id);
-      application.value = await response;
-    } catch (e) {
-      print(e);
-      // Get.snackbar('Error', e.toString());
     }
   }
 }

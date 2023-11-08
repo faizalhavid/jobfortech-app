@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:jobfortech/app/modules/Work/controllers/application_controller.dart';
 import 'package:jobfortech/app/modules/Work/controllers/work_controller.dart';
 import 'package:jobfortech/app/modules/Work/views/work_search_view.dart';
 import 'package:jobfortech/app/modules/Work/views/detail_work.dart';
@@ -142,7 +143,7 @@ class WorkListView extends GetView {
                   (data) => WorkCard(
                     work: data,
                     onTap: () {
-                      controller.fetchAplication(id: data.id);
+                      ApplicationController().fetchAplication(id: data.id);
                       Get.to(
                         () => WorkDetailView(work: data),
                       );
