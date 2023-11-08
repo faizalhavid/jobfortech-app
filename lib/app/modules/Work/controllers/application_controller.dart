@@ -17,6 +17,45 @@ class ApplicationController extends GetxController {
   Rx<Widget?> suffix = Rx<Widget?>(null);
   RxBool statusAplied = RxBool(false);
 
+  @override
+  void onInit() {
+    stateButton();
+    super.onInit();
+  }
+
+  @override
+  void onClose() {
+    application.value = Application();
+    isAgree.value = false;
+    isAgree2.value = false;
+    buttonColor.value = Colors.transparent;
+    textButton.value = '';
+    overlayButton.value = Colors.transparent;
+    textColor.value = Colors.black;
+    message.value = '';
+    suffix.value = null;
+    statusAplied.value = false;
+    super.onClose();
+  }
+
+  void stateButton() {
+    if (isAgree.value && isAgree2.value) {
+      buttonColor.value = AppColor.blue;
+      textButton.value = 'Apply';
+      message.value = 'Congratulation, you have applied for this job !';
+      textColor.value = AppColor.white;
+      overlayButton.value = AppColor.blue.withOpacity(0.2);
+      suffix.value = null;
+    } else {
+      buttonColor.value = AppColor.smoke;
+      textButton.value = 'Apply';
+      message.value = 'You have agree to the terms and conditions !';
+      textColor.value = AppColor.grey;
+      overlayButton.value = AppColor.grey;
+      suffix.value = null;
+    }
+  }
+
   void fetchAplication({required id}) async {
     try {
       final response = WorkRepository().getAplication(id: id);
@@ -36,24 +75,10 @@ class ApplicationController extends GetxController {
         textColor.value = AppColor.red;
         suffix.value = AppIcon(svgPath: 'assets/svgs/close.svg', size: 20);
       } else {
-        if (isAgree.value && isAgree2.value) {
-          buttonColor.value = AppColor.blue;
-          textButton.value = 'Apply';
-          message.value = 'Congratulation, you have applied for this job !';
-          textColor.value = AppColor.white;
-          overlayButton.value = AppColor.blue.withOpacity(0.2);
-          suffix.value = null;
-        } else {
-          buttonColor.value = AppColor.smoke;
-          textButton.value = 'Apply';
-          message.value = 'You have agree to the terms and conditions !';
-          textColor.value = AppColor.grey;
-          overlayButton.value = AppColor.grey;
-          suffix.value = null;
-        }
+        stateButton();
       }
     } catch (e) {
-      print('jancok $e');
+      print('error $e');
       // Get.snackbar('Error', e.toString());
     }
   }

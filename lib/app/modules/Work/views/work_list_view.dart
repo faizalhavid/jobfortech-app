@@ -16,6 +16,8 @@ class WorkListView extends GetView {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(WorkController());
+
+    final aplController = Get.put(ApplicationController());
     Rx<Map<String, dynamic>> filter = Rx<Map<String, dynamic>>({
       'All': true,
       'Date': false,
@@ -143,10 +145,11 @@ class WorkListView extends GetView {
                   (data) => WorkCard(
                     work: data,
                     onTap: () {
-                      ApplicationController().fetchAplication(id: data.id);
+                      aplController.fetchAplication(id: data.id);
                       Get.to(
                         () => WorkDetailView(work: data),
                       );
+                      aplController.update();
                     },
                   ),
                 )

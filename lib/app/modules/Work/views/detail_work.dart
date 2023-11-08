@@ -25,8 +25,8 @@ class WorkDetailView extends GetView {
 
   @override
   Widget build(BuildContext context) {
+    final aplController = Get.find<ApplicationController>();
     final controller = Get.put(WorkController());
-    final aplController = Get.put(ApplicationController());
 
     return Scaffold(
       appBar: AppHeaderbar(
@@ -71,44 +71,74 @@ class WorkDetailView extends GetView {
               children: [
                 Visibility(
                   visible: !aplController.statusAplied.value,
-                  child: Obx(
-                    () => Column(
-                      children: [
-                        buildCheckbox(
-                          title:
-                              'I have read and agree to the terms and conditions',
-                          controller: aplController.isAgree2,
-                        ),
-                        buildCheckbox(
-                          title: 'I have read and agree to the privacy policy',
-                          controller: aplController.isAgree,
-                        ),
-                      ],
-                    ),
+                  child: Column(
+                    children: [
+                      buildCheckbox(
+                        title:
+                            'I have read and agree to the terms and conditions',
+                        controller: aplController.isAgree2,
+                      ),
+                      buildCheckbox(
+                        title: 'I have read and agree to the privacy policy',
+                        controller: aplController.isAgree,
+                      ),
+                    ],
                   ),
                 ),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  child: AppButton(
-                    suffix: aplController.suffix.value,
-                    overlayColor: aplController.overlayButton.value,
-                    backgroundColor: aplController.buttonColor.value,
-                    child: Text(
-                      aplController.textButton.value,
-                      style: AppBasicStyle(
-                        fontColor: aplController.textColor.value,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    onPressed: () {
-                      AppToast(
-                        message: aplController.message.value,
-                        position: EasyLoadingToastPosition.center,
-                      );
-                    },
-                  ),
-                )
+                FutureBuilder(
+                    future: WorkRepository().getAplication(id: work.id),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Container();
+                      } else if (snapshot.hasData) {
+                        return snapshot.data!.status == 'Applied'
+                            ? Container(
+                                height: 50,
+                                width: Get.width,
+                                child: AppButton(
+                                  child: Text(
+                                    'Applied',
+                                    style: AppBasicStyle(
+                                      fontSize: 12,
+                                      fontColor: AppColor.white,
+                                    ),
+                                  ),
+                                  onPressed: () {},
+                                  backgroundColor: AppColor.lightOrange,
+                                  suffix: AppIcon(
+                                    svgPath: 'assets/svgs/time-2.svg',
+                                    size: 20,
+                                  ),
+                                ),
+                              )
+                            : Container(
+                                height: 50,
+                                width: Get.width,
+                                child: AppButton(
+                                  child: Text(
+                                    'Apply',
+                                    style: AppBasicStyle(
+                                      fontSize: 12,
+                                      fontColor: AppColor.white,
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    if (aplController.isAgree.value &&
+                                        aplController.isAgree2.value) {
+                                    } else {
+                                      AppToast(
+                                          message:
+                                              'Please agree to the terms !');
+                                    }
+                                  },
+                                  backgroundColor: AppColor.smoke,
+                                  suffix: aplController.suffix.value,
+                                ),
+                              );
+                      } else {
+                        return Center(child: Text('Something went wrong'));
+                      }
+                    })
               ],
             ),
           ),
