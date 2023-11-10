@@ -66,12 +66,76 @@ class WorkDetailView extends GetView {
                 fontWeight: FontWeight.w600),
           ),
           participant(controller),
-          Obx(
-            () => Column(
-              children: [
-                Visibility(
-                  visible: !aplController.statusAplied.value,
-                  child: Column(
+          FutureBuilder(
+            future: WorkRepository().getAplication(id: work.id),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Container();
+              } else if (snapshot.hasData) {
+                return snapshot.data!.status == 'Applied'
+                    ? Container(
+                        height: 50,
+                        width: Get.width,
+                        child: AppButton(
+                          child: Text(
+                            'Applied',
+                            style: AppBasicStyle(
+                              fontSize: 12,
+                              fontColor: AppColor.white,
+                            ),
+                          ),
+                          onPressed: () {},
+                          backgroundColor: AppColor.lightOrange,
+                          suffix: AppIcon(
+                            svgPath: 'assets/svgs/time-2.svg',
+                            size: 20,
+                          ),
+                        ),
+                      )
+                    : Container(
+                        height: 50,
+                        width: Get.width,
+                        child: AppButton(
+                          child: Text(
+                            'Apply',
+                            style: AppBasicStyle(
+                              fontSize: 12,
+                              fontColor: AppColor.white,
+                            ),
+                          ),
+                          onPressed: () {
+                            if (aplController.isAgree.value &&
+                                aplController.isAgree2.value) {
+                            } else {
+                              AppToast(message: 'Please agree to the terms !');
+                            }
+                          },
+                          backgroundColor: AppColor.smoke,
+                          suffix: aplController.suffix.value,
+                        ),
+                      );
+              } else {
+                if (aplController.isAgree.value &&
+                    aplController.isAgree2.value) {
+                  aplController.buttonColor.value = AppColor.blue;
+                  aplController.textButton.value = 'Apply';
+                  aplController.message.value =
+                      'Congratulation, you have applied for this job !';
+                  aplController.textColor.value = AppColor.white;
+                  aplController.overlayButton.value =
+                      AppColor.blue.withOpacity(0.2);
+                  aplController.suffix.value = null;
+                } else {
+                  aplController.buttonColor.value = AppColor.smoke;
+                  aplController.textButton.value = 'Apply';
+                  aplController.message.value =
+                      'You have agree to the terms and conditions !';
+                  aplController.textColor.value = AppColor.grey;
+                  aplController.overlayButton.value = AppColor.grey;
+                  aplController.suffix.value = null;
+                }
+                return Obx(
+                  () => Column(
                     children: [
                       buildCheckbox(
                         title:
@@ -82,66 +146,53 @@ class WorkDetailView extends GetView {
                         title: 'I have read and agree to the privacy policy',
                         controller: aplController.isAgree,
                       ),
+                      Container(
+                        height: 50,
+                        width: Get.width,
+                        child: AppButton(
+                          child: Text(
+                            'Apply',
+                            style: AppBasicStyle(
+                                fontSize: 12,
+                                fontColor: aplController.isAgree.value &&
+                                        aplController.isAgree2.value
+                                    ? AppColor.white
+                                    : AppColor.grey),
+                          ),
+                          onPressed: () {
+                            if (aplController.isAgree.value &&
+                                aplController.isAgree2.value) {
+                              EasyLoading.show(status: 'Loading...');
+                              WorkRepository()
+                                  .createAplication(id: work.id)
+                                  .then((value) {
+                                EasyLoading.dismiss();
+                                AppToast(message: 'Success');
+                              }).catchError((e) {
+                                EasyLoading.dismiss();
+                                AppToast(message: 'Error');
+                              });
+                            } else {
+                              AppToast(message: 'Please agree to the terms !');
+                            }
+                          },
+                          backgroundColor: aplController.isAgree.value &&
+                                  aplController.isAgree2.value
+                              ? AppColor.blue
+                              : AppColor.smoke,
+                          suffix: aplController.isAgree.value &&
+                                  aplController.isAgree2.value
+                              ? Icon(Icons.verified_outlined,
+                                  size: 20, color: AppColor.white)
+                              : null,
+                        ),
+                      ),
                     ],
                   ),
-                ),
-                FutureBuilder(
-                    future: WorkRepository().getAplication(id: work.id),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Container();
-                      } else if (snapshot.hasData) {
-                        return snapshot.data!.status == 'Applied'
-                            ? Container(
-                                height: 50,
-                                width: Get.width,
-                                child: AppButton(
-                                  child: Text(
-                                    'Applied',
-                                    style: AppBasicStyle(
-                                      fontSize: 12,
-                                      fontColor: AppColor.white,
-                                    ),
-                                  ),
-                                  onPressed: () {},
-                                  backgroundColor: AppColor.lightOrange,
-                                  suffix: AppIcon(
-                                    svgPath: 'assets/svgs/time-2.svg',
-                                    size: 20,
-                                  ),
-                                ),
-                              )
-                            : Container(
-                                height: 50,
-                                width: Get.width,
-                                child: AppButton(
-                                  child: Text(
-                                    'Apply',
-                                    style: AppBasicStyle(
-                                      fontSize: 12,
-                                      fontColor: AppColor.white,
-                                    ),
-                                  ),
-                                  onPressed: () {
-                                    if (aplController.isAgree.value &&
-                                        aplController.isAgree2.value) {
-                                    } else {
-                                      AppToast(
-                                          message:
-                                              'Please agree to the terms !');
-                                    }
-                                  },
-                                  backgroundColor: AppColor.smoke,
-                                  suffix: aplController.suffix.value,
-                                ),
-                              );
-                      } else {
-                        return Center(child: Text('Something went wrong'));
-                      }
-                    })
-              ],
-            ),
-          ),
+                );
+              }
+            },
+          )
         ],
       ),
     );
