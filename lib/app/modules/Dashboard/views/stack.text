@@ -1,0 +1,25 @@
+ AppHeaderbar(
+        expandAppbar: true,
+        type: 'work-desk',
+        leading: InkWell(
+          child: AppAvatar(),
+          onTap: () {
+            Get.to(() => ProfileView());
+          },
+        ),
+        title: AppIcon(
+          svgPath: 'assets/svgs/jobfortech-logo.svg',
+          size: 24,
+          editColor: true,
+          color: AppColor.white,
+        ),
+        actions: Obx(
+          () => AppIconButton(
+            svgPath: 'assets/svgs/notifications-bell.svg',
+            onPressed: () {
+              notifyState.isNotify.value = !notifyState.isNotify.value;
+            },
+            isbadge: notifyState.isNotify.value,
+          ),
+        ),
+      ),

@@ -1,0 +1,24 @@
+
+
+{   
+
+        "name" : "Jaxson Roosser",
+        "email" : "Jaxson@jobfortech.com",
+        "password" : "password",
+        "phone" : "1234567890",
+        "photo_profile" : "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80",
+        "address" : "Jl. Raya Ciputat No. 1, Pondok Pinang, Kebayoran Lama, Jakarta Selatan",
+        "role" : 1,
+        "bio" : "lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum. ",
+        "birth_date" : "1999-01-01",
+        "country" : "Jakarta",
+        "social_media" : {
+            "linkedin" : "https://www.linkedin.com/in/jaxson-roosser-9b1b3a1b2/",
+            "github" : "https://www.github.com/jaxsonroosser"
+    
+        },
+        "work_desk" : 1
+}
+
+
+
