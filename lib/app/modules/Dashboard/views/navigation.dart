@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jobfortech2/app/data/models/Work.dart';
 import 'package:jobfortech2/app/modules/Dashboard/controllers/dashboard_controller.dart';
 import 'package:jobfortech2/app/modules/Dashboard/views/dashboard_view.dart';
 import 'package:jobfortech2/app/modules/Dashboard/views/messages_view.dart';
@@ -7,6 +8,7 @@ import 'package:jobfortech2/app/modules/Work/views/work_desk_view.dart';
 import 'package:jobfortech2/components/AppBadge/index.dart';
 import 'package:jobfortech2/components/AppCard/index.dart';
 import 'package:jobfortech2/components/AppNav/index.dart';
+import 'package:jobfortech2/components/WorkCard/index.dart';
 import 'package:jobfortech2/constant/icons.dart';
 import 'package:jobfortech2/constant/theme.dart';
 import 'package:jobfortech2/app/data/models/User.dart';
@@ -22,7 +24,7 @@ class NavigationView extends GetView {
   const NavigationView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    RxInt currentIndex = RxInt(1);
+    RxInt currentIndex = RxInt(0);
 
     final navController = Get.put(NavigationController());
     final screens = [
@@ -86,7 +88,7 @@ PreferredSize appHeader(
     {required int currentInt, required NavigationController navController}) {
   Widget header = Container();
   header = FutureBuilder<User>(
-    future: UserRepository().getUser(),
+    future: navController.fetchUser(),
     builder: (context, snapshot) {
       if (snapshot.hasData) {
         final user = snapshot.data!;
@@ -372,6 +374,92 @@ Container dashboardContent(User user, NavigationController navController,
   );
 }
 
+Widget workContent(User user, NavigationController navController,
+    AsyncSnapshot<User> snapshot) {
+  final releatedQuery = 'search=${user.profile!.position!.toLowerCase()}';
+  navController.fetchReleatedWork(position: releatedQuery);
+  final List<Work> releatedWorkList =
+      navController.releatedWork.value as List<Work>;
+  return Container(
+    width: Get.width,
+    padding: EdgeInsets.all(10),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Releated Work :',
+          style: AppBasicStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.w600,
+            fontColor: AppColor.white,
+          ),
+        ),
+        SizedBox(
+          height: releatedWorkList.isNotEmpty
+              ? Get.height * 0.01
+              : Get.height * 0.05,
+        ),
+        releatedWorkList.isNotEmpty
+            ? SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Wrap(
+                  spacing: 15,
+                  children: [
+                    if (navController.loading.value)
+                      ...List.generate(
+                        3,
+                        (index) => AppShimmer(
+                            isBlur: true,
+                            baseColor: AppColor.white.withOpacity(0.4),
+                            child: Container(
+                              height: Get.height * 0.1,
+                              width: Get.width * 0.7,
+                              decoration: BoxDecoration(
+                                color: AppColor.grey.withOpacity(0.5),
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                            )),
+                      ),
+                    ...releatedWorkList
+                        .map(
+                          (work) => Container(
+                            width: Get.width * 0.7,
+                            height: Get.height * 0.1,
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: AppColor.white,
+                              borderRadius: BorderRadius.circular(10),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: AppColor.grey.withOpacity(0.1),
+                                  spreadRadius: 0.3,
+                                  blurRadius: 0.3,
+                                  offset: const Offset(0, 1),
+                                ),
+                              ],
+                            ),
+                            child: WorkList(work),
+                          ),
+                        )
+                        .toList(),
+                  ],
+                ))
+            : Center(
+                child: Text(
+                  'No Releated Work Available',
+                  style: AppBasicStyle(
+                    fontSize: 10,
+                    fontWeight: FontWeight.w400,
+                    fontColor: AppColor.white,
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+              ),
+      ],
+    ),
+  );
+}
+
 PreferredSize profileheaderHasData(
     User user,
     NavigationController navController,
@@ -379,9 +467,11 @@ PreferredSize profileheaderHasData(
     int currentInt) {
   Widget expandContent;
   if (currentInt == 0) {
+    // dashboard
     expandContent = dashboardContent(user, navController, snapshot);
   } else {
-    expandContent = Container();
+    // work
+    expandContent = workContent(user, navController, snapshot);
   }
 
   return AppHeaderbar(

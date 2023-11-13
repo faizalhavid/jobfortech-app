@@ -26,6 +26,8 @@ class AppColor {
   static const Color yellow = Color(0xFFFFD233);
   static const Color transparent = Color(0x00000000);
   static const Color whitebone = Color(0xFFD9D9D9);
+  static const Color green = Color(0xFF00B14F);
+  static const Color lightGreen = Color(0xFFE5F9E5);
 }
 
 ColorScheme AppColorScheme = const ColorScheme(

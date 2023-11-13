@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 
 import 'package:jobfortech2/app/modules/Work/controllers/application_controller.dart';
 import 'package:jobfortech2/app/modules/Work/controllers/search_work_controller.dart';
+import 'package:jobfortech2/app/modules/Work/controllers/work_desk_controller.dart';
 import 'package:jobfortech2/app/modules/Work/controllers/work_list_controller.dart';
 
 import '../controllers/work_controller.dart';
@@ -9,6 +10,9 @@ import '../controllers/work_controller.dart';
 class WorkBinding extends Bindings {
   @override
   void dependencies() {
+    Get.lazyPut<WorkDeskController>(
+      () => WorkDeskController(),
+    );
     Get.lazyPut<ApplicationController>(
       () => ApplicationController(),
     );

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jobfortech2/app/data/models/Work.dart';
 import 'package:jobfortech2/app/data/repository/WorkRepo.dart';
+import 'package:jobfortech2/app/modules/Work/views/detail_work.dart';
 import 'package:jobfortech2/components/AppAvatar/index.dart';
 import 'package:jobfortech2/components/AppButton/index.dart';
 import 'package:jobfortech2/components/AppCard/index.dart';
@@ -11,6 +12,7 @@ import 'package:jobfortech2/constant/theme.dart';
 Ink WorkCard({
   required Work work,
   void Function()? onTap,
+  bool simplify = false,
 }) {
   String salary = '';
   if (work.minSalary != null && work.maxSalary != null) {
@@ -125,7 +127,7 @@ Ink WorkCard({
               work.position!,
               style: AppBasicStyle(
                 fontColor: AppColor.black,
-                fontSize: 18,
+                fontSize: simplify ? 16 : 18,
                 fontWeight: FontWeight.w600,
               ),
               overflow: TextOverflow.ellipsis,
@@ -140,53 +142,61 @@ Ink WorkCard({
             ),
           ),
           SizedBox(
-            height: 8,
+            height: simplify ? 0 : 8,
           ),
-          Text(
-            work.project!.details!,
-            style: AppBasicStyle(
-                fontColor: AppColor.black,
-                fontSize: 12,
-                fontWeight: FontWeight.w600),
-            maxLines: 3,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ],
-      ),
-      Wrap(spacing: 5, runSpacing: 8, children: [
-        for (var tecnology in work.technology!.take(7))
-          Container(
-            height: 34,
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey),
-              borderRadius: BorderRadius.circular(15),
-            ),
-            child: Chip(
-              label: Text(tecnology),
-              backgroundColor: AppColor.transparent,
-            ),
-          ),
-        work.technology!.length > 7
-            ? Container(
-                height: 34,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey),
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: Chip(
-                  label: Text(
-                    '+${work.technology!.length - 7}',
-                    style: AppBasicStyle(
+          simplify
+              ? const SizedBox(
+                  height: 0,
+                )
+              : Text(
+                  work.project!.details!,
+                  style: AppBasicStyle(
                       fontColor: AppColor.black,
                       fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  backgroundColor: AppColor.transparent,
+                      fontWeight: FontWeight.w600),
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
                 ),
-              )
-            : Container(),
-      ]),
+        ],
+      ),
+      simplify
+          ? const SizedBox(
+              height: 0,
+            )
+          : Wrap(spacing: 5, runSpacing: 8, children: [
+              for (var tecnology in work.technology!.take(7))
+                Container(
+                  height: 34,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Chip(
+                    label: Text(tecnology),
+                    backgroundColor: AppColor.transparent,
+                  ),
+                ),
+              work.technology!.length > 7
+                  ? Container(
+                      height: 34,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey),
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: Chip(
+                        label: Text(
+                          '+${work.technology!.length - 7}',
+                          style: AppBasicStyle(
+                            fontColor: AppColor.black,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        backgroundColor: AppColor.transparent,
+                      ),
+                    )
+                  : Container(),
+            ]),
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         mainAxisSize: MainAxisSize.max,
@@ -235,11 +245,59 @@ Ink WorkCard({
                 color: AppColor.white,
                 size: 13,
               ),
-              onPressed: () {},
+              onPressed: onTap ?? () {},
             ),
           )
         ],
       ),
     ],
+  );
+}
+
+ListTile WorkList(Work e) {
+  RxBool isBookmark = RxBool(e.saveStatus!);
+  return ListTile(
+    contentPadding: const EdgeInsets.all(0),
+    dense: true,
+    onTap: () {
+      Get.to(() => WorkDetailView(work: e));
+    },
+    leading: AppAvatar(
+      radius: 15,
+      path: e.company?.photo_profile ?? null,
+    ),
+    subtitle: Text(
+      e.position!,
+      style: AppBasicStyle(
+        fontColor: AppColor.blue,
+        fontSize: 12,
+        fontWeight: FontWeight.w500,
+      ),
+    ),
+    title: Text(
+      e.company!.name!,
+      style: AppBasicStyle(
+        fontColor: AppColor.grey,
+        fontSize: 12,
+        fontWeight: FontWeight.w600,
+      ),
+      overflow: TextOverflow.ellipsis,
+    ),
+    trailing: Obx(
+      () => IconButton(
+        onPressed: () async {
+          isBookmark.value = !isBookmark.value;
+          final response = await WorkRepository()
+              .updateSaveStatus(status: isBookmark.value, id: e.id!);
+        },
+        icon: Icon(
+          isBookmark.value
+              ? Icons.bookmark_added_rounded
+              : Icons.bookmark_border_rounded,
+        ),
+        splashRadius: 20,
+        color: AppColor.blue,
+      ),
+    ),
   );
 }

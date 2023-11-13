@@ -63,7 +63,7 @@ class WorkRepository {
     }
   }
 
-  Future<bool> aplicationWork({required id}) async {
+  Future<Application> aplicationWork({required id}) async {
     final token = await secureStorage.read(key: 'token');
 
     try {
@@ -84,9 +84,9 @@ class WorkRepository {
         },
       );
 
-      if (response.statusCode == 200) {
-        final List<dynamic> jobList = jsonDecode(response.body)['results'];
-        return true;
+      if (response.statusCode == 201) {
+        final Map<String, dynamic> jobList = jsonDecode(response.body);
+        return Application.fromJson(jobList);
       } else {
         throw Exception('Something went wrong, Please try again later !');
       }
@@ -113,15 +113,17 @@ class WorkRepository {
         },
       );
       if (response.statusCode == 200) {
+        await Future.delayed(new Duration(seconds: 2));
         final Map<String, dynamic> jobList = jsonDecode(response.body);
         return Application.fromJson(jobList);
       } else {
+        print('fail');
         throw Exception('Something went wrong, Please try again later !');
       }
     } catch (e) {
       print(e);
+      throw Exception(e.toString());
     }
-    throw Exception('Something went wrong, Please try again later !');
   }
 
   Future<bool> updateSaveStatus({required bool status, required int id}) async {
@@ -152,6 +154,55 @@ class WorkRepository {
       }
     } catch (e) {
       throw Exception(e.toString());
+    }
+  }
+
+  Future<List<Work>> getAppliedWork() async {
+    final token = await secureStorage.read(key: 'token');
+    try {
+      final response = await http.get(
+        Uri.parse('${baseUrl}/job/application/user/applied'),
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': 'Token ${token}',
+        },
+      ).timeout(
+        Duration(minutes: 1),
+        onTimeout: () {
+          throw Exception('Something went wrong, Please try again later !');
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final List<dynamic> jobList = jsonDecode(response.body)['results'];
+        return jobList.map((json) => Work.fromJson(json)).toList();
+      } else {
+        throw Exception('Something went wrong, Please try again later !');
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  Future<List<Work>> getBookmark() async {
+    final token = await secureStorage.read(key: 'token');
+    final response = await http
+        .get(Uri.parse('$baseUrl/job/application/user/saved'), headers: {
+      'Accept': 'application/json',
+      'Authorization': 'Token ${token}',
+      'Content-Type': 'application/json',
+    }).timeout(
+      Duration(minutes: 1),
+      onTimeout: () {
+        throw Exception('Something went wrong, Please try again later !');
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final List<dynamic> jobList = jsonDecode(response.body)['results'];
+      return jobList.map((json) => Work.fromJson(json)).toList();
+    } else {
+      throw Exception('Something went wrong, Please try again later !');
     }
   }
 }
