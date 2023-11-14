@@ -94,16 +94,56 @@ class WorkDeskView extends GetView {
               Expanded(
                 child: TabBarView(
                   children: <Widget>[
-                    Center(
-                      child: Icon(Icons.directions_transit),
-                    ),
+                    FutureBuilder(
+                        future: WorkRepository().getAppliedWork(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData && snapshot.data != null) {
+                            print(snapshot.data);
+                            final workData = snapshot.data as List<Work>;
+                            return Container(
+                              child: OverflowBox(
+                                alignment: Alignment.center,
+                                child: ListView.separated(
+                                  shrinkWrap: true,
+                                  separatorBuilder: (context, index) {
+                                    return SizedBox(
+                                      height: Get.height * 0.02,
+                                    );
+                                  },
+                                  itemCount: workData.length,
+                                  itemBuilder: (context, index) {
+                                    return WorkCard(
+                                      work: workData[index],
+                                      simplify: true,
+                                      onTap: () {
+                                        Get.to(() => WorkDetailView(
+                                              work: workData[index],
+                                            ));
+                                      },
+                                    );
+                                  },
+                                ),
+                              ),
+                            );
+                            ;
+                          } else {
+                            return Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
+                        }),
                     FutureBuilder(
                         future: WorkRepository().getBookmark(),
                         builder: (context, snapshot) {
                           if (snapshot.hasData && snapshot.data != null) {
                             print(snapshot.data);
                             final workData = snapshot.data as List<Work>;
-                            return ListView.builder(
+                            return ListView.separated(
+                              separatorBuilder: (context, index) {
+                                return SizedBox(
+                                  height: Get.height * 0.02,
+                                );
+                              },
                               itemCount: workData.length,
                               itemBuilder: (context, index) {
                                 return WorkCard(
