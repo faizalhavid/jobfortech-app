@@ -94,3 +94,66 @@ Table buildReportJob(
     ],
   );
 }
+
+Widget buildReportWork(
+    {required String workApply,
+    required String interview,
+    required String hired}) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    mainAxisSize: MainAxisSize.max,
+    children: [
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Work Applyed',
+            style: AppBasicStyle(
+                fontColor: AppColor.black,
+                fontWeight: FontWeight.w600,
+                fontSize: 12),
+          ),
+          Text(
+            workApply,
+            style: AppBasicStyle(
+              fontSize: 25,
+              fontWeight: FontWeight.w800,
+            ),
+          ),
+        ],
+      ),
+      Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Text(
+          'Interviewed',
+          style: AppBasicStyle(
+              fontColor: AppColor.black,
+              fontWeight: FontWeight.w600,
+              fontSize: 12),
+        ),
+        Text(
+          interview,
+          style: AppBasicStyle(
+            fontSize: 25,
+            fontWeight: FontWeight.w800,
+          ),
+        ),
+      ]),
+      Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Text(
+          'Hired',
+          style: AppBasicStyle(
+              fontColor: AppColor.black,
+              fontWeight: FontWeight.w600,
+              fontSize: 12),
+        ),
+        Text(
+          hired,
+          style: AppBasicStyle(
+            fontSize: 25,
+            fontWeight: FontWeight.w800,
+          ),
+        ),
+      ]),
+    ],
+  );
+}

@@ -192,11 +192,11 @@ class DetailParticipantsView extends GetView {
               safearea: {'horizontal': 25, 'vertical': 20},
               backgroundcolor: AppColor.lightGrey,
               children: [
-                buildReportJob(
-                  project: '12',
-                  outsource: '12',
-                  skills: user.profile!.skills!,
-                ),
+                // buildReportJob(
+                //   project: '12',
+                //   outsource: '12',
+                //   skills: user.profile!.skills!,
+                // ),
                 Text(
                   'Latest Client',
                   style: AppBasicStyle(

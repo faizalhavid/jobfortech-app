@@ -4,12 +4,8 @@ import 'package:get/get.dart';
 import 'package:jobfortech2/app/data/models/Work.dart';
 import 'package:jobfortech2/app/data/repository/WorkRepo.dart';
 import 'package:jobfortech2/app/modules/Work/views/detail_work.dart';
-
-import 'package:jobfortech2/app/modules/Work/views/my_work_view.dart';
 import 'package:jobfortech2/app/modules/Work/views/work_list.dart';
-import 'package:jobfortech2/app/modules/Work/views/work_search_view.dart';
 import 'package:jobfortech2/components/AppButton/index.dart';
-import 'package:jobfortech2/components/AppSafeArea/index.dart';
 import 'package:jobfortech2/components/WorkCard/index.dart';
 import 'package:jobfortech2/constant/icons.dart';
 import 'package:jobfortech2/constant/theme.dart';
@@ -50,7 +46,7 @@ class WorkDeskView extends GetView {
                             fontWeight: FontWeight.w500),
                       ),
                       onPressed: () {
-                        Get.to(() => SearchWokView());
+                        Get.to(() => WorkListView());
                       },
                       suffix: AppIconButton(
                         svgPath: 'assets/svgs/zoom-in.svg',

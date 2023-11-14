@@ -45,7 +45,7 @@ PreferredSize AppHeaderbar({
       centerTitle: true,
       bottom: expandAppbar
           ? PreferredSize(
-              preferredSize: Size.fromHeight(type == 'default' ? 18 : 100),
+              preferredSize: Size.fromHeight(type == 'default' ? 0 : 100),
               child: Container(
                 color: AppColor.blue,
                 height: type == 'default' ? 0 : 135,

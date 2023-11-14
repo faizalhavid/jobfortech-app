@@ -27,21 +27,12 @@ class NavigationView extends GetView {
     RxInt currentIndex = RxInt(0);
 
     final navController = Get.put(NavigationController());
-    final screens = [
-      Dashboard(),
-      WorkDeskView(),
-      MessagesView(),
-    ];
+    final screens = [Dashboard(), WorkDeskView(), ProfileView()];
 
     return Obx(
       () => Scaffold(
-        appBar: currentIndex.value == 2
-            ? PreferredSize(
-                preferredSize: Size.fromHeight(0),
-                child: Container(),
-              )
-            : appHeader(
-                currentInt: currentIndex.value, navController: navController),
+        appBar: appHeader(
+            currentInt: currentIndex.value, navController: navController),
         body: Obx(() => screens[currentIndex.value]),
         bottomNavigationBar: BottomNavigationBar(
           showUnselectedLabels: false,
@@ -74,8 +65,8 @@ class NavigationView extends GetView {
             AppNav(
               currentIndex.value,
               2,
-              'assets/svgs/messages.svg',
-              'Messages',
+              'assets/svgs/users.svg',
+              'Profile',
             ),
           ],
         ),
@@ -101,7 +92,7 @@ PreferredSize appHeader(
     },
   );
   return PreferredSize(
-    preferredSize: Size.fromHeight(210),
+    preferredSize: Size.fromHeight(currentInt == 2 ? 75 : 210),
     child: header,
   );
 }
@@ -402,47 +393,49 @@ Widget workContent(User user, NavigationController navController,
         releatedWorkList.isNotEmpty
             ? SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
-                child: Wrap(
-                  spacing: 15,
-                  children: [
-                    if (navController.loading.value)
-                      ...List.generate(
-                        3,
-                        (index) => AppShimmer(
-                            isBlur: true,
-                            baseColor: AppColor.white.withOpacity(0.4),
-                            child: Container(
-                              height: Get.height * 0.1,
-                              width: Get.width * 0.7,
-                              decoration: BoxDecoration(
-                                color: AppColor.grey.withOpacity(0.5),
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                            )),
-                      ),
-                    ...releatedWorkList
-                        .map(
-                          (work) => Container(
-                            width: Get.width * 0.7,
-                            height: Get.height * 0.1,
-                            padding: const EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              color: AppColor.white,
-                              borderRadius: BorderRadius.circular(10),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: AppColor.grey.withOpacity(0.1),
-                                  spreadRadius: 0.3,
-                                  blurRadius: 0.3,
-                                  offset: const Offset(0, 1),
+                child: Obx(
+                  () => Wrap(
+                    spacing: 15,
+                    children: [
+                      if (navController.loading.value)
+                        ...List.generate(
+                          3,
+                          (index) => AppShimmer(
+                              isBlur: true,
+                              baseColor: AppColor.white.withOpacity(0.4),
+                              child: Container(
+                                height: Get.height * 0.1,
+                                width: Get.width * 0.7,
+                                decoration: BoxDecoration(
+                                  color: AppColor.grey.withOpacity(0.5),
+                                  borderRadius: BorderRadius.circular(6),
                                 ),
-                              ],
+                              )),
+                        ),
+                      ...releatedWorkList
+                          .map(
+                            (work) => Container(
+                              width: Get.width * 0.7,
+                              height: Get.height * 0.1,
+                              padding: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                color: AppColor.white,
+                                borderRadius: BorderRadius.circular(10),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: AppColor.grey.withOpacity(0.1),
+                                    spreadRadius: 0.3,
+                                    blurRadius: 0.3,
+                                    offset: const Offset(0, 1),
+                                  ),
+                                ],
+                              ),
+                              child: WorkList(work),
                             ),
-                            child: WorkList(work),
-                          ),
-                        )
-                        .toList(),
-                  ],
+                          )
+                          .toList(),
+                    ],
+                  ),
                 ))
             : Center(
                 child: Text(
@@ -469,28 +462,23 @@ PreferredSize profileheaderHasData(
   if (currentInt == 0) {
     // dashboard
     expandContent = dashboardContent(user, navController, snapshot);
-  } else {
+  } else if (currentInt == 1) {
     // work
     expandContent = workContent(user, navController, snapshot);
+  } else {
+    // profile
+    expandContent = Container();
   }
 
   return AppHeaderbar(
     height: 500,
-    type: 'dashboard',
+    type: currentInt == 2 ? 'default' : 'dashboard',
     expandAppbar: true,
-    leading: InkWell(
-      onTap: () {
-        Get.to(() => ProfileView());
-      },
-      customBorder: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: AppAvatar(
-        outlineColor: AppColor.transparent,
-        path: user.profile?.photoProfile != null
-            ? user.profile!.photoProfile
-            : null,
-      ),
+    leading: AppAvatar(
+      outlineColor: AppColor.transparent,
+      path: user.profile?.photoProfile != null
+          ? user.profile!.photoProfile
+          : null,
     ),
     title: AppIcon(
       svgPath: 'assets/svgs/jobfortech-logo.svg',

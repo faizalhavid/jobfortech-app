@@ -1,9 +1,9 @@
 import 'package:get/get.dart';
+import 'package:jobfortech2/app/data/models/Article.dart';
+import 'package:jobfortech2/app/data/repository/ArticleRepo.dart';
 
 class ArticleController extends GetxController {
-  //TODO: Implement ArticleController
-
-  final count = 0.obs;
+  Rx<List<Article>> articles = Rx<List<Article>>([]);
   @override
   void onInit() {
     super.onInit();
@@ -14,10 +14,8 @@ class ArticleController extends GetxController {
     super.onReady();
   }
 
-  @override
-  void onClose() {
-    super.onClose();
+  void fetchArticle() async {
+    final articelData = ArticleRepository().getAllArticle();
+    articles.value = await articelData;
   }
-
-  void increment() => count.value++;
 }

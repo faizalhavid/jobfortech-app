@@ -20,66 +20,8 @@ class ProfileView extends GetView<ProfileController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppHeaderbar(
-        height: 100,
-        backgroundColor: AppColor.blue,
-        toolbarHeight: 70,
-        leading: Row(
-          children: [
-            GetX<UserController>(
-              builder: (controller2) {
-                return AppAvatar(
-                    radius: 20,
-                    outlineColor: AppColor.white,
-                    path: controller2.user.value.profile?.photoProfile ?? null);
-              },
-            ),
-            SizedBox(
-              width: 20,
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                GetX<UserController>(
-                  builder: (controller2) {
-                    return Text(
-                      controller2.user.value.firstName ?? 'No data',
-                      style: AppBasicStyle(
-                        fontSize: 16,
-                        fontColor: AppColor.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    );
-                  },
-                ),
-                GetX<UserController>(
-                  builder: (controller) {
-                    final email = controller.user.value.email ?? 'No';
-                    return Text(
-                      '$email',
-                      style: AppBasicStyle(
-                        fontSize: 12,
-                        fontColor: AppColor.white,
-                      ),
-                    );
-                  },
-                ),
-              ],
-            ),
-          ],
-        ),
-        centerTitle: false,
-        actions: IconButton(
-          onPressed: () {
-            Get.back();
-          },
-          icon: Icon(Icons.close),
-        ),
-      ),
       body: AppSafeArea(
-        safearea: {'horizontal': 16, 'vertical': 20},
+        safearea: {'horizontal': 16, 'vertical': 40},
         children: [
           AppListTile(
             leading: AppIcon(
