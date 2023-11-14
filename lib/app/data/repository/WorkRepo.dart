@@ -63,21 +63,22 @@ class WorkRepository {
     }
   }
 
-  Future<bool> aplicationWork({required Map<String, dynamic> body}) async {
+  Future<bool> aplicationWork({required id}) async {
     final token = await secureStorage.read(key: 'token');
 
     try {
       final response = await http
-          .patch(
+          .post(
         Uri.parse('${baseUrl}/job/application/create'),
         headers: {
           'Accept': 'application/json',
+          'Content-Type': 'application/json',
           'Authorization': 'Token ${token}',
         },
-        body: jsonEncode(body),
+        body: jsonEncode({'job': id, 'status': 'Applied'}),
       )
           .timeout(
-        Duration(minutes: 1),
+        Duration(seconds: 30),
         onTimeout: () {
           throw Exception('Something went wrong, Please try again later !');
         },
@@ -90,6 +91,7 @@ class WorkRepository {
         throw Exception('Something went wrong, Please try again later !');
       }
     } catch (e) {
+      print(e);
       throw Exception(e.toString());
     }
   }
@@ -120,23 +122,6 @@ class WorkRepository {
       print(e);
     }
     throw Exception('Something went wrong, Please try again later !');
-  }
-
-  Future<void> createAplication({required id}) async {
-    final token = await secureStorage.read(key: 'token');
-    final response =
-        await http.post(Uri.parse('${baseUrl}/job/application/create'),
-            headers: {
-              'Accept': 'application/json',
-              'Authorization': 'Token ${token}',
-              'Content-Type': 'application/json',
-            },
-            body: jsonEncode({'job': id, 'status': 'Applied'}));
-    if (response.statusCode == 201) {
-      print('success');
-    } else {
-      print('error');
-    }
   }
 
   Future<bool> updateSaveStatus({required bool status, required int id}) async {

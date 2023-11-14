@@ -28,172 +28,203 @@ class WorkDetailView extends GetView {
     final aplController = Get.find<ApplicationController>();
     final controller = Get.put(WorkController());
 
-    return Scaffold(
-      appBar: AppHeaderbar(
-        title: Text(
-          'Detail Work',
-          style: AppBasicStyle(
-            fontColor: AppColor.white,
-            fontSize: 18,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        automaticallyImplyLeading: true,
-      ),
-      body: AppSafeArea(
-        safearea: {'horizontal': 20, 'vertical': 20},
-        spacing: 10,
-        children: [
-          headerCompany(),
-          qualification(),
-          workDescription(),
-          Text(
-            'Skill Required :',
+    return RefreshIndicator(
+      onRefresh: () async {
+        WorkRepository().getAplication(id: work.id);
+        WorkRepository().getAplication(id: work.id);
+      },
+      child: Scaffold(
+        appBar: AppHeaderbar(
+          title: Text(
+            'Detail Work',
             style: AppBasicStyle(
-              fontColor: AppColor.black,
-              fontSize: 12,
-              fontWeight: FontWeight.w600,
+              fontColor: AppColor.white,
+              fontSize: 18,
+              fontWeight: FontWeight.w500,
             ),
           ),
-          skills(),
-          listInfoWork(),
-          const SizedBox(height: 15),
-          Text(
-            'Team Profile :',
-            style: AppBasicStyle(
+          automaticallyImplyLeading: true,
+        ),
+        body: AppSafeArea(
+          safearea: {'horizontal': 20, 'vertical': 20},
+          spacing: 10,
+          children: [
+            headerCompany(),
+            qualification(),
+            workDescription(),
+            Text(
+              'Skill Required :',
+              style: AppBasicStyle(
                 fontColor: AppColor.black,
                 fontSize: 12,
-                fontWeight: FontWeight.w600),
-          ),
-          participant(controller),
-          FutureBuilder(
-            future: WorkRepository().getAplication(id: work.id),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Container();
-              } else if (snapshot.hasData) {
-                return snapshot.data!.status == 'Applied'
-                    ? Container(
-                        height: 50,
-                        width: Get.width,
-                        child: AppButton(
-                          child: Text(
-                            'Applied',
-                            style: AppBasicStyle(
-                              fontSize: 12,
-                              fontColor: AppColor.white,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            skills(),
+            listInfoWork(),
+            const SizedBox(height: 15),
+            Text(
+              'Team Profile :',
+              style: AppBasicStyle(
+                fontColor: AppColor.black,
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            participant(controller),
+            const SizedBox(height: 15),
+            FutureBuilder(
+              future: WorkRepository().getAplication(id: work.id),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return AppShimmer(
+                      child: Container(
+                          height: 50,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(29),
+                              color: Colors.grey)));
+                } else if (snapshot.hasData) {
+                  return snapshot.data!.status == 'Applied'
+                      ? Container(
+                          height: 50,
+                          width: Get.width,
+                          child: AppButton(
+                            child: Text(
+                              'Applied',
+                              style: AppBasicStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                fontColor: AppColor.orange,
+                              ),
+                            ),
+                            onPressed: () {
+                              AppToast(
+                                  message: 'You have applied for this job !');
+                            },
+                            backgroundColor: AppColor.lightOrange,
+                            overlayColor: AppColor.orange.withOpacity(0.2),
+                            suffix: AppIcon(
+                              svgPath: 'assets/svgs/time-2.svg',
+                              size: 20,
                             ),
                           ),
-                          onPressed: () {},
-                          backgroundColor: AppColor.lightOrange,
-                          suffix: AppIcon(
-                            svgPath: 'assets/svgs/time-2.svg',
-                            size: 20,
-                          ),
-                        ),
-                      )
-                    : Container(
-                        height: 50,
-                        width: Get.width,
-                        child: AppButton(
-                          child: Text(
-                            'Apply',
-                            style: AppBasicStyle(
-                              fontSize: 12,
-                              fontColor: AppColor.white,
-                            ),
-                          ),
-                          onPressed: () {
-                            if (aplController.isAgree.value &&
-                                aplController.isAgree2.value) {
-                            } else {
-                              AppToast(message: 'Please agree to the terms !');
-                            }
-                          },
-                          backgroundColor: AppColor.smoke,
-                          suffix: aplController.suffix.value,
-                        ),
-                      );
-              } else {
-                if (aplController.isAgree.value &&
-                    aplController.isAgree2.value) {
-                  aplController.buttonColor.value = AppColor.blue;
-                  aplController.textButton.value = 'Apply';
-                  aplController.message.value =
-                      'Congratulation, you have applied for this job !';
-                  aplController.textColor.value = AppColor.white;
-                  aplController.overlayButton.value =
-                      AppColor.blue.withOpacity(0.2);
-                  aplController.suffix.value = null;
-                } else {
-                  aplController.buttonColor.value = AppColor.smoke;
-                  aplController.textButton.value = 'Apply';
-                  aplController.message.value =
-                      'You have agree to the terms and conditions !';
-                  aplController.textColor.value = AppColor.grey;
-                  aplController.overlayButton.value = AppColor.grey;
-                  aplController.suffix.value = null;
-                }
-                return Obx(
-                  () => Column(
-                    children: [
-                      buildCheckbox(
-                        title:
-                            'I have read and agree to the terms and conditions',
-                        controller: aplController.isAgree2,
-                      ),
-                      buildCheckbox(
-                        title: 'I have read and agree to the privacy policy',
-                        controller: aplController.isAgree,
-                      ),
-                      Container(
-                        height: 50,
-                        width: Get.width,
-                        child: AppButton(
-                          child: Text(
-                            'Apply',
-                            style: AppBasicStyle(
+                        )
+                      : Container(
+                          height: 50,
+                          width: Get.width,
+                          child: AppButton(
+                            child: Text(
+                              'Apply',
+                              style: AppBasicStyle(
                                 fontSize: 12,
-                                fontColor: aplController.isAgree.value &&
-                                        aplController.isAgree2.value
-                                    ? AppColor.white
-                                    : AppColor.grey),
+                                fontColor: AppColor.white,
+                              ),
+                            ),
+                            onPressed: () {
+                              if (aplController.isAgree.value &&
+                                  aplController.isAgree2.value) {
+                                EasyLoading.show(status: 'Loading...');
+                                WorkRepository()
+                                    .aplicationWork(id: work.id)
+                                    .then((value) {
+                                  EasyLoading.dismiss();
+                                  AppToast(message: 'Success');
+                                }).catchError((e) {
+                                  EasyLoading.dismiss();
+                                  AppToast(message: 'Error');
+                                });
+                              } else {
+                                AppToast(
+                                    message: 'Please agree to the terms !');
+                              }
+                            },
+                            backgroundColor: AppColor.smoke,
+                            suffix: aplController.suffix.value,
                           ),
-                          onPressed: () {
-                            if (aplController.isAgree.value &&
-                                aplController.isAgree2.value) {
-                              EasyLoading.show(status: 'Loading...');
-                              WorkRepository()
-                                  .createAplication(id: work.id)
-                                  .then((value) {
-                                EasyLoading.dismiss();
-                                AppToast(message: 'Success');
-                              }).catchError((e) {
-                                EasyLoading.dismiss();
-                                AppToast(message: 'Error');
-                              });
-                            } else {
-                              AppToast(message: 'Please agree to the terms !');
-                            }
-                          },
-                          backgroundColor: aplController.isAgree.value &&
-                                  aplController.isAgree2.value
-                              ? AppColor.blue
-                              : AppColor.smoke,
-                          suffix: aplController.isAgree.value &&
-                                  aplController.isAgree2.value
-                              ? Icon(Icons.verified_outlined,
-                                  size: 20, color: AppColor.white)
-                              : null,
+                        );
+                } else {
+                  if (aplController.isAgree.value &&
+                      aplController.isAgree2.value) {
+                    aplController.buttonColor.value = AppColor.blue;
+                    aplController.textButton.value = 'Apply';
+                    aplController.message.value =
+                        'Congratulation, you have applied for this job !';
+                    aplController.textColor.value = AppColor.white;
+                    aplController.overlayButton.value =
+                        AppColor.blue.withOpacity(0.2);
+                    aplController.suffix.value = null;
+                  } else {
+                    aplController.buttonColor.value = AppColor.smoke;
+                    aplController.textButton.value = 'Apply';
+                    aplController.message.value =
+                        'You have agree to the terms and conditions !';
+                    aplController.textColor.value = AppColor.grey;
+                    aplController.overlayButton.value = AppColor.grey;
+                    aplController.suffix.value = null;
+                  }
+                  return Obx(
+                    () => Column(
+                      children: [
+                        buildCheckbox(
+                          title:
+                              'I have read and agree to the terms and conditions',
+                          controller: aplController.isAgree2,
                         ),
-                      ),
-                    ],
-                  ),
-                );
-              }
-            },
-          )
-        ],
+                        buildCheckbox(
+                          title: 'I have read and agree to the privacy policy',
+                          controller: aplController.isAgree,
+                        ),
+                        Container(
+                          height: 50,
+                          width: Get.width,
+                          child: AppButton(
+                            child: Text(
+                              'Apply',
+                              style: AppBasicStyle(
+                                  fontSize: 12,
+                                  fontColor: aplController.isAgree.value &&
+                                          aplController.isAgree2.value
+                                      ? AppColor.white
+                                      : AppColor.grey),
+                            ),
+                            onPressed: () {
+                              if (aplController.isAgree.value &&
+                                  aplController.isAgree2.value) {
+                                EasyLoading.show(status: 'Loading...');
+                                WorkRepository()
+                                    .aplicationWork(id: work.id)
+                                    .then((value) {
+                                  EasyLoading.dismiss();
+                                  AppToast(message: 'Success');
+                                }).catchError((e) {
+                                  print(e);
+                                  EasyLoading.dismiss();
+                                  AppToast(message: 'Error');
+                                });
+                              } else {
+                                AppToast(
+                                    message: 'Please agree to the terms !');
+                              }
+                            },
+                            backgroundColor: aplController.isAgree.value &&
+                                    aplController.isAgree2.value
+                                ? AppColor.blue
+                                : AppColor.smoke,
+                            suffix: aplController.isAgree.value &&
+                                    aplController.isAgree2.value
+                                ? Icon(Icons.verified_outlined,
+                                    size: 20, color: AppColor.white)
+                                : null,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+              },
+            )
+          ],
+        ),
       ),
     );
   }

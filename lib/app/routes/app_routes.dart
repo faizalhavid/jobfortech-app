@@ -9,6 +9,7 @@ abstract class Routes {
   static const ASSESSMENT = _Paths.ASSESSMENT;
   static const PROJECT_TEST = _Paths.ASSESSMENT;
   static const WORK = _Paths.WORK;
+  static const ARTICLE = _Paths.ARTICLE;
 }
 
 abstract class _Paths {
@@ -18,4 +19,5 @@ abstract class _Paths {
   static const MENU = '/menu';
   static const ASSESSMENT = '/assessment';
   static const WORK = '/work';
+  static const ARTICLE = '/article';
 }

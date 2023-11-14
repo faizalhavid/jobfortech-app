@@ -1,6 +1,8 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 
+import '../modules/Article/bindings/article_binding.dart';
+import '../modules/Article/views/article_list.dart';
 import '../modules/Auth/bindings/auth_binding.dart';
 import '../modules/Auth/views/login_view.dart';
 import '../modules/Dashboard/bindings/dashboard_binding.dart';
@@ -37,6 +39,11 @@ class AppPages {
           name: _Paths.WORK,
           page: () => const WorkView(),
           binding: WorkBinding(),
+        ),
+        GetPage(
+          name: _Paths.ARTICLE,
+          page: () => const ArticleListView(),
+          binding: ArticleBinding(),
         ),
       ];
 
