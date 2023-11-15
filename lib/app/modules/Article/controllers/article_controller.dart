@@ -6,6 +6,7 @@ class ArticleController extends GetxController {
   Rx<List<Article>> articles = Rx<List<Article>>([]);
   @override
   void onInit() {
+    fetchArticle();
     super.onInit();
   }
 

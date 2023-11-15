@@ -33,6 +33,7 @@ dependencies:
   syncfusion_flutter_pdfviewer: ^23.1.40
   url_launcher: ^6.1.14
   buttons_tabbar: ^1.3.8
+  intl: ^0.18.1
 
 dev_dependencies:
   flutter_lints: ^2.0.0

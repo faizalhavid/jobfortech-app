@@ -42,4 +42,20 @@ class ArticleRepository {
       throw Exception('Failed to load article');
     }
   }
+
+  Future<Article> getArticleById({required int id}) async {
+    final token = await secureStorage.read(key: 'token');
+    final response =
+        await http.get(Uri.parse('$baseUrl/article/$id'), headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization': 'Token $token',
+    });
+
+    if (response.statusCode == 200) {
+      final article = Article.fromJson(jsonDecode(response.body)['results']);
+      return article;
+    } else {
+      throw Exception('Failed to load article');
+    }
+  }
 }
