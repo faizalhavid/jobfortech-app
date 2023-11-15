@@ -52,7 +52,8 @@ class ArticleRepository {
     });
 
     if (response.statusCode == 200) {
-      final article = Article.fromJson(jsonDecode(response.body)['results']);
+      final article = Article.fromJson(jsonDecode(response.body));
+      print(article);
       return article;
     } else {
       throw Exception('Failed to load article');

@@ -15,7 +15,7 @@ class ArticleListView extends GetView<ArticleController> {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(ArticleController());
-    final article = controller.articles;
+
     return Scaffold(
         appBar: AppHeaderbar(
           title: Text(
@@ -42,13 +42,13 @@ class ArticleListView extends GetView<ArticleController> {
                     final Article article = snapshot.data![index];
                     return ListTile(
                       onTap: () {
-                        Get.to(() => DetailArticleView(article.id!));
+                        Get.to(() =>
+                            DetailArticleView(article.id!, article.image!));
                       },
                       visualDensity: VisualDensity(vertical: 4),
                       contentPadding: const EdgeInsets.all(10),
                       trailing: Hero(
-                        tag:
-                            'heroTag-${article.id}', // Unique tag for this Hero widget. You can use the article id.
+                        tag: 'heroTag-${article.id}',
                         child: Container(
                           width: 100,
                           height: 300,
@@ -68,7 +68,7 @@ class ArticleListView extends GetView<ArticleController> {
                             article.title!,
                             style: AppBasicStyle(
                               fontColor: AppColor.black,
-                              fontSize: 14,
+                              fontSize: 16,
                               fontWeight: FontWeight.bold,
                             ),
                             maxLines: 2,
@@ -77,7 +77,7 @@ class ArticleListView extends GetView<ArticleController> {
                           ...article.tags!.map((tag) => Chip(
                                 padding: const EdgeInsets.all(0),
                                 labelPadding: const EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: -2),
+                                    horizontal: 10, vertical: -4),
                                 backgroundColor: AppColor.lightBlue,
                                 label: Text(
                                   '#$tag',
