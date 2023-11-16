@@ -10,6 +10,7 @@ abstract class Routes {
   static const PROJECT_TEST = _Paths.ASSESSMENT;
   static const WORK = _Paths.WORK;
   static const ARTICLE = _Paths.ARTICLE;
+  static const ARTICLE_LIST_BY_TAG = _Paths.ARTICLE_LIST_BY_TAG;
 }
 
 abstract class _Paths {
@@ -20,4 +21,5 @@ abstract class _Paths {
   static const ASSESSMENT = '/assessment';
   static const WORK = '/work';
   static const ARTICLE = '/article';
+  static const ARTICLE_LIST_BY_TAG = '/article-list-by-tag';
 }

@@ -59,4 +59,23 @@ class ArticleRepository {
       throw Exception('Failed to load article');
     }
   }
+
+  Future<bool> patchLikeArticle({required int id, required bool like}) async {
+    final token = await secureStorage.read(key: 'token');
+    final response = await http.patch(
+      Uri.parse('$baseUrl/article/$id/like'),
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Token $token',
+      },
+      body: jsonEncode({
+        'is_liked': like.toString(),
+      }),
+    );
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      throw Exception('Failed to like article');
+    }
+  }
 }

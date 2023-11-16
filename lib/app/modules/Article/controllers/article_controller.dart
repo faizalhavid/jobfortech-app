@@ -1,22 +1,27 @@
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:jobfortech2/app/data/models/Article.dart';
+import 'package:jobfortech2/app/data/models/User.dart';
 import 'package:jobfortech2/app/data/repository/ArticleRepo.dart';
+import 'package:jobfortech2/app/data/repository/UserRepo.dart';
 
 class ArticleController extends GetxController {
-  // Rx<List<Article>> articles = Rx<List<Article>>([]);
-  // @override
-  // void onInit() {
-  //   fetchArticle();
-  //   super.onInit();
-  // }
+  RxBool isLike = RxBool(false);
+  final secureStorage = FlutterSecureStorage();
+  final int articleId;
+  ArticleController({required this.articleId});
 
-  // @override
-  // void onReady() {
-  //   super.onReady();
-  // }
+  @override
+  void onInit() {
+    checkLike(id: articleId);
+    super.onInit();
+  }
 
-  // void fetchArticle() async {
-  //   final articelData = ArticleRepository().getAllArticle();
-  //   articles.value = await articelData;
-  // }
+  void checkLike({required int id}) async {
+    final userId = await secureStorage.read(key: 'id');
+    final Article article = await ArticleRepository().getArticleById(id: id);
+    article.likes!.contains(int.parse(userId!))
+        ? isLike.value = true
+        : isLike.value = false;
+  }
 }
