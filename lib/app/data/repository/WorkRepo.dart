@@ -205,4 +205,28 @@ class WorkRepository {
       throw Exception('Something went wrong, Please try again later !');
     }
   }
+
+  Future<Map<String, int>> getWorkReport() async {
+    final token = await secureStorage.read(key: 'token');
+    final response = await http.get(Uri.parse('$baseUrl/job/report'), headers: {
+      'Accept': 'application/json',
+      'Authorization': 'Token ${token}',
+      'Content-Type': 'application/json',
+    }).timeout(
+      Duration(minutes: 1),
+      onTimeout: () {
+        throw Exception('Something went wrong, Please try again later !');
+      },
+    );
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> jobList = jsonDecode(response.body);
+      return {
+        'workApply': jobList['applied'],
+        'interview': jobList['interview'],
+        'hired': jobList['hired'],
+      };
+    } else {
+      throw Exception('Something went wrong, Please try again later !');
+    }
+  }
 }

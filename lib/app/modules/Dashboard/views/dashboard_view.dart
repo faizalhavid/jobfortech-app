@@ -1,19 +1,16 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jobfortech2/app/data/repository/WorkRepo.dart';
 import 'package:jobfortech2/app/modules/Article/views/article_list.dart';
 import 'package:jobfortech2/app/modules/Auth/controllers/navigation_controller.dart';
 import 'package:jobfortech2/components/AppBadge/index.dart';
-import 'package:jobfortech2/components/AppButton/index.dart';
-import 'package:jobfortech2/components/AppCard/index.dart';
 import 'package:jobfortech2/components/AppStack/index.dart';
 import 'package:jobfortech2/components/TableReportWork/index.dart';
-import 'package:jobfortech2/constant/icons.dart';
 import 'package:jobfortech2/constant/theme.dart';
-import '../controllers/dashboard_controller.dart';
 
 SingleChildScrollView Dashboard() {
   final navController = Get.put(NavigationController());
+
   List<String> TopIndustri = [
     'Fintech',
     'Ecommerce',
@@ -35,7 +32,21 @@ SingleChildScrollView Dashboard() {
         backgroundcolor: AppColor.white,
         children: [
           TextHeader(text: 'Your Progress'),
-          buildReportWork(workApply: '10', interview: '5', hired: '2'),
+          FutureBuilder(
+              future: WorkRepository().getWorkReport(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return buildReportWork(
+                    workApply: snapshot.data!['workApply'] ?? 0,
+                    interview: snapshot.data!['interview'] ?? 0,
+                    hired: snapshot.data!['hired'] ?? 0,
+                  );
+                } else {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+              }),
           const Divider(
             color: AppColor.smoke,
             thickness: 1,

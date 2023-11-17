@@ -96,9 +96,7 @@ Table buildReportJob(
 }
 
 Widget buildReportWork(
-    {required String workApply,
-    required String interview,
-    required String hired}) {
+    {required int workApply, required int interview, required int hired}) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     mainAxisSize: MainAxisSize.max,
@@ -114,7 +112,7 @@ Widget buildReportWork(
                 fontSize: 12),
           ),
           Text(
-            workApply,
+            workApply.toString(),
             style: AppBasicStyle(
               fontSize: 25,
               fontWeight: FontWeight.w800,
@@ -131,7 +129,7 @@ Widget buildReportWork(
               fontSize: 12),
         ),
         Text(
-          interview,
+          interview.toString(),
           style: AppBasicStyle(
             fontSize: 25,
             fontWeight: FontWeight.w800,
@@ -147,7 +145,7 @@ Widget buildReportWork(
               fontSize: 12),
         ),
         Text(
-          hired,
+          hired.toString(),
           style: AppBasicStyle(
             fontSize: 25,
             fontWeight: FontWeight.w800,
