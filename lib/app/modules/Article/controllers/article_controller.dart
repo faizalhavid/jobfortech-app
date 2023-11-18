@@ -10,10 +10,12 @@ class ArticleController extends GetxController {
   final secureStorage = FlutterSecureStorage();
   final int articleId;
   ArticleController({required this.articleId});
+  late Future<Article> dataFuture;
 
   @override
   void onInit() {
     checkLike(id: articleId);
+    dataFuture = ArticleRepository().getArticleById(id: articleId);
     super.onInit();
   }
 

@@ -27,17 +27,18 @@ class ArticleRepository {
     }
   }
 
-  Future<Article> getHighlightArticle() async {
+  Future<List<Article>> getHighlightArticle() async {
     final token = await secureStorage.read(key: 'token');
     final response =
-        await http.get(Uri.parse('$baseUrl//article/highlight'), headers: {
+        await http.get(Uri.parse('$baseUrl/article/highlight'), headers: {
       'Content-Type': 'application/json; charset=UTF-8',
       'Authorization': 'Token $token',
     });
 
     if (response.statusCode == 200) {
-      final article = Article.fromJson(jsonDecode(response.body)['results']);
-      return article;
+      final List<dynamic> articleList = jsonDecode(response.body)['results'];
+      print(articleList);
+      return articleList.map((json) => Article.fromJson(json)).toList();
     } else {
       throw Exception('Failed to load article');
     }
@@ -53,7 +54,6 @@ class ArticleRepository {
 
     if (response.statusCode == 200) {
       final article = Article.fromJson(jsonDecode(response.body));
-      print(article);
       return article;
     } else {
       throw Exception('Failed to load article');
@@ -67,7 +67,6 @@ class ArticleRepository {
       'Content-Type': 'application/json; charset=UTF-8',
       'Authorization': 'Token $token',
     });
-
 
     if (response.statusCode == 200) {
       final List<dynamic> articleList = jsonDecode(response.body)['results'];

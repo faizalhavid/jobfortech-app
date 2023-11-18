@@ -223,7 +223,7 @@ class WorkRepository {
       return {
         'workApply': jobList['applied'],
         'interview': jobList['interview'],
-        'hired': jobList['hired'],
+        'hired': jobList['accepted'],
       };
     } else {
       throw Exception('Something went wrong, Please try again later !');

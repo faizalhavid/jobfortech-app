@@ -46,7 +46,7 @@ class DetailArticleView extends GetView {
             delegate: SliverChildListDelegate(
               [
                 FutureBuilder(
-                  future: ArticleRepository().getArticleById(id: articleId),
+                  future: controller.dataFuture,
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       final Article article = snapshot.data!;
@@ -146,6 +146,7 @@ class DetailArticleView extends GetView {
         child: LikeButton(
           isLiked: controller.isLike.value,
           onTap: (bool value) async {
+            controller.dataFuture;
             bool newValue = !value;
             if (newValue) {
               await ArticleRepository()

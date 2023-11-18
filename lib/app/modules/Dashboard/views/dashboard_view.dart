@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jobfortech2/app/data/repository/ArticleRepo.dart';
 import 'package:jobfortech2/app/data/repository/WorkRepo.dart';
 import 'package:jobfortech2/app/modules/Article/views/article_list.dart';
 import 'package:jobfortech2/app/modules/Auth/controllers/navigation_controller.dart';
 import 'package:jobfortech2/components/AppBadge/index.dart';
+import 'package:jobfortech2/components/AppCard/index.dart';
 import 'package:jobfortech2/components/AppStack/index.dart';
 import 'package:jobfortech2/components/TableReportWork/index.dart';
 import 'package:jobfortech2/constant/theme.dart';
@@ -74,7 +76,27 @@ SingleChildScrollView Dashboard() {
                 ),
               )
             ],
-          )
+          ),
+          FutureBuilder(
+            future: ArticleRepository().getHighlightArticle(),
+            builder: (context, snapshot) {
+              final article = snapshot.data!;
+              if (snapshot.hasData) {
+                return SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      ...article.map((e) => CardArticle(e)),
+                    ],
+                  ),
+                );
+              } else {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+            },
+          ),
         ],
       ),
     ],
