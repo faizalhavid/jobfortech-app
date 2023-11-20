@@ -157,9 +157,7 @@ class ForgotPasswordView extends GetView {
                                   fontWeight: FontWeight.w500,
                                 ),
                               ),
-                              onPressed: () {
-                                controller.sendResetPasswordEmail(keyForm);
-                              },
+                              onPressed: () {},
                             )
                           : AppButton(
                               type: controller.resendEmail.value

@@ -48,7 +48,6 @@ class LoginView extends GetView<AuthController> {
               ),
               textAlign: TextAlign.center,
             ),
-
             AppTextInput(
               controller: loginController.email,
               labelText: 'Email',
@@ -88,16 +87,6 @@ class LoginView extends GetView<AuthController> {
                 ],
               ),
             ),
-
-            // AppButton(
-            //   child: Text(
-            //     'Sign Up Developer',
-            //     style: AppBasicStyle(fontWeight: FontWeight.bold),
-            //   ),
-            //   onPressed: () {},
-            //   type: 'outline',
-            //   outlineColor: AppColor.blue,
-            // ),
             SizedBox(
               height: 15,
             ),
@@ -137,7 +126,9 @@ class LoginView extends GetView<AuthController> {
                       fontColor: AppColor.darkBlue,
                       fontWeight: FontWeight.bold),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  loginController.loginGoogle();
+                },
                 type: 'outline',
               ),
               Row(

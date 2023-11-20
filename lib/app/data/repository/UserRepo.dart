@@ -10,6 +10,7 @@ class UserRepository {
   final GetConnect connect = Get.find<GetConnect>();
   final baseUrl = dotenv.env['BASE_URL'];
   final secureStorage = FlutterSecureStorage();
+
   Future<User> register({
     required String email,
     required String password,
@@ -75,7 +76,7 @@ class UserRepository {
     }
   }
 
-  Future<User> login({
+  Future<void> login({
     required String email,
     required String password,
   }) async {
@@ -98,11 +99,36 @@ class UserRepository {
       final readToken = await secureStorage.read(key: 'token');
       print('readToken : $readToken');
       await secureStorage.write(key: 'id', value: id.toString());
-      return User.fromJson(jsonDecode(response.body));
     } else {
       final message = jsonDecode(response.body)['non_field_errors'][0];
       throw (message);
     }
+  }
+
+  Future<void> loginWithGoogle(String accessToken) {
+    final uri = Uri.parse('$baseUrl/auth/oauth/');
+    return http.post(
+      uri,
+      body: jsonEncode(<dynamic, dynamic>{
+        'access_token': accessToken,
+        'backend': 'google-oauth2',
+      }),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'X-Client-Type': 'Jobfortech-app',
+      },
+    ).then((response) async {
+      if (response.statusCode == 200) {
+        final token = jsonDecode(response.body)['token'];
+        final id = jsonDecode(response.body)['id'];
+        await secureStorage.write(key: 'token', value: token);
+        await secureStorage.write(key: 'id', value: id.toString());
+        print('response : ${response.body}');
+      } else {
+        final message = jsonDecode(response.body)['non_field_errors'][0];
+        throw (message);
+      }
+    });
   }
 
   Future<User> emailActivation(
