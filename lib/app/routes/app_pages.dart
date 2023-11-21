@@ -1,5 +1,7 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
+import 'package:jobfortech2/app/modules/Auth/views/forgot_password_view.dart';
+import 'package:jobfortech2/app/modules/Dashboard/views/not_found_view.dart';
 
 import '../modules/Article/bindings/article_binding.dart';
 import '../modules/Article/views/article_list.dart';
@@ -45,6 +47,9 @@ class AppPages {
           page: () => const ArticleListView(),
           binding: ArticleBinding(),
         ),
+        GetPage(
+            name: '/password-reset', page: () => const ForgotPasswordView()),
+        GetPage(name: '/not_found', page: () => const NotFoundView()),
       ];
 
   static Future<String> initialRouteMiddleware() async {

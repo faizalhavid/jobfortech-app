@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
+import 'package:jobfortech2/app/data/repository/UserRepo.dart';
 import 'package:jobfortech2/app/modules/Auth/controllers/forgot_password_controller.dart';
+import 'package:jobfortech2/app/modules/Auth/views/change_password_view.dart';
 import 'package:jobfortech2/app/modules/Auth/views/register_view.dart';
 import 'package:jobfortech2/components/AppButton/index.dart';
 import 'package:jobfortech2/components/AppHeaderBar/index.dart';
@@ -157,7 +159,27 @@ class ForgotPasswordView extends GetView {
                                   fontWeight: FontWeight.w500,
                                 ),
                               ),
-                              onPressed: () {},
+                              onPressed: () async {
+                                if (keyForm.currentState!.validate()) {
+                                  EasyLoading.show(status: 'Please wait...');
+                                  await UserRepository()
+                                      .sendEmailForgotPassword(
+                                          email: controller.email.text)
+                                      .then((value) {
+                                    EasyLoading.dismiss();
+
+                                    controller.verifiedEmail.value =
+                                        !controller.verifiedEmail.value;
+                                    controller.countdownValue.value = 60;
+                                  }).onError((error, stackTrace) {
+                                    EasyLoading.dismiss();
+                                    EasyLoading.showToast(
+                                        'Something went wrong',
+                                        toastPosition:
+                                            EasyLoadingToastPosition.bottom);
+                                  });
+                                }
+                              },
                             )
                           : AppButton(
                               type: controller.resendEmail.value

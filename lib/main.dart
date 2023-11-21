@@ -2,17 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
-import 'package:jobfortech2/app/service/secure_storage_service.dart';
 import 'package:jobfortech2/constant/theme.dart';
+import 'package:jobfortech2/constant/dynamicLink.dart';
 import 'app/routes/app_pages.dart';
+import 'package:firebase_core/firebase_core.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
-  // await Get.putAsync(() => SecureStorageService().init());
+    await Firebase.initializeApp();
   configLoading();
+  initLinks();
   runApp(
     GetMaterialApp(
+
       theme: ThemeData(
         colorScheme: AppColorScheme,
       ),

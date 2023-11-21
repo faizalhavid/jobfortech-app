@@ -301,4 +301,55 @@ class UserRepository {
       throw Exception(response.body);
     }
   }
+
+  Future<bool> sendEmailForgotPassword({required String email}) async {
+    final uri = Uri.parse('$baseUrl/users/send-email-forget-password/');
+    final response = await http
+        .post(
+      uri,
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(<dynamic, dynamic>{'email': email}),
+    )
+        .timeout(Duration(seconds: 30), onTimeout: () {
+      throw Exception('Something went wrong, Please try again later !');
+    });
+
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      throw Exception(response.body);
+    }
+  }
+
+  Future<void> changeForgotPassword({
+    required String password,
+    required String confirmPassword,
+    required String string_activation,
+    required String user_id,
+  }) {
+    final uri = Uri.parse('$baseUrl/users/forget-password/$user_id/');
+    return http
+        .patch(
+      uri,
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(<dynamic, dynamic>{
+        'password': password,
+        'password2': confirmPassword,
+        'string_activation': string_activation,
+      }),
+    )
+        .then((response) {
+      if (response.statusCode == 200) {
+        print('response ${response.body}');
+      } else {
+        throw Exception(response.body);
+      }
+    });
+  }
 }
