@@ -9,6 +9,7 @@ import 'package:jobfortech2/components/AppButton/index.dart';
 import 'package:jobfortech2/components/AppHeaderBar/index.dart';
 import 'package:jobfortech2/components/AppSafeArea/index.dart';
 import 'package:jobfortech2/components/AppTextInput/index.dart';
+import 'package:jobfortech2/components/AppToast/index.dart';
 import 'package:jobfortech2/constant/icons.dart';
 import 'package:jobfortech2/constant/theme.dart';
 import 'package:jobfortech2/app/utils/validation.dart';
@@ -109,13 +110,16 @@ class ForgotPasswordView extends GetView {
                             validator: (value) {
                               return validateEmail(value!);
                             },
+                            onFieldSubmitted: (value) {
+                              FocusScope.of(context).unfocus();
+                            },
                           ),
                         )
                       : Text(
                           'If you have not received the email after few minutes, please check your spam folder.',
                           style: AppBasicStyle(
                             fontColor: AppColor.grey,
-                            fontSize: 14,
+                            fontSize: 12,
                             fontWeight: FontWeight.w500,
                           ),
                           textAlign: TextAlign.center,
@@ -136,12 +140,14 @@ class ForgotPasswordView extends GetView {
                     children: [
                       controller.verifiedEmail.value
                           ? SizedBox()
-                          : Text(
-                              'Resend Email in : ${controller.countdownValue.value}',
-                              style: AppBasicStyle(
-                                fontSize: 14,
-                                fontColor: AppColor.grey,
-                                fontWeight: FontWeight.w500,
+                          : Obx(
+                              () => Text(
+                                'Resend Email in : ${controller.countdownValue.value}',
+                                style: AppBasicStyle(
+                                  fontSize: 14,
+                                  fontColor: AppColor.grey,
+                                  fontWeight: FontWeight.w500,
+                                ),
                               ),
                             ),
                       const SizedBox(
@@ -166,43 +172,43 @@ class ForgotPasswordView extends GetView {
                                       .sendEmailForgotPassword(
                                           email: controller.email.text)
                                       .then((value) {
-                                    EasyLoading.dismiss();
-
+                                    AppToast(
+                                        message: 'Email sent successfully');
                                     controller.verifiedEmail.value =
                                         !controller.verifiedEmail.value;
-                                    controller.countdownValue.value = 60;
+                                    controller.startCountdown(60);
+                                    EasyLoading.dismiss();
                                   }).onError((error, stackTrace) {
                                     EasyLoading.dismiss();
-                                    EasyLoading.showToast(
-                                        'Something went wrong',
-                                        toastPosition:
-                                            EasyLoadingToastPosition.bottom);
+                                    EasyLoading.showError(error.toString());
                                   });
                                 }
                               },
                             )
-                          : AppButton(
-                              type: controller.resendEmail.value
-                                  ? 'default'
-                                  : 'disabled',
-                              width: 10,
-                              child: Text(
-                                'Resend Email',
-                                style: AppBasicStyle(
-                                  fontSize: 16,
-                                  fontColor: AppColor.white,
-                                  fontWeight: FontWeight.w500,
+                          : Obx(
+                              () => AppButton(
+                                type: controller.resendEmail.value
+                                    ? 'default'
+                                    : 'disabled',
+                                width: 10,
+                                child: Text(
+                                  'Resend Email',
+                                  style: AppBasicStyle(
+                                    fontSize: 16,
+                                    fontColor: AppColor.white,
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 ),
+                                onPressed: () {
+                                  controller.resendEmail.value
+                                      ? controller.verifiedEmail.value =
+                                          !controller.verifiedEmail.value
+                                      : EasyLoading.showToast(
+                                          'Please wait for a moment',
+                                          toastPosition:
+                                              EasyLoadingToastPosition.bottom);
+                                },
                               ),
-                              onPressed: () {
-                                controller.resendEmail.value
-                                    ? controller.verifiedEmail.value =
-                                        !controller.verifiedEmail.value
-                                    : EasyLoading.showToast(
-                                        'Please wait for a moment',
-                                        toastPosition:
-                                            EasyLoadingToastPosition.bottom);
-                              },
                             ),
                     ],
                   ),

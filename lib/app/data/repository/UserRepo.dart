@@ -5,6 +5,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:jobfortech2/app/data/models/User.dart';
 import 'package:http/http.dart' as http;
+import 'package:jobfortech2/constant/exceptions.dart';
 
 class UserRepository {
   final GetConnect connect = Get.find<GetConnect>();
@@ -302,25 +303,27 @@ class UserRepository {
     }
   }
 
-  Future<bool> sendEmailForgotPassword({required String email}) async {
+  Future<void> sendEmailForgotPassword({required String email}) async {
     final uri = Uri.parse('$baseUrl/users/send-email-forget-password/');
-    final response = await http
-        .post(
-      uri,
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: jsonEncode(<dynamic, dynamic>{'email': email}),
-    )
-        .timeout(Duration(seconds: 30), onTimeout: () {
-      throw Exception('Something went wrong, Please try again later !');
-    });
+    try {
+      final response = await http.post(
+        uri,
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(<dynamic, dynamic>{'email': email}),
+      );
 
-    if (response.statusCode == 200) {
-      return true;
-    } else {
-      throw Exception(response.body);
+      if (response.statusCode == 400) {
+        var responseBody = jsonDecode(response.body);
+        var message = responseBody['message'][0];
+        throw BadRequestException(message);
+      }
+    } on SocketException {
+      throw NoInternetException('No Internet');
+    } catch (e) {
+      throw UnknownException(e.toString());
     }
   }
 
@@ -329,10 +332,10 @@ class UserRepository {
     required String confirmPassword,
     required String string_activation,
     required String user_id,
-  }) {
+  }) async {
     final uri = Uri.parse('$baseUrl/users/forget-password/$user_id/');
-    return http
-        .patch(
+    final response = await http
+        .post(
       uri,
       headers: {
         'Accept': 'application/json',
@@ -340,16 +343,16 @@ class UserRepository {
       },
       body: jsonEncode(<dynamic, dynamic>{
         'password': password,
-        'password2': confirmPassword,
+        'confirm_password': confirmPassword,
         'string_activation': string_activation,
       }),
     )
-        .then((response) {
-      if (response.statusCode == 200) {
-        print('response ${response.body}');
-      } else {
-        throw Exception(response.body);
-      }
+        .timeout(Duration(seconds: 30), onTimeout: () {
+      throw Exception('Something went wrong, Please try again later !');
     });
+
+    if (response.statusCode != 200) {
+      throw Exception(response.body);
+    }
   }
 }
