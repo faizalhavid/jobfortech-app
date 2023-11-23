@@ -28,73 +28,8 @@ class EmailVerifyView extends GetView {
         },
         spacing: 25,
         children: [
-          // Obx(
-          //   () => Text(
-          //     controller.emailVerifySuccess.value
-          //         ? 'Verification Success'
-          //         : controller.emailVerified.value
-          //             ? "You've already logged in"
-          //             : 'Verification Failed',
-          //     style: AppBasicStyle(
-          //       fontColor: AppColor.black,
-          //       fontSize: 18,
-          //       fontWeight: FontWeight.w700,
-          //     ),
-          //     textAlign: TextAlign.center,
-          //   ),
-          // ),
-          // Padding(
-          //   padding: const EdgeInsets.all(8.0),
-          //   child: Obx(
-          //     () => AppIcon(
-          //         svgPath: controller.emailVerifySuccess.value
-          //             ? 'assets/svgs/success-verify.svg'
-          //             : 'assets/svgs/failed-verify.svg',
-          //         size: 80),
-          //   ),
-          // ),
-          // Obx(
-          //   () => Text(
-          //     controller.emailVerifySuccess.value
-          //         ? 'Your email has been verified. You can now log in with your new account.'
-          //         : controller.emailVerified.value
-          //             ? "Click to continue"
-          //             : 'Your email verification failed.Please try again.',
-          //     style: AppBasicStyle(
-          //       fontColor: AppColor.grey,
-          //       fontSize: 14,
-          //       fontWeight: FontWeight.w500,
-          //     ),
-          //     textAlign: TextAlign.center,
-          //   ),
-          // ),
-          // Padding(
-          //   padding: const EdgeInsets.symmetric(horizontal: 50),
-          //   child: AppButton(
-          //     width: 10,
-          //     child: Obx(
-          //       () => Text(
-          //         controller.emailVerifySuccess.value
-          //             ? 'Log in'
-          //             : controller.emailVerified.value
-          //                 ? "Continue"
-          //                 : 'Try again',
-          //         style: AppBasicStyle(
-          //             fontSize: 16,
-          //             fontColor: AppColor.white,
-          //             fontWeight: FontWeight.w500),
-          //       ),
-          //     ),
-          //     onPressed: () {
-          //       controller.emailVerifySuccess.value
-          //           ? Get.to(() => LoginView())
-          //           : controller.sendEmailVerification();
-          //     },
-          //   ),
-          // ),
-
           Text(
-            'Verification Success',
+            'Send Verification Email Success',
             style: AppBasicStyle(
               fontColor: AppColor.black,
               fontSize: 18,
@@ -102,7 +37,6 @@ class EmailVerifyView extends GetView {
             ),
             textAlign: TextAlign.center,
           ),
-
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: AppIcon(svgPath: 'assets/svgs/success-verify.svg', size: 80),
@@ -130,7 +64,6 @@ class EmailVerifyView extends GetView {
             ),
             textAlign: TextAlign.center,
           ),
-
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             mainAxisSize: MainAxisSize.max,

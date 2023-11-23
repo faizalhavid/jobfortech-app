@@ -29,6 +29,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="https" android:host="https://jobfortech.page.link" android:pathPrefix="/forgot-password" />
+                <data android:scheme="https" android:host="https://jobfortech.page.link" android:pathPrefix="/welcome-user" />
                 <data android:scheme="path" android:host="jobfortech" android:pathPrefix="/" />
                 <data android:scheme="path" android:host="jobfortech" android:pathPrefix="/welcome-user" />
             </intent-filter>
