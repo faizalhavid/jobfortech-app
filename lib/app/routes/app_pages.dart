@@ -1,6 +1,7 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:jobfortech2/app/modules/Auth/views/forgot_password_view.dart';
+import 'package:jobfortech2/app/modules/Auth/views/welcome_user_view.dart';
 import 'package:jobfortech2/app/modules/Dashboard/views/not_found_view.dart';
 
 import '../modules/Article/bindings/article_binding.dart';
