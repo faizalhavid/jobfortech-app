@@ -164,6 +164,7 @@ class RegisterView extends GetView<AuthController> {
             AppButton(
               focusNode: registerController.focusNode[5],
               height: Get.height * 0.065,
+              overlayColor: AppColor.overlayblue,
               child: Text(
                 'Register',
                 style: AppBasicStyle(
@@ -174,7 +175,6 @@ class RegisterView extends GetView<AuthController> {
               ),
               onPressed: () {
                 registerController.focusNode[5].unfocus();
-
                 registerController.registering(formKey);
               },
             ),

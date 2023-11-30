@@ -18,6 +18,7 @@ class ApplicationController extends GetxController {
   RxBool statusAplied = RxBool(false);
   final RxBool refreshButton = RxBool(false);
   var workApplication = Future.value().obs;
+  RxBool isAccepted = RxBool(false);
 
   void getApplication(int id) async {
     workApplication.value = WorkRepository().getAplication(id: id);

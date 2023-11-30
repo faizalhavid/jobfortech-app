@@ -19,61 +19,52 @@ class UserRepository {
     required String firstName,
     required String lastName,
   }) async {
-    try {
-      final uri = Uri.parse('$baseUrl/auth/register');
-      final response = await http.post(
-        uri,
-        body: jsonEncode(
-          <dynamic, dynamic>{
-            'email': email,
-            'password': password,
-            'password2': password2,
-            'first_name': firstName,
-            'last_name': lastName,
-            'is_developer': 'True',
-          },
-        ),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
+    final uri = Uri.parse('$baseUrl/auth/register');
+    final response = await http.post(
+      uri,
+      body: jsonEncode(
+        <dynamic, dynamic>{
+          'email': email,
+          'password': password,
+          'password2': password2,
+          'first_name': firstName,
+          'last_name': lastName,
+          'is_developer': 'True',
         },
-      ).timeout(
-        Duration(minutes: 1),
-        onTimeout: () {
-          throw Exception('Something went wrong, Please try again later !');
-        },
-      );
+      ),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
 
-      switch (response.statusCode) {
-        case 200:
-          final user = User.fromJson(jsonDecode(response.body)['user']);
-
-          return user;
-        case 400:
-          final dynamic errorData = jsonDecode(response.body);
-          if (errorData is Map<String, dynamic>) {
-            final List<String> errorKeys = [
-              'email',
-              'password',
-              'password2',
-              'first_name',
-              'last_name'
-            ];
-
-            for (var key in errorKeys) {
-              if (errorData.containsKey(key)) {
-                throw errorData[key][0];
-              }
+    switch (response.statusCode) {
+      case 200:
+        final user = User.fromJson(jsonDecode(response.body)['user']);
+        return user;
+      case 500:
+        throw InternalServerErrorException('Internal Server Error');
+      case 400:
+        final dynamic errorData = jsonDecode(response.body);
+        if (errorData is Map<String, dynamic>) {
+          final List<String> errorKeys = [
+            'email',
+            'password',
+            'password2',
+            'first_name',
+            'last_name'
+          ];
+          List<String> errors = [];
+          for (var key in errorKeys) {
+            if (errorData.containsKey(key)) {
+              errors.add('${key}: ${errorData[key][0]}');
             }
           }
-
-          final message = jsonDecode(response.body)['non_field_errors'][0];
-          throw Exception(message);
-        default:
-          throw Exception(response.body);
-      }
-    } on Exception catch (e) {
-      print(e);
-      rethrow;
+          throw InvalidInputException(errors.join('\n'));
+        }
+        final message = jsonDecode(response.body)['non_field_errors'][0];
+        throw InvalidInputException(message);
+      default:
+        throw Exception(response.body);
     }
   }
 
@@ -106,6 +97,39 @@ class UserRepository {
     }
   }
 
+  Future<void> changePassword(
+      String oldPassword, String newPassword, String confirmPassword) async {
+    final id = await secureStorage.read(key: 'id');
+    final token = await secureStorage.read(key: 'token');
+    final uri = Uri.parse('$baseUrl/users/change-password/$id/');
+    try {
+      final response = await http.patch(
+        uri,
+        body: jsonEncode(<dynamic, dynamic>{
+          'old_password': oldPassword,
+          'new_password': newPassword,
+          'confirm_password': confirmPassword,
+        }),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Token ${token}',
+        },
+      );
+      if (response.statusCode == 200) {
+        secureStorage.delete(key: 'token');
+        secureStorage.delete(key: 'id');
+      } else {
+        final message = jsonDecode(response.body)['old_password'];
+        throw ('$message');
+      }
+    } on SocketException {
+      throw NoInternetException('No Internet');
+    } on Exception catch (e) {
+      print('Error: $e');
+      throw UnknownException('Something went wrong, Please try again later !');
+    }
+  }
+
   Future<void> loginWithGoogle(String accessToken) {
     final uri = Uri.parse('$baseUrl/auth/oauth/');
     return http.post(
@@ -132,20 +156,22 @@ class UserRepository {
     });
   }
 
-  Future<User> emailActivation(
+  Future<void> emailActivation(
       {required id, required string_activation}) async {
-    final uri = Uri.parse('$baseUrl/auth/activate/$id/$string_activation');
-    final response = await http.get(uri, headers: {
-      'Accept': 'application/json',
-    });
+    final uri = Uri.parse('$baseUrl/activate/$id/$string_activation/');
     try {
-      if (response.statusCode == 200) {
-        return User.fromJson(jsonDecode(response.body));
+      final response = await http.get(uri, headers: {
+        'Accept': 'application/json',
+      });
+      print(response.statusCode);
+      if (response.statusCode == 400) {
+        throw jsonDecode(response.body)[0];
       }
-      return User.fromJson(jsonDecode(response.body));
+    } on SocketException {
+      throw NoInternetException('No Internet');
     } on Exception catch (e) {
-      print(e);
-      rethrow;
+      print('Error: $e');
+      throw UnknownException('Something went wrong, Please try again later !');
     }
   }
 
@@ -295,7 +321,6 @@ class UserRepository {
     });
 
     if (response.statusCode == 200) {
-      print('response ${response.body}');
       Map<String, dynamic> jsonResponse = json.decode(response.body);
       return User.fromJson(jsonResponse);
     } else {
@@ -318,7 +343,7 @@ class UserRepository {
       if (response.statusCode == 400) {
         var responseBody = jsonDecode(response.body);
         var message = responseBody['message'][0];
-        throw BadRequestException(message);
+        throw Exception(message);
       }
     } on SocketException {
       throw NoInternetException('No Internet');

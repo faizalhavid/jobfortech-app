@@ -6,6 +6,8 @@ class AppColor {
   static const Color darkBlue = Color(0xFF0371D8);
   static const Color osean = Color(0xFF1DB5E5);
   static const Color blue = Color(0xFF197DDC);
+  static const Color overlayblue = Color.fromARGB(255, 52, 137, 216);
+
   static const Color blueMedium = Color.fromARGB(255, 239, 247, 255);
   static const Color lightBlue = Color(0xFFDCEEFF);
   static const Color white = Color(0xFFFFFFFF);

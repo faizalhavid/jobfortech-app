@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:jobfortech2/app/data/repository/UserRepo.dart';
 import 'package:jobfortech2/app/modules/Auth/controllers/auth_controller.dart';
+import 'package:jobfortech2/app/modules/Auth/views/welcome_user_view.dart';
 import 'package:jobfortech2/app/modules/Dashboard/views/navigation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:jobfortech2/components/AppToast/index.dart';
@@ -13,8 +16,9 @@ class LoginController extends GetxController {
   var password = TextEditingController();
   final authController = Get.put(AuthController());
   final userRepo = UserRepository();
-  final secureStorage = FlutterSecureStorage();
-  GoogleSignIn _googleSignIn = GoogleSignIn(
+  final secureStorage = const FlutterSecureStorage();
+
+  final GoogleSignIn _googleSignIn = GoogleSignIn(
     scopes: [
       'email',
       'https://www.googleapis.com/auth/contacts.readonly',

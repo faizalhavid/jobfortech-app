@@ -90,7 +90,7 @@ class AuthController extends GetxController {
       var connection = await checkConnection();
       UserRepository userRepo = UserRepository();
       if (connection) {
-        EasyLoading.show();
+        EasyLoading.show(status: 'loading...');
         secureStorage.delete(key: 'token');
         secureStorage.delete(key: 'id');
         EasyLoading.dismiss();

@@ -62,12 +62,10 @@ class RegisterController extends GetxController {
             lastName: lastName.text,
           );
           user.value = response;
-          print('user data : ${user.value.firstName} ${user.value.lastName} ');
 
-          AppToast(message: 'Register success');
-
-          await Future.delayed(Duration(seconds: 1));
           EasyLoading.dismiss();
+          AppToast(message: 'Register success');
+          await Future.delayed(Duration(seconds: 1));
           Get.to(() => EmailVerifyView(), arguments: user.value);
         } else {
           EasyLoading.showToast('Please fill all fields with valid data',
@@ -77,7 +75,12 @@ class RegisterController extends GetxController {
         if (e.toString().contains('email')) {
           EasyLoading.dismiss();
           AppDialog(
-            onConfirm: () {},
+            onConfirm: () {
+              Get.to(
+                () => LoginView(),
+                duration: Duration(milliseconds: 500),
+              );
+            },
             content: AppStack(
                 mAlignment: MainAxisAlignment.center,
                 cAlignment: CrossAxisAlignment.center,

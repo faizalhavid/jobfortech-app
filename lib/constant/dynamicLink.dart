@@ -1,5 +1,7 @@
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
+import 'package:jobfortech2/app/data/repository/UserRepo.dart';
 import 'package:jobfortech2/app/modules/Auth/views/change_password_view.dart';
 import 'package:jobfortech2/app/modules/Auth/views/welcome_user_view.dart';
 import 'package:jobfortech2/app/modules/Dashboard/views/not_found_view.dart';
@@ -34,10 +36,25 @@ void handleDeepLink(Uri uri) {
           ));
       break;
     case '/welcome-user':
-      Get.to(() => WelcomeUserView(
-            uri.queryParameters['user_id']!,
-            uri.queryParameters['user_uuid']!,
-          ));
+      final response = UserRepository()
+          .emailActivation(
+        id: uri.queryParameters['user_id'],
+        string_activation: uri.queryParameters['user_uuid']!,
+      )
+          .then((value) {
+        Get.snackbar('Success Email Activation',
+            'Welcome JobFortech ! You can login now');
+        EasyLoading.show(status: 'loading...');
+        Future.delayed(const Duration(seconds: 3), () {
+          EasyLoading.dismiss();
+          Get.offAll(() => WelcomeUserView(isAboutUs: false));
+        });
+      }).catchError((e) {
+        Get.snackbar('Error', e.toString(),
+            duration: const Duration(seconds: 5),
+            backgroundColor: Get.theme.colorScheme.error,
+            colorText: Get.theme.colorScheme.onSecondary);
+      });
       break;
 
     default:

@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:jobfortech2/app/data/models/User.dart';
 import 'package:jobfortech2/app/data/repository/UserRepo.dart';
 import 'package:get/get.dart';
 import 'package:jobfortech2/app/modules/Auth/controllers/auth_controller.dart';
+import 'package:jobfortech2/app/modules/Auth/views/change_password.dart';
+import 'package:jobfortech2/app/modules/Auth/views/email_verify_view.dart';
+import 'package:jobfortech2/app/modules/Auth/views/welcome_user_view.dart';
 import 'package:jobfortech2/app/modules/Profile/controllers/profile_controller.dart';
 import 'package:jobfortech2/app/modules/Profile/views/edit_profile_view.dart';
 import 'package:jobfortech2/app/modules/Profile/views/payroll_view.dart';
@@ -38,27 +42,13 @@ class ProfileView extends GetView<ProfileController> {
           ),
           AppListTile(
             leading: AppIcon(
-                svgPath: 'assets/svgs/money-bill.svg',
+                svgPath: 'assets/svgs/reset-password.svg',
                 color: AppColor.blue,
                 size: 26),
-            text: 'Payroll',
+            text: 'Change Password',
             onTap: () {
-              Get.to(() => PayrollView());
-              print('Payroll tapped');
+              Get.to(() => ChangePasswordView());
             },
-            trailing: AppBadge(
-                child: Text(
-                  '1',
-                  style: AppBasicStyle(
-                      fontSize: 12,
-                      fontColor: AppColor.white,
-                      fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.center,
-                ),
-                radius: 20,
-                height: 25,
-                width: 25,
-                backgroundColor: AppColor.blue),
           ),
           SizedBox(
             height: 5,
@@ -70,7 +60,7 @@ class ProfileView extends GetView<ProfileController> {
                 size: 26),
             text: 'About Us',
             onTap: () {
-              print('About US tapped');
+              Get.to(() => WelcomeUserView(isAboutUs: true));
             },
           ),
           AppListTile(

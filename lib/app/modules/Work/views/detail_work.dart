@@ -194,7 +194,8 @@ class WorkDetailView extends GetView {
           size: 20,
           color: AppColor.green,
         );
-        aplController.message.value = 'You have accepted for this job !';
+        aplController.isAccepted.value = true;
+
         break;
       case 'Rejected':
         aplController.textButton.value = status;
@@ -270,7 +271,7 @@ class WorkDetailView extends GetView {
                       ),
                     );
             } else {
-              return Center(child: Text('Something went wrong'));
+              return Center(child: Text('Not yet participant'));
             }
           },
         )

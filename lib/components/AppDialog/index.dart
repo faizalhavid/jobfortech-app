@@ -23,8 +23,10 @@ Future<void> AppDialog({
     ),
     title: title,
     content: content,
-    confirm: SizedBox(
-      width: Get.width * 0.25,
+    confirm: Container(
+      constraints: BoxConstraints(
+        maxWidth: Get.width * 0.3,
+      ),
       child: AppButton(
         overlayColor: AppColor.blueMedium,
         backgroundColor: AppColor.lightBlue,

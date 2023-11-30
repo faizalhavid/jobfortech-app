@@ -51,36 +51,7 @@ class EditProfileView extends GetView<ProfileController> {
         ),
         body: Form(
           key: formKey,
-          child:
-              // final biodata = user.profile?.description == '' ||
-              //         user.profile?.description == null
-              //     ? 'No biodata'
-              //     : user.profile?.description ?? '';
-
-              // controller.firts_name.text = user.firstName!;
-              // controller.last_name.text = user.lastName!;
-              // controller.email.text = user.email!;
-              // controller.bio.text = profile?.description ?? 'No biodata';
-              // controller.phoneNumber.text = user.phoneNumber!;
-              // controller.cv_file.value = File(profile?.resume ?? '');
-              // controller.address.text = user.profile?.location ?? '';
-              // controller.jobRoles.text = user.profile?.position ?? '';
-              // controller.expertiseTag.value =
-              //     (user.profile?.expertise ?? []).map<String>((dynamic item) {
-              //   return item.toString();
-              // }).toList();
-              // final socialList =
-              //     (profile?.socialMedia as List<dynamic>?)?.map((e) {
-              //           return {
-              //             'name': socialMediaName(e.toString()),
-              //             'url': e.toString(),
-              //           };
-              //         })?.toList() ??
-              //         [];
-
-              // controller.userSocial.value = socialList;
-
-              AppSafeArea(
+          child: AppSafeArea(
             safearea: resSafeArea,
             spacing: 20,
             children: [

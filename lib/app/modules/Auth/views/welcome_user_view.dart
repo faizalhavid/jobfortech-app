@@ -4,16 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 import 'package:get/get.dart';
+import 'package:jobfortech2/app/data/repository/UserRepo.dart';
 import 'package:jobfortech2/app/modules/Auth/views/login_view.dart';
 import 'package:jobfortech2/constant/icons.dart';
 import 'package:jobfortech2/constant/theme.dart';
 
 class WelcomeUserView extends StatefulWidget {
-  final String user_id;
-  final String user_uuid;
-
-  const WelcomeUserView(this.user_id, this.user_uuid, {Key? key})
-      : super(key: key);
+  final bool isAboutUs;
+  const WelcomeUserView({Key? key, required this.isAboutUs}) : super(key: key);
 
   @override
   _WelcomeUserViewState createState() => _WelcomeUserViewState();
@@ -71,7 +69,11 @@ class _WelcomeUserViewState extends State<WelcomeUserView> {
         timer.cancel();
         timer = Timer.periodic(const Duration(seconds: 2), (timer) {
           if (pageController.page?.round() == gallerySwipper.length - 1) {
-            Get.offAll(() => LoginView());
+            if (widget.isAboutUs) {
+              Get.back();
+            } else {
+              Get.offAll(() => LoginView());
+            }
             timer.cancel();
           } else {
             pageController.nextPage(
@@ -84,7 +86,11 @@ class _WelcomeUserViewState extends State<WelcomeUserView> {
         timer.cancel();
         timer = Timer.periodic(const Duration(seconds: 2), (timer) {
           if (pageController.page?.round() == gallerySwipper.length - 1) {
-            Get.offAll(() => LoginView());
+            if (widget.isAboutUs) {
+              Get.back();
+            } else {
+              Get.offAll(() => LoginView());
+            }
             timer.cancel();
           } else {
             pageController.nextPage(
@@ -103,7 +109,7 @@ class _WelcomeUserViewState extends State<WelcomeUserView> {
         companyController.jumpToPage(0);
       } else {
         companyController.nextPage(
-          duration: Duration.zero,
+          duration: Duration(milliseconds: 500),
           curve: Curves.slowMiddle,
         );
       }
@@ -129,7 +135,6 @@ class _WelcomeUserViewState extends State<WelcomeUserView> {
   @override
   void initState() {
     super.initState();
-
     caraouselSlider();
     listenerSwipeUp();
   }
@@ -235,7 +240,7 @@ class _WelcomeUserViewState extends State<WelcomeUserView> {
                 ),
               ),
               const SizedBox(
-                height: 10,
+                height: 25,
               ),
               Text(
                 'Jobfortech is a job search app designed specifically for developers. The app allows developers to search for jobs, apply for jobs, and connect with potential employers.',
@@ -424,6 +429,19 @@ class _WelcomeUserViewState extends State<WelcomeUserView> {
                   ),
                 );
               },
+            ),
+          ),
+          const SizedBox(
+            height: 50,
+          ),
+          Center(
+            child: Text(
+              '@2023 JobForTech',
+              style: AppBasicStyle(
+                fontColor: AppColor.white,
+                fontSize: 12,
+                fontWeight: FontWeight.w400,
+              ),
             ),
           ),
         ],

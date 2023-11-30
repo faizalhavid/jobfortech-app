@@ -1,3 +1,4 @@
+import 'package:jobfortech2/app/data/models/Project.dart';
 import 'package:jobfortech2/app/data/models/User.dart';
 
 class Application {
@@ -97,50 +98,6 @@ class Work {
       company: json['company'] != null
           ? Company.fromJson(json['company'] as Map<String, dynamic>)
           : null,
-    );
-  }
-}
-
-class Project {
-  int id;
-  List<int>? participants;
-  String? name;
-  String? details;
-  int? time;
-  String? status;
-  DateTime? dueDate;
-  bool updated;
-  int user;
-
-  Project({
-    required this.id,
-    this.participants,
-    this.name,
-    this.details,
-    this.time,
-    this.status,
-    this.dueDate,
-    required this.updated,
-    required this.user,
-  });
-
-  factory Project.fromJson(Map<String, dynamic> json) {
-    return Project(
-      id: json['id'] as int,
-      participants: json['participants'] != null
-          ? (json['participants'] as List<dynamic>)
-              .map((e) => e as int)
-              .toList()
-          : null,
-      name: json['name'] as String?,
-      details: json['details'] as String?,
-      time: json['time'] as int?,
-      status: json['status'] as String?,
-      dueDate: json['dueDate'] != null
-          ? DateTime.parse(json['dueDate'] as String)
-          : DateTime.now(),
-      updated: json['updated'] as bool,
-      user: json['user'] as int,
     );
   }
 }

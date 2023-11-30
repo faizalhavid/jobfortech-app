@@ -66,7 +66,7 @@ class LoginView extends GetView<AuthController> {
                     controller: loginController.password,
                     labelText: 'Password',
                     hintText: '•••••••••',
-                    errorText: 'Invalid password address',
+                    errorText: 'Invalid password',
                     keyboardType: TextInputType.visiblePassword,
                     obscureText: controller.eyeIconPassword.value,
                     suffix: AppIconButton(

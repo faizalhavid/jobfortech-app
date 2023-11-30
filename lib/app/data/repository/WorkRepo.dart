@@ -175,6 +175,35 @@ class WorkRepository {
 
       if (response.statusCode == 200) {
         final List<dynamic> jobList = jsonDecode(response.body)['results'];
+        print('job list : $jobList');
+        return jobList.map((json) => Work.fromJson(json)).toList();
+      } else {
+        throw Exception('Something went wrong, Please try again later !');
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  Future<List<Work>> getAcceptWork() async {
+    final token = await secureStorage.read(key: 'token');
+    try {
+      final response = await http.get(
+        Uri.parse('${baseUrl}/job/application/user'),
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': 'Token ${token}',
+        },
+      ).timeout(
+        Duration(minutes: 1),
+        onTimeout: () {
+          throw Exception('Something went wrong, Please try again later !');
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final List<dynamic> jobList = jsonDecode(response.body)['results'];
+        print('job list : $jobList');
         return jobList.map((json) => Work.fromJson(json)).toList();
       } else {
         throw Exception('Something went wrong, Please try again later !');

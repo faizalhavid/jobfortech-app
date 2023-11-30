@@ -1,12 +1,6 @@
-class BadRequestException implements Exception {
-  final String message;
-  BadRequestException(this.message);
-  @override
-  String toString() => message;
-}
-
 class TimeoutException implements Exception {
-  final String message = 'Request timed out';
+  final String message;
+  TimeoutException(this.message);
   @override
   String toString() => message;
 }
